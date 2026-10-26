@@ -1,12 +1,14 @@
-// FitMeal Pro Progressive Web App Service Worker
-const CACHE_NAME = 'fitmeal-pwa-v1';
+// Uchitatvam Progressive Web App Service Worker
+const CACHE_NAME = 'uchitatvam-pwa-v1';
 const STATIC_ASSETS = [
   '/',
-  '/icon.svg',
-  '/pwa-192x192.png',
-  '/pwa-512x512.png',
+  '/favicon.ico',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
   '/apple-touch-icon.png',
-  '/manifest.webmanifest',
+  '/android-chrome-192x192.png',
+  '/android-chrome-512x512.png',
+  '/site.webmanifest',
 ];
 
 // Install Event - Pre-cache core shell
@@ -75,10 +77,10 @@ self.addEventListener('fetch', (event) => {
 // Service Worker Push Event Handler
 self.addEventListener('push', (event) => {
   let data = {
-    title: 'FitMeal Live Alert',
+    title: 'Uchitatvam Live Alert',
     body: 'Your fitness telemetry and recovery metrics are synchronized.',
-    icon: '/pwa-192x192.png',
-    badge: '/pwa-192x192.png',
+    icon: '/android-chrome-192x192.png',
+    badge: '/android-chrome-192x192.png',
     data: { url: '/' },
   };
 
@@ -92,8 +94,8 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: data.icon || '/pwa-192x192.png',
-    badge: data.badge || '/pwa-192x192.png',
+    icon: data.icon || '/android-chrome-192x192.png',
+    badge: data.badge || '/android-chrome-192x192.png',
     vibrate: [100, 50, 100],
     data: data.data || { url: '/' },
     actions: [
@@ -132,10 +134,10 @@ self.addEventListener('notificationclick', (event) => {
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
     const { title, options } = event.data;
-    self.registration.showNotification(title || 'FitMeal Alert', {
+    self.registration.showNotification(title || 'Uchitatvam Alert', {
       body: options?.body || 'Fitness alert triggered.',
-      icon: options?.icon || '/pwa-192x192.png',
-      badge: options?.badge || '/pwa-192x192.png',
+      icon: options?.icon || '/android-chrome-192x192.png',
+      badge: options?.badge || '/android-chrome-192x192.png',
       vibrate: [150, 80, 150],
       data: options?.data || { url: '/' },
     });

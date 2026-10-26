@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { AnimatePresence, motion } from "motion/react";
@@ -32,7 +33,6 @@ import {
   FaThreads,
   FaWhatsapp,
 } from "react-icons/fa6";
-import PotatoFitLogo from "./PotatoFitLogo";
 import { cn } from "@/lib/utils";
 import { PWAInstallButton } from "./PWAInstallButton";
 
@@ -329,7 +329,7 @@ const LEARN_MENU: MegaMenu = {
   showSocials: true,
   image: {
     src: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
-    alt: "PotatoFit Athletic Academy",
+    alt: "Uchitatvam Athletic Academy",
   },
   imageCaption: "Complete athlete education: Programs, PulseAI nutrition & certified coach clinics",
 };
@@ -495,7 +495,7 @@ export default function Navbar({
         >
           {/* Top Navbar Row */}
           <div className="flex items-center justify-between gap-6 px-5 py-3.5 sm:px-7">
-            {/* 1. Left: PotatoFit Brand Mark & Subtle Streak Badge */}
+            {/* 1. Left: Uchitatvam Brand Mark */}
             <div className="flex items-center gap-3 shrink-0">
               <Link
                 href="/"
@@ -507,10 +507,21 @@ export default function Navbar({
                   setOpenMenu(null);
                   setMobileOpen(false);
                 }}
-                className="group flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-xl p-0.5"
-                aria-label="PotatoFit Home"
+                className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-xl p-0.5"
+                aria-label="Uchitatvam Home"
               >
-                <PotatoFitLogo size="sm" variant="dark" />
+                <Image
+                  src="/uchitatvam-logo.svg"
+                  alt="Uchitatvam"
+                  width={36}
+                  height={36}
+                  priority
+                  referrerPolicy="no-referrer"
+                  className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0"
+                />
+                <span className="font-bold text-lg sm:text-xl tracking-tight text-white font-sans">
+                  Uchitatvam
+                </span>
               </Link>
 
               {/* Streak Trigger */}
@@ -837,7 +848,7 @@ export default function Navbar({
                       <div className="relative z-10 p-4 space-y-1">
                         <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-[#f7fe72] uppercase tracking-wider">
                           <Activity className="w-3 h-3" />
-                          <span>PotatoFit Verified Engine</span>
+                          <span>Uchitatvam Verified Engine</span>
                         </div>
                         <p className="text-xs font-semibold text-white leading-relaxed">
                           {activeMenu.imageCaption}

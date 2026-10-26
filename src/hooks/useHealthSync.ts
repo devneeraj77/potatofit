@@ -192,7 +192,8 @@ const DEFAULT_PROVIDERS: HealthProvider[] = [
   },
 ];
 
-const STORAGE_KEY = "potatofit_connected_health_single_v3";
+const STORAGE_KEY = "uchitatvam_connected_health_single_v3";
+const LEGACY_STORAGE_KEY = "potatofit_connected_health_single_v3";
 
 export function useHealthSync() {
   const { triggerNotification } = usePWA();
@@ -206,7 +207,7 @@ export function useHealthSync() {
 
     const loadFromStorage = () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
+        const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -305,7 +306,7 @@ export function useHealthSync() {
       // Trigger Service Worker Alert
       await triggerNotification(`⚡ ${providerName} Connected`, {
         body: `All biometrics active! Daily burn (+${targetProvider?.telemetry.activeBurnKcal || 500} kcal), steps (${targetProvider?.telemetry.dailySteps.toLocaleString()}), and sleep synced.`,
-        icon: "/pwa-192x192.png",
+        icon: "/android-chrome-192x192.png",
       });
     },
     [saveProviders, triggerNotification]
@@ -358,9 +359,9 @@ export function useHealthSync() {
     setSyncStatusMsg("Telemetry refreshed. Steps, burn, heart rate and sleep updated.");
     setTimeout(() => setSyncStatusMsg(null), 3500);
 
-    await triggerNotification("FitMeal // Telemetry Refreshed", {
+    await triggerNotification("Uchitatvam // Telemetry Refreshed", {
       body: "Health telemetry up to date. Macro allocations and recovery metrics verified.",
-      icon: "/pwa-192x192.png",
+      icon: "/android-chrome-192x192.png",
     });
   }, [providers, saveProviders, triggerNotification]);
 

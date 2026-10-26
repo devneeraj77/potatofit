@@ -20,9 +20,9 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
 
   const handleTestAlert = async () => {
     setIsNotifLoading(true);
-    const success = await triggerNotification("FitMeal Pro // PWA Alert", {
+    const success = await triggerNotification("Uchitatvam // PWA Alert", {
       body: "⚡ Service Worker Alert: Recovery readiness 88%. Optimal window for Box Breathing protocol!",
-      icon: "/pwa-192x192.png",
+      icon: "/android-chrome-192x192.png",
     });
     setIsNotifLoading(false);
     if (!success && notificationPermission === "denied") {
@@ -42,7 +42,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <div className="flex items-center gap-2">
             <Smartphone className="w-5 h-5 text-[#f7fe72]" />
-            <h3 className="text-base font-bold text-white">Install FitMeal on iOS</h3>
+            <h3 className="text-base font-bold text-white">Install Uchitatvam on iOS</h3>
           </div>
           <button
             onClick={() => setShowIOSGuide(false)}
@@ -74,7 +74,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
               3
             </span>
             <span>
-              Confirm <strong>Add</strong> to launch FitMeal with native fullscreen and service worker alerts.
+              Confirm <strong>Add</strong> to launch Uchitatvam with native fullscreen and service worker alerts.
             </span>
           </li>
         </ol>
@@ -102,7 +102,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
               </span>
               <div>
                 <p className="font-bold text-white text-xs sm:text-sm">
-                  Install PotatoFit Web App
+                  Install Uchitatvam Web App
                 </p>
                 <p className="text-[11px] text-[#A0A493] hidden sm:block">
                   Offline biometric caching, instant workout pacing, and fullscreen athletic telemetry.

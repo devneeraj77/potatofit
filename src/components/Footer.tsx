@@ -84,7 +84,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-[#505445] dark:text-[#757761]">
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <p>© 2026 PotatoFit Inc. All rights reserved.</p>
+            <p>© 2026 Uchitatvam Inc. All rights reserved.</p>
             <span className="hidden sm:inline text-[#757761]/40">•</span>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-mono text-[#505445] dark:text-[#A0A594]">Theme:</span>

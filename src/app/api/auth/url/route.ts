@@ -21,14 +21,14 @@ export async function GET(req: NextRequest) {
       redirectUri
     )}&approval_prompt=auto&scope=read,activity:read_all`;
   } else if (provider === "googlefit") {
-    const clientId = process.env.GOOGLE_FIT_CLIENT_ID || "potatofit-health-connect";
+    const clientId = process.env.GOOGLE_FIT_CLIENT_ID || "uchitatvam-health-connect";
     authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(
       redirectUri
     )}&response_type=code&scope=${encodeURIComponent(
       "https://www.googleapis.com/auth/fitness.activity.read https://www.googleapis.com/auth/fitness.heart_rate.read https://www.googleapis.com/auth/fitness.sleep.read"
     )}&access_type=offline&prompt=consent`;
   } else if (provider === "applehealth") {
-    const clientId = process.env.APPLE_HEALTH_CLIENT_ID || "com.potatofit.health";
+    const clientId = process.env.APPLE_HEALTH_CLIENT_ID || "com.uchitatvam.health";
     authUrl = `https://appleid.apple.com/auth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
       redirectUri
     )}&response_type=code&scope=name%20email&response_mode=form_post`;

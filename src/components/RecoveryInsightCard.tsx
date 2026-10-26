@@ -153,9 +153,9 @@ export default function RecoveryInsightCard({
     setTimeout(() => setAppliedNotice(null), 3500);
 
     // Fire PWA Notification alert
-    triggerNotification("FitMeal Recovery Insight", {
+    triggerNotification("Uchitatvam Recovery Insight", {
       body: `⚡ Nutrition updated: ${status.nutritionAdjustments.proteinDelta} & ${status.nutritionAdjustments.suggestedMeal} added to today's plan.`,
-      icon: "/pwa-192x192.png",
+      icon: "/android-chrome-192x192.png",
     });
   };
 
@@ -548,9 +548,9 @@ export default function RecoveryInsightCard({
             <button
               type="button"
               onClick={() => {
-                triggerNotification("FitMeal Recovery Alert", {
+                triggerNotification("Uchitatvam Recovery Alert", {
                   body: `⚡ Optimal sleep window recommended at 10:15 PM. Consume ${status.nutritionAdjustments.proteinDelta} to maximize recovery score!`,
-                  icon: "/pwa-192x192.png",
+                  icon: "/android-chrome-192x192.png",
                 });
                 setAppliedNotice("Recovery notification alert sent via Service Worker!");
                 setTimeout(() => setAppliedNotice(null), 3000);

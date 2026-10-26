@@ -108,7 +108,7 @@ export default function SignInModal({ isOpen, onClose, onOpenDashboard }: SignIn
             </div>
 
             <h3 className="text-2xl font-black text-white tracking-tight">
-              Sign In to PotatoFit
+              Sign In to Uchitatvam
             </h3>
             <p className="text-xs text-[#A0A493] mt-1 mb-5">
               Secure authentication powered by NextAuth. Access your personal training splits and biomarker logs.

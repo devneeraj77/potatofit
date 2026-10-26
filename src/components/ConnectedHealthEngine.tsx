@@ -100,19 +100,19 @@ export default function ConnectedHealthEngine({
     }
 
     if (type === "macro") {
-      await triggerNotification("FitMeal Nutrition Alert", {
+      await triggerNotification("Uchitatvam Nutrition Alert", {
         body: `Post-Workout Window: Consume 42g protein within 45 mins. Calories adjusted for ${primaryProvider?.name || "daily workout"}!`,
-        icon: "/pwa-192x192.png",
+        icon: "/android-chrome-192x192.png",
       });
     } else if (type === "recovery") {
       await triggerNotification("Parasympathetic Recovery Alert", {
         body: `HRV baseline steady at ${hrvMs || 70}ms. 5-min Box Breathing session recommended at 9:30 PM.`,
-        icon: "/pwa-192x192.png",
+        icon: "/android-chrome-192x192.png",
       });
     } else {
       await triggerNotification("Leaderboard Rival Watch", {
         body: "Contender @Rohan_K has logged a 10km run and is 80 XP ahead of you in Sector 4!",
-        icon: "/pwa-192x192.png",
+        icon: "/android-chrome-192x192.png",
       });
     }
   };

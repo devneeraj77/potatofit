@@ -82,7 +82,7 @@ function generateAnnualActivityData(targetBurnKcal = 750, targetSteps = 10000): 
     const dayOfMonth = curDate.getDate();
     const month = curDate.getMonth();
 
-    // Consistency profile: PotatoFit athlete is very consistent (~74% of days meet goals)
+    // Consistency profile: Uchitatvam athlete is very consistent (~74% of days meet goals)
     // Sundays are mostly active recovery or rest
     const rand = pseudoRandom();
 

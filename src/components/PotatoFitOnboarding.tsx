@@ -170,15 +170,17 @@ const SAMPLE_VENDORS: LocalVendor[] = [
   },
 ];
 
-interface PotatoFitOnboardingProps {
+interface UchitatvamOnboardingProps {
   onContinueToDashboard?: () => void;
   onExploreFullPlatform?: () => void;
 }
 
-export default function PotatoFitOnboarding({
+export type PotatoFitOnboardingProps = UchitatvamOnboardingProps;
+
+export default function UchitatvamOnboarding({
   onContinueToDashboard,
   onExploreFullPlatform,
-}: PotatoFitOnboardingProps) {
+}: UchitatvamOnboardingProps) {
   const [selectedLevelId, setSelectedLevelId] = useState<AthleteLevelId>("street-athlete");
   const [isDetecting, setIsDetecting] = useState(false);
   const [detectionStep, setDetectionStep] = useState<number>(0);
@@ -295,7 +297,7 @@ export default function PotatoFitOnboarding({
         {/* 2. Central Value Proposition */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.1] mb-5">
-            From Couch Potato to{" "}
+            Precision Fuel to{" "}
             <span className="bg-gradient-to-r from-[#121815] via-[#505445] to-[#7A5A00] dark:from-[#FFFFFF] dark:via-[#f4e76e] dark:to-[#f7fe72] bg-clip-text text-transparent drop-shadow-sm">
               Global Apex.
             </span>
@@ -547,9 +549,9 @@ export default function PotatoFitOnboarding({
       <footer className="relative z-10 w-full border-t border-[#757761]/25 bg-[#0B0E0C] py-6 text-center text-xs text-[#757761]">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-[#CBD2C7]">POTATOFIT</span>
+            <span className="font-bold text-[#CBD2C7]">UCHITATVAM</span>
             <span>&bull;</span>
-            <span>From Couch Potato to Global Apex</span>
+            <span>Precision Athletic Fuel &amp; Biometrics</span>
           </div>
           <div className="flex items-center gap-4 text-[#A0A493]">
             <Link href="/dashboard" className="hover:text-[#f7fe72] transition-colors">
@@ -746,3 +748,4 @@ export default function PotatoFitOnboarding({
     </div>
   );
 }
+export { UchitatvamOnboarding as PotatoFitOnboarding };

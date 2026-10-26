@@ -142,7 +142,7 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
       primaryActionText: "Enter Global Arena (#42)",
       secondaryActionText: "Explore Guided Sessions",
       metricLabel: "14,820 Active Contenders Worldwide",
-      metricSub: "Season 4 Apex Protocol • ₹50,000 FitMeal Prize",
+      metricSub: "Season 4 Apex Protocol • ₹50,000 Uchitatvam Prize",
     },
   ];
 
@@ -195,7 +195,7 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
   const BadgeIcon = activeSlideData.badgeIcon;
 
   return (
-    <section className="dark-hero relative w-full min-h-[70vh] lg:h-[70vh] flex flex-col justify-center overflow-hidden bg-[#0B0E0C] text-[#E2E7DE] border-b border-[#757761]/30">
+    <section className="dark-hero relative w-full min-h-[80vh] lg:h-[80vh] flex flex-col justify-between overflow-hidden bg-[#0B0E0C] text-[#E2E7DE] border-b border-[#757761]/30">
       {/* Dynamic Unsplash Background Carousel with Smooth Crossfade */}
       <div className="absolute inset-0 z-0">
         {slides.map((slide, idx) => (
@@ -227,21 +227,21 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
         <div className="absolute bottom-1/4 right-1/4 -z-0 w-96 h-96 bg-[#f7fe72]/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* Main Content Viewport */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 lg:py-4">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+      {/* Main Content Viewport - Centered vertically within the 80vh layout */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex items-center py-4 sm:py-6 lg:py-2">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 xl:gap-12 w-full">
           
           {/* Left Column (58% desktop width): Carousel Slide Content */}
-          <div className="w-full lg:w-[58%] flex flex-col items-start space-y-4 sm:space-y-5 animate-in fade-in duration-500">
+          <div className="w-full lg:w-[58%] flex flex-col items-start space-y-3 sm:space-y-4 xl:space-y-5 animate-in fade-in duration-500">
             
             {/* Tag Badge: Styled strictly to match BentoGrid and other sections */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#121815] border border-[#757761]/40 text-[#f7fe72] text-xs font-bold tracking-wider uppercase shadow-xs">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#121815] border border-[#757761]/40 text-[#f7fe72] text-[11px] sm:text-xs font-bold tracking-wider uppercase shadow-xs">
               <BadgeIcon className="w-3.5 h-3.5 text-[#f7fe72]" />
               <span>{activeSlideData.badgeText}</span>
             </div>
 
             {/* Carousel Headline: High-Contrast Crisp White with Brand Gold Gradient */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black tracking-tight text-white leading-[1.08] text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[2.65rem] xl:text-[3.15rem] font-black tracking-tight text-white leading-[1.08] text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
               {activeSlideData.headlineMain}{" "}
               <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f7fe72] via-[#f4e76e] to-white drop-shadow-md">
@@ -250,78 +250,78 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
             </h1>
 
             {/* Description: High-Contrast #CBD2C7 matching other sections */}
-            <p className="text-base sm:text-lg lg:text-xl text-[#CBD2C7] leading-relaxed max-w-xl font-normal drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
+            <p className="text-sm sm:text-base lg:text-base xl:text-lg text-[#CBD2C7] leading-relaxed max-w-xl font-normal drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
               {activeSlideData.description}
             </p>
 
             {/* Action Buttons Cluster: High-contrast buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-1 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-0.5 sm:pt-1 w-full sm:w-auto">
               {currentSlide === 3 ? (
                 <Link
                   href="/leaderboards"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-sm sm:text-base shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-xs sm:text-sm shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
                 >
                   <Trophy className="w-4 h-4 text-[#0B0E0C]" />
                   <span>{activeSlideData.primaryActionText}</span>
-                  <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                  <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </Link>
               ) : currentSlide === 2 ? (
                 <button
                   onClick={() => {
                     document.getElementById("nutrition-engine-section")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-sm sm:text-base shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-xs sm:text-sm shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
                 >
                   <Utensils className="w-4 h-4 text-[#0B0E0C]" />
                   <span>{activeSlideData.primaryActionText}</span>
-                  <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                  <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
               ) : currentSlide === 1 ? (
                 <button
                   onClick={onOpenGuidedSession}
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-sm sm:text-base shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-xs sm:text-sm shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
                 >
-                  <Play className="w-4 h-4 fill-[#0B0E0C] text-[#0B0E0C]" />
+                  <Play className="w-3.5 h-3.5 fill-[#0B0E0C] text-[#0B0E0C]" />
                   <span>{activeSlideData.primaryActionText}</span>
-                  <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                  <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
               ) : (
                 <button
                   onClick={onOpenRoutineBuilder}
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-sm sm:text-base shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] font-black text-xs sm:text-sm shadow-lg shadow-[#f7fe72]/20 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
                 >
                   <span>{activeSlideData.primaryActionText}</span>
-                  <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                  <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
               )}
 
               {/* Secondary Ghost Button: Styled with consistent #121815 and #757761 border */}
               <button
                 onClick={currentSlide === 1 ? onOpenRoutineBuilder : onOpenGuidedSession}
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 hover:border-[#f7fe72] text-white hover:text-[#f7fe72] font-semibold text-sm sm:text-base shadow-md transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 hover:border-[#f7fe72] text-white hover:text-[#f7fe72] font-semibold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
               >
-                <div className="w-5 h-5 rounded-full bg-[#757761]/30 text-[#f7fe72] flex items-center justify-center">
-                  <Play className="w-3 h-3 fill-current ml-0.5 text-[#f7fe72]" />
+                <div className="w-4 h-4 rounded-full bg-[#757761]/30 text-[#f7fe72] flex items-center justify-center">
+                  <Play className="w-2.5 h-2.5 fill-current ml-0.5 text-[#f7fe72]" />
                 </div>
                 <span className="text-white font-semibold">{activeSlideData.secondaryActionText}</span>
               </button>
             </div>
 
             {/* Social Proof Capsule: High-Contrast Capsule with HeroUI AvatarGroup */}
-            <div className="pt-2">
-              <div className="inline-flex flex-wrap sm:flex-nowrap items-center gap-3.5 bg-[#121815] border border-[#757761]/40 rounded-2xl px-4 py-2.5 shadow-md">
-                <AvatarGroup className="inline-flex items-center -space-x-2.5 shrink-0">
+            <div className="pt-1">
+              <div className="inline-flex flex-wrap sm:flex-nowrap items-center gap-2.5 sm:gap-3 bg-[#121815] border border-[#757761]/40 rounded-xl sm:rounded-2xl px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-md">
+                <AvatarGroup className="inline-flex items-center -space-x-2 shrink-0">
                   {users.slice(0, 4).map((user) => (
                     <Avatar
                       key={user.id}
-                      className="relative inline-flex items-center justify-center shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full ring-2 ring-[#121815] bg-[#18201A] overflow-hidden shadow-xs"
+                      className="relative inline-flex items-center justify-center shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full ring-2 ring-[#121815] bg-[#18201A] overflow-hidden shadow-xs"
                     >
                       <Avatar.Image
                         alt={user.name}
                         src={user.image}
                         className="w-full h-full object-cover rounded-full"
                       />
-                      <Avatar.Fallback className="flex items-center justify-center w-full h-full text-[11px] sm:text-xs font-bold text-[#f7fe72] bg-[#18201A] rounded-full font-mono">
+                      <Avatar.Fallback className="flex items-center justify-center w-full h-full text-[10px] font-bold text-[#f7fe72] bg-[#18201A] rounded-full font-mono">
                         {user.name
                           .split(" ")
                           .map((n) => n[0])
@@ -335,32 +335,32 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
                   {currentSlide === 0 ? (
                     <>
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="font-bold text-white text-xs sm:text-sm leading-tight tracking-tight">
+                        <span className="font-bold text-white text-xs leading-tight tracking-tight">
                           Joined by 14,000+ active movers
                         </span>
-                        <span className="text-[10px] sm:text-[11px] font-bold text-[#0B0E0C] bg-[#f7fe72] px-1.5 py-0.5 rounded-full font-sans shadow-xs">
+                        <span className="text-[9px] sm:text-[10px] font-bold text-[#0B0E0C] bg-[#f7fe72] px-1.5 py-0.5 rounded-full font-sans shadow-xs">
                           this month
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                        <span className="text-[#f7fe72] text-[11px] tracking-wider select-none">
+                      <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                        <span className="text-[#f7fe72] text-[10px] tracking-wider select-none">
                           ★★★★★
                         </span>
-                        <span className="text-[11px] sm:text-xs text-[#CBD2C7] font-mono font-semibold">
+                        <span className="text-[10px] sm:text-[11px] text-[#CBD2C7] font-mono font-semibold">
                           4.9/5 Rating
                         </span>
-                        <span className="text-[#757761] text-[10px]">•</span>
-                        <span className="text-[11px] sm:text-xs text-[#A0A594] font-medium hidden xs:inline">
+                        <span className="text-[#757761] text-[9px]">•</span>
+                        <span className="text-[10px] sm:text-[11px] text-[#A0A594] font-medium hidden xs:inline">
                           Progressive Overload Engine
                         </span>
                       </div>
                     </>
                   ) : (
                     <>
-                      <span className="font-bold text-white text-xs sm:text-sm leading-tight">
+                      <span className="font-bold text-white text-xs leading-tight">
                         {activeSlideData.metricLabel}
                       </span>
-                      <span className="text-[11px] sm:text-xs text-[#f7fe72] font-mono font-semibold mt-0.5">
+                      <span className="text-[10px] sm:text-[11px] text-[#f7fe72] font-mono font-semibold mt-0.5">
                         {activeSlideData.metricSub}
                       </span>
                     </>
@@ -373,26 +373,26 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
 
           {/* Right Column: Floating Interactive Workout Telemetry Card */}
           <div className="hidden lg:flex w-[42%] justify-end animate-in fade-in duration-700">
-            <div className="w-full max-w-sm xl:max-w-md bg-[#121815] rounded-3xl p-5 sm:p-6 border border-[#757761]/40 shadow-2xl shadow-black/80 relative text-white">
+            <div className="w-full max-w-sm xl:max-w-md bg-[#121815] rounded-2xl xl:rounded-3xl p-3.5 xl:p-4.5 border border-[#757761]/40 shadow-2xl shadow-black/80 relative text-white">
               
               {/* Top Card Bar with Live Activity & Category */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#757761]/25">
+              <div className="flex items-center justify-between pb-2 border-b border-[#757761]/25">
                 <div className="flex items-center gap-2">
-                  <span className="flex h-2.5 w-2.5 relative">
+                  <span className="flex h-2 w-2 relative">
                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isPlaying ? 'bg-[#f7fe72]' : 'bg-[#757761]'} opacity-75`}></span>
-                    <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isPlaying ? 'bg-[#f7fe72]' : 'bg-[#757761]'}`}></span>
+                    <span className={`relative inline-flex rounded-full h-2 w-2 ${isPlaying ? 'bg-[#f7fe72]' : 'bg-[#757761]'}`}></span>
                   </span>
-                  <span className="text-xs font-bold tracking-wider text-[#E2E7DE] uppercase font-mono">
+                  <span className="text-[11px] font-bold tracking-wider text-[#E2E7DE] uppercase font-mono">
                     {isPlaying ? "ACTIVE TRAINING SESSION" : "SESSION PAUSED"}
                   </span>
                 </div>
-                <span className="text-[10px] font-bold px-2.5 py-1 rounded bg-[#757761]/25 text-[#f4e76e] border border-[#757761]/35 font-mono">
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-[#757761]/25 text-[#f4e76e] border border-[#757761]/35 font-mono">
                   BLOCK 2 // HYPERTROPHY
                 </span>
               </div>
 
               {/* Demonstration thumbnail canvas */}
-              <div className="mt-3.5 relative rounded-2xl overflow-hidden aspect-[16/9] flex items-end p-3.5 text-white shadow-inner border border-[#757761]/35 bg-[#0B0E0C]">
+              <div className="mt-2.5 relative rounded-xl overflow-hidden aspect-[16/7.5] xl:aspect-[16/8] max-h-32 xl:max-h-36 flex items-end p-2.5 text-white shadow-inner border border-[#757761]/35 bg-[#0B0E0C]">
                 {/* Visual geometric gym backdrop simulation */}
                 <div className="absolute inset-0 opacity-20">
                   <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -408,9 +408,9 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
                 {/* Athlete Silhouette / Dynamic SVG Graphic */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="relative">
-                    <div className="w-20 h-20 rounded-full border border-[#757761]/35 flex items-center justify-center animate-pulse">
-                      <div className="w-14 h-14 rounded-full border border-[#f7fe72]/40 flex items-center justify-center">
-                        <svg className="w-8 h-8 text-[#f7fe72] stroke-current fill-none stroke-[1.8]" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 rounded-full border border-[#757761]/35 flex items-center justify-center animate-pulse">
+                      <div className="w-11 h-11 rounded-full border border-[#f7fe72]/40 flex items-center justify-center">
+                        <svg className="w-6 h-6 text-[#f7fe72] stroke-current fill-none stroke-[1.8]" viewBox="0 0 24 24">
                           <circle cx="12" cy="5" r="3" />
                           <path d="M7 21v-4l3-3 2 2 3-5 5 4" />
                           <path d="M5 11l4 2 3-2" />
@@ -421,11 +421,11 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
                 </div>
 
                 {/* Top overlay badge */}
-                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#18201A] border border-[#757761]/40 text-white backdrop-blur-sm">
+                <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#18201A] border border-[#757761]/40 text-white backdrop-blur-sm">
                     4K COACH DEMO
                   </span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-black/70 text-[#f4e76e] backdrop-blur-sm border border-[#757761]/35">
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-black/70 text-[#f4e76e] backdrop-blur-sm border border-[#757761]/35">
                     FORM: 98% MATCH
                   </span>
                 </div>
@@ -433,40 +433,40 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
                 {/* Bottom Exercise Overlay Info */}
                 <div className="relative z-10 w-full flex items-end justify-between">
                   <div>
-                    <p className="text-[10px] text-[#f7fe72] font-bold uppercase tracking-wider font-mono">Current Movement</p>
-                    <p className="text-xs sm:text-sm font-bold text-white line-clamp-1">{currentExercise.name}</p>
-                    <p className="text-[10px] text-[#CBD2C7]">{currentExercise.target} • {currentExercise.load}</p>
+                    <p className="text-[9px] text-[#f7fe72] font-bold uppercase tracking-wider font-mono">Current Movement</p>
+                    <p className="text-xs font-bold text-white line-clamp-1">{currentExercise.name}</p>
+                    <p className="text-[9px] text-[#CBD2C7]">{currentExercise.target} • {currentExercise.load}</p>
                   </div>
 
                   <button
                     onClick={() => setIsPlaying(!isPlaying)}
-                    className="w-9 h-9 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] flex items-center justify-center shadow-lg transition-transform active:scale-95 cursor-pointer shrink-0 ml-2 hover:brightness-110"
+                    className="w-7 h-7 rounded-full bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] flex items-center justify-center shadow-lg transition-transform active:scale-95 cursor-pointer shrink-0 ml-2 hover:brightness-110"
                     aria-label={isPlaying ? "Pause workout" : "Resume workout"}
                   >
-                    {isPlaying ? <Pause className="w-4 h-4 fill-[#0B0E0C] text-[#0B0E0C]" /> : <Play className="w-4 h-4 fill-[#0B0E0C] text-[#0B0E0C] ml-0.5" />}
+                    {isPlaying ? <Pause className="w-3.5 h-3.5 fill-[#0B0E0C] text-[#0B0E0C]" /> : <Play className="w-3.5 h-3.5 fill-[#0B0E0C] text-[#0B0E0C] ml-0.5" />}
                   </button>
                 </div>
               </div>
 
               {/* Real-time Heartbeat BPM Graph & Telemetry */}
-              <div className="mt-3.5 p-3.5 rounded-2xl bg-[#0B0E0C] border border-[#757761]/35">
-                <div className="flex items-center justify-between mb-2">
+              <div className="mt-2.5 p-2.5 rounded-xl bg-[#0B0E0C] border border-[#757761]/35">
+                <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-1.5">
-                    <Heart className={`w-3.5 h-3.5 text-[#f7fe72] fill-[#f7fe72] ${isPlaying ? 'animate-pulse' : ''}`} />
-                    <span className="text-xs font-bold text-[#E2E7DE]">Cardiovascular Load</span>
+                    <Heart className={`w-3 h-3 text-[#f7fe72] fill-[#f7fe72] ${isPlaying ? 'animate-pulse' : ''}`} />
+                    <span className="text-[11px] font-bold text-[#E2E7DE]">Cardiovascular Load</span>
                   </div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-base font-black text-white font-mono tabular-nums">{bpm}</span>
-                    <span className="text-[10px] text-[#A0A493] font-medium">BPM</span>
-                    <span className="text-[9px] font-bold text-[#f4e76e] bg-[#757761]/25 border border-[#757761]/40 px-1.5 py-0.5 rounded ml-1 font-mono">
+                    <span className="text-sm font-black text-white font-mono tabular-nums">{bpm}</span>
+                    <span className="text-[9px] text-[#A0A493] font-medium">BPM</span>
+                    <span className="text-[8px] font-bold text-[#f4e76e] bg-[#757761]/25 border border-[#757761]/40 px-1 py-0.5 rounded ml-1 font-mono">
                       Zone 3
                     </span>
                   </div>
                 </div>
 
                 {/* SVG ECG Waveform */}
-                <div className="w-full h-9 bg-[#121815] rounded-xl border border-[#757761]/30 px-2 flex items-center overflow-hidden relative">
-                  <svg className="w-full h-6 text-[#f7fe72] stroke-current fill-none stroke-[2]" viewBox="0 0 300 40" preserveAspectRatio="none">
+                <div className="w-full h-7 bg-[#121815] rounded-lg border border-[#757761]/30 px-2 flex items-center overflow-hidden relative">
+                  <svg className="w-full h-5 text-[#f7fe72] stroke-current fill-none stroke-[2]" viewBox="0 0 300 40" preserveAspectRatio="none">
                     <path
                       d="M0 20 L40 20 L50 20 L55 8 L65 32 L75 14 L85 24 L95 20 L140 20 L150 20 L155 5 L165 35 L175 12 L185 25 L195 20 L240 20 L250 20 L255 10 L265 30 L275 16 L285 22 L300 20"
                       className={isPlaying ? "transition-all duration-300" : "opacity-60"}
@@ -479,34 +479,34 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
               </div>
 
               {/* Set Counter & Progress */}
-              <div className="mt-3.5 grid grid-cols-2 gap-3">
-                <div className="p-3 rounded-2xl bg-[#0B0E0C] border border-[#757761]/35 flex flex-col justify-between">
+              <div className="mt-2.5 grid grid-cols-2 gap-2 xl:gap-2.5">
+                <div className="p-2.5 rounded-xl bg-[#0B0E0C] border border-[#757761]/35 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-[#A0A594] uppercase tracking-wider">Active Set</span>
-                    <span className="text-[10px] font-bold text-[#f7fe72] bg-[#f7fe72]/15 border border-[#f7fe72]/30 px-1.5 py-0.5 rounded font-mono">
+                    <span className="text-[9px] font-bold text-[#A0A594] uppercase tracking-wider">Active Set</span>
+                    <span className="text-[9px] font-bold text-[#f7fe72] bg-[#f7fe72]/15 border border-[#f7fe72]/30 px-1.5 py-0.5 rounded font-mono">
                       {restTime > 0 ? "REST" : "LIFT"}
                     </span>
                   </div>
-                  <div className="my-1.5">
-                    <div className="text-base font-black text-white font-mono">
+                  <div className="my-1">
+                    <div className="text-xs font-black text-white font-mono">
                       Set {currentSet} of {totalSets}
                     </div>
-                    <p className="text-[11px] text-[#A0A493] font-mono tabular-nums">
+                    <p className="text-[10px] text-[#A0A493] font-mono tabular-nums">
                       {restTime}s Rest Interval
                     </p>
                   </div>
                   <button
                     onClick={handleNextSet}
-                    className="w-full py-1.5 px-2 bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] rounded-lg text-[11px] font-black transition-colors flex items-center justify-center gap-1 cursor-pointer shadow-xs active:scale-95"
+                    className="w-full py-1 px-2 bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] rounded-md text-[10px] font-black transition-colors flex items-center justify-center gap-1 cursor-pointer shadow-xs active:scale-95"
                   >
                     <span>{currentSet < totalSets ? "Log Set" : "Complete"}</span>
-                    <ChevronRight className="w-3 h-3 stroke-[2.5]" />
+                    <ChevronRight className="w-2.5 h-2.5 stroke-[2.5]" />
                   </button>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#0B0E0C] border border-[#757761]/35 flex items-center gap-2.5">
-                  <div className="relative w-12 h-12 shrink-0 flex items-center justify-center">
-                    <svg className="w-12 h-12 -rotate-90 transform" viewBox="0 0 36 36">
+                <div className="p-2.5 rounded-xl bg-[#0B0E0C] border border-[#757761]/35 flex items-center gap-2">
+                  <div className="relative w-10 h-10 shrink-0 flex items-center justify-center">
+                    <svg className="w-10 h-10 -rotate-90 transform" viewBox="0 0 36 36">
                       <path
                         className="text-[#757761]/25 stroke-current stroke-[3.5] fill-none"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -517,29 +517,29 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                       />
                     </svg>
-                    <span className="absolute text-[11px] font-black text-white font-mono">
+                    <span className="absolute text-[10px] font-black text-white font-mono">
                       {progressPercent}%
                     </span>
                   </div>
                   <div className="flex flex-col text-left">
-                    <span className="text-[10px] font-bold text-[#A0A594] uppercase tracking-wider">Volume Moved</span>
-                    <span className="text-sm font-black text-white font-mono tabular-nums">
+                    <span className="text-[9px] font-bold text-[#A0A594] uppercase tracking-wider">Volume</span>
+                    <span className="text-xs font-black text-white font-mono tabular-nums">
                       {(currentExercise.volumeKg * (currentSet / totalSets)).toLocaleString()}
                     </span>
-                    <span className="text-[10px] text-[#A0A493]">kg moved</span>
+                    <span className="text-[9px] text-[#A0A493]">kg moved</span>
                   </div>
                 </div>
               </div>
 
               {/* Bottom Quick Switch */}
-              <div className="mt-3 pt-2.5 border-t border-[#757761]/25 flex items-center justify-between text-xs text-[#A0A493]">
+              <div className="mt-2 pt-2 border-t border-[#757761]/25 flex items-center justify-between text-[10px] text-[#A0A493]">
                 <span className="truncate">Exercise {currentExerciseIdx + 1} of {exercises.length}</span>
                 <button
                   onClick={() => setCurrentExerciseIdx((idx) => (idx + 1) % exercises.length)}
                   className="text-[#f4e76e] hover:text-[#f7fe72] font-bold inline-flex items-center gap-1 cursor-pointer transition-colors"
                 >
                   <span>Switch Movement</span>
-                  <RotateCcw className="w-3 h-3" />
+                  <RotateCcw className="w-2.5 h-2.5" />
                 </button>
               </div>
 
@@ -550,15 +550,15 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
       </div>
 
       {/* Carousel Navigation Bottom Bar: Strict Theme Alignment */}
-      <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-3.5 pt-1.5 flex items-center justify-between">
+      <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full shrink-0 pb-3 sm:pb-3.5 pt-1 flex items-center justify-between gap-3">
         
         {/* Slide Indicators / Tabs */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
           {slides.map((slide, idx) => (
             <button
               key={slide.id}
               onClick={() => setCurrentSlide(idx)}
-              className={`group flex items-center gap-2 py-1.5 px-3.5 rounded-full text-xs transition-all duration-300 cursor-pointer ${
+              className={`group flex items-center gap-1.5 py-1 px-2.5 sm:py-1.5 sm:px-3.5 rounded-full text-xs transition-all duration-300 cursor-pointer shrink-0 ${
                 idx === currentSlide
                   ? "bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] shadow-md shadow-[#f7fe72]/20 font-black"
                   : "bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/35 text-[#CBD2C7] hover:text-white"
@@ -566,36 +566,36 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
               aria-label={`Go to slide ${idx + 1}: ${slide.headlineMain}`}
             >
               <span className="font-mono text-[10px] opacity-75">0{idx + 1}</span>
-              <span className="hidden sm:inline text-xs font-semibold truncate max-w-[130px]">{slide.headlineMain.replace(".", "")}</span>
+              <span className="hidden sm:inline text-xs font-semibold truncate max-w-[120px] xl:max-w-[140px]">{slide.headlineMain.replace(".", "")}</span>
             </button>
           ))}
         </div>
 
         {/* Carousel Arrow Controls & Autoplay Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            className="p-2 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 text-[#E2E7DE] hover:text-[#f7fe72] transition-all active:scale-95 cursor-pointer shadow-xs"
+            className="p-1.5 sm:p-2 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 text-[#E2E7DE] hover:text-[#f7fe72] transition-all active:scale-95 cursor-pointer shadow-xs"
             aria-label={isAutoPlaying ? "Pause carousel auto-play" : "Start carousel auto-play"}
             title={isAutoPlaying ? "Pause auto-advance" : "Resume auto-advance"}
           >
-            {isAutoPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+            {isAutoPlaying ? <Pause className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current ml-0.5" />}
           </button>
 
           <button
             onClick={handlePrevSlide}
-            className="p-2 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 text-[#E2E7DE] hover:text-[#f7fe72] transition-all active:scale-95 cursor-pointer shadow-xs"
+            className="p-1.5 sm:p-2 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 text-[#E2E7DE] hover:text-[#f7fe72] transition-all active:scale-95 cursor-pointer shadow-xs"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           <button
             onClick={handleNextSlide}
-            className="p-2 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 text-[#E2E7DE] hover:text-[#f7fe72] transition-all active:scale-95 cursor-pointer shadow-xs"
+            className="p-1.5 sm:p-2 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 text-[#E2E7DE] hover:text-[#f7fe72] transition-all active:scale-95 cursor-pointer shadow-xs"
             aria-label="Next slide"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 

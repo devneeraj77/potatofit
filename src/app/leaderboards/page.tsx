@@ -662,7 +662,7 @@ export default function LeaderboardsPage() {
             <Link
               href="/"
               className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-lg p-1"
-              aria-label="PotatoFit Home"
+              aria-label="Uchitatvam Home"
             >
               <PotatoFitLogo size="sm" variant="dark" />
             </Link>

@@ -132,8 +132,8 @@ export function usePWA() {
       if (swRegistration && "showNotification" in swRegistration) {
         try {
           await swRegistration.showNotification(title, {
-            icon: "/pwa-192x192.png",
-            badge: "/pwa-192x192.png",
+            icon: "/android-chrome-192x192.png",
+            badge: "/android-chrome-192x192.png",
             ...options,
           });
           return true;
@@ -155,8 +155,8 @@ export function usePWA() {
       // 3. Fallback to browser Notification constructor
       try {
         new Notification(title, {
-          icon: "/pwa-192x192.png",
-          badge: "/pwa-192x192.png",
+          icon: "/android-chrome-192x192.png",
+          badge: "/android-chrome-192x192.png",
           ...options,
         });
         return true;
