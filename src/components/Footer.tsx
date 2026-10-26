@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import PotatoFitLogo from "./PotatoFitLogo";
 import ThemeToggleGlide from "./ThemeToggleGlide";
 
@@ -92,10 +93,26 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
-            <a href="#" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Biometric Security</a>
-            <a href="#" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Accessibility</a>
+            <Link href="/privacy" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">
+              Terms of Service
+            </Link>
+            <Link href="/privacy#section-6" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">
+              Biometric Security
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
+                }
+              }}
+              className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors cursor-pointer"
+            >
+              Cookie Preferences
+            </button>
           </div>
         </div>
 

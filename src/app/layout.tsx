@@ -62,6 +62,7 @@ export const metadata: Metadata = {
 import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { OfflineIndicator } from "@/components/PWAInstallButton";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             {children}
             <OfflineIndicator />
+            <CookieConsentBanner />
           </AuthProvider>
         </ThemeProvider>
       </body>

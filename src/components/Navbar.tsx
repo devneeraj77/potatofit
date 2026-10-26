@@ -489,12 +489,12 @@ export default function Navbar({
         <motion.div
           layout
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="overflow-hidden rounded-2xl border border-[#757761]/25 bg-white/90 text-[#121815] shadow-xl backdrop-blur-xl dark:border-[#757761]/35 dark:bg-[#121815]/95 dark:text-[#E2E7DE] dark:shadow-2xl dark:shadow-black/60 transition-colors"
+          className="overflow-hidden rounded-2xl border border-[#757761]/35 bg-[#121815]/95 shadow-2xl shadow-black/80 backdrop-blur-xl text-[#E2E7DE] transition-all"
         >
           {/* Top Navbar Row */}
-          <div className="flex items-center justify-between gap-6 px-5 py-3.5 sm:px-7">
+          <div className="flex items-center justify-between gap-3 sm:gap-4 lg:gap-6 px-4 py-2.5 sm:px-6 sm:py-3">
             {/* 1. Left: Uchitatvam Brand Mark */}
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               <Link
                 href="/"
                 onClick={(e) => {
@@ -505,19 +505,19 @@ export default function Navbar({
                   setOpenMenu(null);
                   setMobileOpen(false);
                 }}
-                className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-xl p-0.5"
+                className="group flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-xl p-0.5"
                 aria-label="Uchitatvam Home"
               >
                 <Image
                   src="/uchitatvam-logo.svg"
                   alt="Uchitatvam"
-                  width={36}
-                  height={36}
+                  width={34}
+                  height={34}
                   priority
                   referrerPolicy="no-referrer"
-                  className="w-14 h-14 sm:w-20 sm:h-20 object-contain shrink-0"
+                  className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0"
                 />
-                <span className="font-bold hidden md:block text-lg sm:text-xl tracking-tight text-[#121815] dark:text-white font-sans">
+                <span className="font-bold hidden sm:block text-base sm:text-lg tracking-tight text-white font-sans">
                   Uchitatvam
                 </span>
               </Link>
@@ -528,7 +528,7 @@ export default function Navbar({
                   type="button"
                   onClick={onOpenStreak}
                   title="View Active Streak Adherence"
-                  className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#f7fe72]/15 border border-[#f7fe72]/30 text-xs font-mono font-bold text-[#f7fe72] hover:bg-[#f7fe72]/25 transition-all cursor-pointer"
+                  className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#f7fe72]/15 border border-[#f7fe72]/30 text-xs font-mono font-bold text-[#f7fe72] hover:bg-[#f7fe72]/25 transition-all cursor-pointer"
                 >
                   <Flame className="w-3.5 h-3.5 fill-[#f7fe72] text-[#f7fe72]" />
                   <span>14D STREAK</span>
@@ -548,7 +548,7 @@ export default function Navbar({
                       key={item.label}
                       href={item.href ?? "#"}
                       onClick={(e) => handleAnchorClick(e, item.href ?? "#")}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold text-[#505445] hover:text-[#121815] hover:bg-black/5 dark:text-[#CBD2C7] dark:hover:text-[#f7fe72] dark:hover:bg-white/5 transition-colors cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold text-[#CBD2C7] hover:text-[#f7fe72] hover:bg-white/5 transition-colors cursor-pointer"
                     >
                       <Icon className="w-3.5 h-3.5 opacity-70" />
                       <span>{item.label}</span>
@@ -564,8 +564,8 @@ export default function Navbar({
                     className={cn(
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all cursor-pointer",
                       isOpen
-                        ? "bg-black/5 text-[#121815] dark:bg-white/10 dark:text-[#f7fe72]"
-                        : "text-[#505445] hover:text-[#121815] hover:bg-black/5 dark:text-[#CBD2C7] dark:hover:text-[#f7fe72] dark:hover:bg-white/5"
+                        ? "bg-white/10 text-[#f7fe72]"
+                        : "text-[#CBD2C7] hover:text-[#f7fe72] hover:bg-white/5"
                     )}
                   >
                     <Icon className="w-3.5 h-3.5 opacity-70" />
@@ -585,11 +585,11 @@ export default function Navbar({
                 className={cn(
                   "hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all",
                   pathname === "/leaderboards"
-                    ? "bg-[#757761]/25 text-[#121815] dark:text-[#f7fe72] border border-[#757761]/50"
-                    : "text-[#505445] hover:text-[#121815] hover:bg-black/5 dark:text-[#CBD2C7] dark:hover:text-[#f7fe72] dark:hover:bg-white/5"
+                    ? "bg-[#757761]/25 text-[#f7fe72] border border-[#757761]/50"
+                    : "text-[#CBD2C7] hover:text-[#f7fe72] hover:bg-white/5"
                 )}
               >
-                <Trophy className="w-3.5 h-3.5 text-[#7A5A00] dark:text-[#f7fe72]" />
+                <Trophy className="w-3.5 h-3.5 text-[#f7fe72]" />
                 <span>Leaderboards</span>
               </Link>
 
@@ -598,27 +598,25 @@ export default function Navbar({
                 className={cn(
                   "hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all",
                   pathname === "/rewards"
-                    ? "bg-[#f4e76e]/20 text-[#7A5A00] dark:text-[#f4e76e] border border-[#f4e76e]/40"
-                    : "text-[#505445] hover:text-[#121815] hover:bg-black/5 dark:text-[#CBD2C7] dark:hover:text-[#f7fe72] dark:hover:bg-white/5"
+                    ? "bg-[#f4e76e]/20 text-[#f4e76e] border border-[#f4e76e]/40"
+                    : "text-[#CBD2C7] hover:text-[#f7fe72] hover:bg-white/5"
                 )}
               >
-                <Award className="w-3.5 h-3.5 text-[#7A5A00] dark:text-[#f4e76e]" />
+                <Award className="w-3.5 h-3.5 text-[#f4e76e]" />
                 <span>Rewards</span>
               </Link>
-
-             
             </nav>
 
             {/* 3. Right Utility Cluster: Theme Toggle + Language + Auth + High-Voltage CTA */}
-            <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
               
               {/* Desktop Quick 1-Click Theme Switcher */}
-              <div className="hidden sm:block">
+              <div className="flex items-center shrink-0">
                 <ThemeToggleQuick />
               </div>
 
               {/* Language Selector Popover (Desktop) */}
-              <div className="relative hidden md:block" ref={langRef}>
+              <div className="relative hidden sm:block" ref={langRef}>
                 <button
                   type="button"
                   onClick={() => {
@@ -630,8 +628,8 @@ export default function Navbar({
                   className={cn(
                     "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold transition-colors cursor-pointer border",
                     langOpen
-                      ? "bg-black/5 text-[#121815] border-[#757761]/40 dark:bg-white/10 dark:text-white"
-                      : "text-[#505445] hover:text-[#121815] dark:text-[#A0A594] dark:hover:text-white border-transparent hover:border-[#757761]/30"
+                      ? "bg-white/10 text-white border-[#757761]/40"
+                      : "text-[#A0A594] hover:text-white border-transparent hover:border-[#757761]/30"
                   )}
                 >
                   <Languages className="h-3.5 w-3.5 text-[#757761]" />
@@ -651,7 +649,7 @@ export default function Navbar({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -6, scale: 0.96 }}
                       transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute right-0 top-full z-30 mt-2 w-48 overflow-hidden rounded-2xl border border-[#757761]/25 bg-white text-[#121815] p-1.5 shadow-2xl dark:border-[#757761]/35 dark:bg-[#121815] dark:text-[#E2E7DE] dark:shadow-black/60"
+                      className="absolute right-0 top-full z-30 mt-2 w-48 overflow-hidden rounded-2xl border border-[#757761]/35 bg-[#121815] p-1.5 shadow-2xl shadow-black/80"
                     >
                       <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-[#757761] border-b border-[#757761]/20 mb-1">
                         Select Local Dialect
@@ -667,8 +665,8 @@ export default function Navbar({
                           className={cn(
                             "flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-semibold transition-colors cursor-pointer",
                             lng.code === language.code
-                              ? "bg-[#F4F6F5] text-[#7A5A00] dark:bg-[#18201A] dark:text-[#f7fe72]"
-                              : "text-[#505445] hover:bg-black/5 dark:text-[#CBD2C7] dark:hover:bg-white/5"
+                              ? "bg-[#18201A] text-[#f7fe72]"
+                              : "text-[#CBD2C7] hover:bg-white/5"
                           )}
                         >
                           <div className="flex flex-col">
@@ -676,7 +674,7 @@ export default function Navbar({
                             <span className="text-[10px] text-[#A0A594]">{lng.sub}</span>
                           </div>
                           {lng.code === language.code && (
-                            <Check className="h-4 w-4 text-[#7A5A00] dark:text-[#f7fe72]" />
+                            <Check className="h-4 w-4 text-[#f7fe72]" />
                           )}
                         </button>
                       ))}
@@ -687,17 +685,17 @@ export default function Navbar({
 
               {/* Session Profile / Sign In */}
               {session?.user ? (
-                <div className="hidden sm:flex items-center gap-1.5">
+                <div className="hidden sm:flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
                     onClick={handleDashboard}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 border border-[#757761]/25 dark:border-[#757761]/35 text-xs font-bold text-[#121815] dark:text-[#E2E7DE] hover:text-[#7A5A00] dark:hover:text-[#f7fe72] transition-all cursor-pointer"
+                    className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-[#757761]/35 text-xs font-bold text-[#E2E7DE] hover:text-[#f7fe72] transition-all cursor-pointer"
                     title="Open Athlete Dashboard"
                   >
-                    <div className="w-5 h-5 rounded-full bg-[#EAEFEA] dark:bg-[#18201A] text-[#7A5A00] dark:text-[#f7fe72] border border-[#757761]/40 flex items-center justify-center text-[10px] font-black">
+                    <div className="w-5 h-5 rounded-full bg-[#18201A] text-[#f7fe72] border border-[#757761]/40 flex items-center justify-center text-[10px] font-black">
                       {session.user.name?.[0]?.toUpperCase() || <User className="w-3 h-3" />}
                     </div>
-                    <span className="max-w-[80px] truncate text-xs">
+                    <span className="max-w-[75px] truncate text-xs">
                       {session.user.name?.split(" ")[0] || "Athlete"}
                     </span>
                   </button>
@@ -705,7 +703,7 @@ export default function Navbar({
                   <button
                     type="button"
                     onClick={() => signOut({ redirect: false })}
-                    className="text-xs font-semibold text-[#505445] hover:text-[#121815] dark:text-[#A0A594] dark:hover:text-white p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                    className="text-xs font-semibold text-[#A0A594] hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
                     title="Sign Out"
                   >
                     <LogOut className="w-3.5 h-3.5" />
@@ -715,7 +713,7 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={handleSignIn}
-                  className="hidden sm:block text-xs font-bold text-[#505445] hover:text-[#121815] dark:text-[#CBD2C7] dark:hover:text-[#f7fe72] px-2.5 py-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                  className="hidden md:block text-xs font-bold text-[#CBD2C7] hover:text-[#f7fe72] px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer shrink-0"
                 >
                   Sign In
                 </button>
@@ -725,7 +723,7 @@ export default function Navbar({
               <button
                 type="button"
                 onClick={session?.user ? handleDashboard : handleTrial}
-                className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] text-xs font-black tracking-wide shadow-md active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                className="group inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 text-[#0B0E0C] text-xs font-black tracking-wide shadow-md active:scale-95 transition-all cursor-pointer shrink-0 whitespace-nowrap"
               >
                 <span>{session?.user ? "Dashboard" : "Start Trial"}</span>
                 <ArrowRight className="w-3 h-3 text-[#0B0E0C] transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -735,7 +733,7 @@ export default function Navbar({
               <button
                 type="button"
                 onClick={() => setMobileOpen((v) => !v)}
-                className="lg:hidden p-2 rounded-xl text-[#CBD2C7] hover:bg-white/10 border border-[#757761]/30 transition-all cursor-pointer"
+                className="lg:hidden p-2 rounded-xl text-[#CBD2C7] hover:bg-white/10 border border-[#757761]/30 transition-all cursor-pointer shrink-0"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}
               >
@@ -753,7 +751,7 @@ export default function Navbar({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="hidden overflow-hidden lg:block border-t border-[#757761]/20 bg-white/95 text-[#121815] dark:border-[#757761]/30 dark:bg-[#0B0E0C]/95 dark:text-[#E2E7DE] transition-colors"
+                className="hidden overflow-hidden lg:block border-t border-[#757761]/30 bg-[#0B0E0C]/95 text-[#E2E7DE]"
               >
                 <div
                   className={cn(
@@ -766,11 +764,11 @@ export default function Navbar({
                   {activeMenu.columns.map((col, colIdx) => (
                     <div key={col.eyebrow} className="flex flex-col gap-4">
                       <div className="flex items-center gap-2">
-                        <span className="w-fit rounded-lg border border-[#757761]/25 bg-black/5 dark:bg-[#18201A] dark:border-[#757761]/30 px-2.5 py-0.5 text-[11px] font-mono font-bold uppercase tracking-wider text-[#505445] dark:text-[#A0A493]">
+                        <span className="w-fit rounded-lg border border-[#757761]/30 bg-[#18201A] px-2.5 py-0.5 text-[11px] font-mono font-bold uppercase tracking-wider text-[#A0A493]">
                           {col.eyebrow}
                         </span>
                         {colIdx === 0 && activeMenu.badgeText && (
-                          <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#7A5A00] dark:text-[#f7fe72]">
+                          <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#f7fe72]">
                             <Sparkles className="w-3 h-3" />
                             {activeMenu.badgeText}
                           </span>
@@ -783,15 +781,15 @@ export default function Navbar({
                             <a
                               href={link.href}
                               onClick={(e) => handleAnchorClick(e, link.href)}
-                              className="group block rounded-xl p-2.5 transition-all hover:bg-black/5 dark:hover:bg-[#18201A] border border-transparent hover:border-[#757761]/35 shadow-xs"
+                              className="group block rounded-xl p-2.5 transition-all hover:bg-[#18201A] border border-transparent hover:border-[#757761]/35 shadow-xs"
                             >
                               <div className="flex items-center gap-2">
                                 <span
                                   className={cn(
-                                    "text-sm font-bold transition-colors group-hover:text-[#7A5A00] dark:group-hover:text-[#f7fe72]",
+                                    "text-sm font-bold transition-colors group-hover:text-[#f7fe72]",
                                     link.active
-                                      ? "text-[#7A5A00] dark:text-[#f7fe72]"
-                                      : "text-[#121815] dark:text-[#E2E7DE]"
+                                      ? "text-[#f7fe72]"
+                                      : "text-[#E2E7DE]"
                                   )}
                                 >
                                   {link.label}
@@ -803,7 +801,7 @@ export default function Navbar({
                                 )}
                               </div>
                               {link.desc && (
-                                <p className="text-xs text-[#505445] dark:text-[#A0A493] mt-0.5 line-clamp-1">
+                                <p className="text-xs text-[#A0A493] mt-0.5 line-clamp-1">
                                   {link.desc}
                                 </p>
                               )}
@@ -820,9 +818,9 @@ export default function Navbar({
                               key={item.label}
                               href={item.href}
                               onClick={(e) => handleAnchorClick(e, item.href)}
-                              className="flex items-center gap-1 text-xs font-medium text-[#505445] dark:text-[#A0A493] hover:text-[#7A5A00] dark:hover:text-[#f7fe72] transition-colors"
+                              className="flex items-center gap-1 text-xs font-medium text-[#A0A493] hover:text-[#f7fe72] transition-colors"
                             >
-                              <ArrowRight className="w-3 h-3 text-[#7A5A00] dark:text-[#f7fe72]" />
+                              <ArrowRight className="w-3 h-3 text-[#f7fe72]" />
                               <span>{item.label}</span>
                             </a>
                           ))}
@@ -855,9 +853,9 @@ export default function Navbar({
 
                 {/* Social Community Strip */}
                 {activeMenu.showSocials && (
-                  <div className="flex items-center justify-between border-t border-[#757761]/20 px-8 py-3 bg-[#F4F6F5] dark:border-[#757761]/25 dark:bg-[#0B0E0C]/80">
-                    <div className="flex items-center gap-2 text-xs text-[#505445] dark:text-[#A0A493]">
-                      <HeartHandshake className="w-3.5 h-3.5 text-[#7A5A00] dark:text-[#f7fe72]" />
+                  <div className="flex items-center justify-between border-t border-[#757761]/25 px-8 py-3 bg-[#0B0E0C]/80">
+                    <div className="flex items-center gap-2 text-xs text-[#A0A493]">
+                      <HeartHandshake className="w-3.5 h-3.5 text-[#f7fe72]" />
                       <span>Join 12,000+ athletes across Delhi NCR</span>
                     </div>
 
@@ -869,7 +867,7 @@ export default function Navbar({
                           target="_blank"
                           rel="noreferrer"
                           aria-label={label}
-                          className="text-[#505445] dark:text-[#A0A493] hover:text-[#7A5A00] dark:hover:text-[#f7fe72] transition-colors p-1"
+                          className="text-[#A0A594] hover:text-[#f7fe72] transition-colors p-1"
                         >
                           <Icon className="h-4 w-4" />
                         </a>
@@ -890,7 +888,7 @@ export default function Navbar({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="overflow-hidden lg:hidden border-t border-[#757761]/20 px-5 py-4 space-y-4 bg-[#F8FAF8] text-[#121815] dark:border-[#757761]/25 dark:bg-[#121815] dark:text-[#E2E7DE] transition-colors"
+                className="overflow-hidden lg:hidden border-t border-[#757761]/25 px-5 py-4 space-y-4 bg-[#121815] text-[#E2E7DE]"
               >
                 {/* Primary Nav Accordions */}
                 <div className="flex flex-col gap-1.5">
@@ -974,27 +972,27 @@ export default function Navbar({
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-black/5 dark:bg-[#18201A] border border-[#757761]/25 dark:border-[#757761]/35 text-xs font-bold text-[#7A5A00] dark:text-[#f7fe72]"
                   >
-                    <Trophy className="w-3.5 h-3.5 text-[#7A5A00] dark:text-[#f7fe72]" />
+                    <Trophy className="w-3.5 h-3.5 text-[#f7fe72]" />
                     <span>Leaderboards</span>
                   </Link>
 
                   <Link
                     href="/rewards"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-[#757761]/25 dark:border-[#757761]/35 text-xs font-bold text-[#121815] dark:text-[#E2E7DE]"
+                    className="flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-white/5 border border-[#757761]/35 text-xs font-bold text-[#E2E7DE]"
                   >
-                    <Award className="w-3.5 h-3.5 text-[#7A5A00] dark:text-[#f4e76e]" />
+                    <Award className="w-3.5 h-3.5 text-[#f4e76e]" />
                     <span>Rewards</span>
                   </Link>
                 </div>
 
                 {/* Mobile Theme Switcher Glide */}
-                <div className="pt-2 border-t border-[#757761]/20 space-y-2">
+                <div className="pt-2 border-t border-[#757761]/25 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#505445] dark:text-[#757761]">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#A0A493]">
                       Theme Mode / रूपरेखा
                     </span>
-                    <span className="text-[10px] font-mono text-[#7A5A00] dark:text-[#f7fe72]">
+                    <span className="text-[10px] font-mono text-[#f7fe72]">
                       Manual &amp; System Sync
                     </span>
                   </div>
@@ -1004,8 +1002,8 @@ export default function Navbar({
                 </div>
 
                 {/* Mobile Language Switcher */}
-                <div className="pt-2 border-t border-[#757761]/20 space-y-1.5">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#505445] dark:text-[#757761]">
+                <div className="pt-2 border-t border-[#757761]/25 space-y-1.5">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#A0A493]">
                     Language / बोली
                   </span>
                   <div className="grid grid-cols-4 gap-1.5">
@@ -1017,8 +1015,8 @@ export default function Navbar({
                         className={cn(
                           "rounded-lg border py-1.5 text-center text-xs font-mono font-bold transition-all cursor-pointer",
                           lng.code === language.code
-                            ? "border-[#7A5A00] bg-[#7A5A00] text-white dark:border-[#f7fe72] dark:bg-[#f7fe72] dark:text-[#0B0E0C]"
-                            : "border-[#757761]/25 text-[#505445] bg-black/5 dark:border-[#757761]/35 dark:text-[#CBD2C7] dark:bg-white/5"
+                            ? "border-[#f7fe72] bg-[#f7fe72] text-[#0B0E0C]"
+                            : "border-[#757761]/35 text-[#CBD2C7] bg-white/5"
                         )}
                       >
                         {lng.code}
@@ -1028,14 +1026,14 @@ export default function Navbar({
                 </div>
 
                 {/* Mobile Session Status & CTA */}
-                <div className="pt-2 border-t border-[#757761]/20 space-y-2">
+                <div className="pt-2 border-t border-[#757761]/25 space-y-2">
                   {session?.user ? (
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-[#757761]/20 dark:border-[#757761]/35">
+                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-[#757761]/35">
                       <div className="flex items-center gap-2 min-w-0">
-                        <div className="w-6 h-6 rounded-full bg-[#EAEFEA] dark:bg-[#18201A] text-[#7A5A00] dark:text-[#f7fe72] border border-[#757761]/40 flex items-center justify-center text-xs font-black shrink-0">
+                        <div className="w-6 h-6 rounded-full bg-[#18201A] text-[#f7fe72] border border-[#757761]/40 flex items-center justify-center text-xs font-black shrink-0">
                           {session.user.name?.[0]?.toUpperCase() || <User className="w-3.5 h-3.5" />}
                         </div>
-                        <span className="text-xs font-bold text-[#121815] dark:text-[#E2E7DE] truncate">
+                        <span className="text-xs font-bold text-[#E2E7DE] truncate">
                           {session.user.name}
                         </span>
                       </div>
