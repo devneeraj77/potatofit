@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { Sun, Moon, Monitor } from "lucide-react";
 
@@ -9,15 +9,19 @@ interface ThemeToggleGlideProps {
   size?: "sm" | "md";
 }
 
-export function ThemeToggleGlide({ className = "", size = "sm" }: ThemeToggleGlideProps) {
-  const mounted = React.useSyncExternalStore(
-    () => () => {},
+// React 19 recommended hydration-safe mount helper
+const emptySubscribe = () => () => {};
+function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
     () => true,
     () => false
   );
-  const { theme, setTheme } = useTheme();
+}
 
-  const currentTheme = mounted ? theme || "system" : "system";
+export function ThemeToggleGlide({ className = "", size = "sm" }: ThemeToggleGlideProps) {
+  const isClient = useIsClient();
+  const { theme, setTheme } = useTheme();
 
   const options = [
     { id: "system", label: "System", icon: Monitor },
@@ -25,14 +29,15 @@ export function ThemeToggleGlide({ className = "", size = "sm" }: ThemeToggleGli
     { id: "light", label: "Light", icon: Sun },
   ] as const;
 
+  const currentTheme = isClient ? (theme || "dark") : "dark";
   const activeIndex = options.findIndex((opt) => opt.id === currentTheme);
-  const safeIndex = activeIndex >= 0 ? activeIndex : 0;
+  const safeIndex = activeIndex >= 0 ? activeIndex : 1;
 
   // Direct and deterministic theme switch handler
   const handleSelect = (selectedTheme: "system" | "dark" | "light") => {
     setTheme(selectedTheme);
 
-    if (typeof document !== "undefined") {
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
       const root = document.documentElement;
       let isDark = false;
 
@@ -48,12 +53,10 @@ export function ThemeToggleGlide({ className = "", size = "sm" }: ThemeToggleGli
         root.classList.add("dark");
         root.classList.remove("light");
         root.setAttribute("data-theme", "dark");
-        root.style.setProperty("color-scheme", "dark");
       } else {
         root.classList.remove("dark");
         root.classList.add("light");
         root.setAttribute("data-theme", "light");
-        root.style.setProperty("color-scheme", "light");
       }
 
       try {
@@ -109,6 +112,56 @@ export function ThemeToggleGlide({ className = "", size = "sm" }: ThemeToggleGli
         );
       })}
     </div>
+  );
+}
+
+export function ThemeToggleQuick({ className = "" }: { className?: string }) {
+  const isClient = useIsClient();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+
+  const isDark = isClient ? (resolvedTheme === "dark" || theme === "dark") : true;
+
+  const toggle = () => {
+    const nextTheme = isDark ? "light" : "dark";
+    setTheme(nextTheme);
+
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      const root = document.documentElement;
+      if (nextTheme === "dark") {
+        root.classList.add("dark");
+        root.classList.remove("light");
+        root.setAttribute("data-theme", "dark");
+      } else {
+        root.classList.remove("dark");
+        root.classList.add("light");
+        root.setAttribute("data-theme", "light");
+      }
+      try {
+        localStorage.setItem("theme", nextTheme);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${
+        isDark
+          ? "border-[#757761]/35 bg-white/5 text-[#f7fe72] hover:bg-white/10 hover:border-[#f7fe72]/50"
+          : "border-[#757761]/30 bg-black/5 text-[#7A5A00] hover:bg-black/10 hover:border-[#7A5A00]/50"
+      } ${className}`}
+    >
+      {isDark ? (
+        <Sun className="w-4 h-4 text-[#f7fe72]" />
+      ) : (
+        <Moon className="w-4 h-4 text-[#7A5A00]" />
+      )}
+    </button>
   );
 }
 

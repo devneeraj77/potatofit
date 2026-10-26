@@ -3,27 +3,27 @@
 @variant dark (&:where(.dark, .dark *, [data-theme=dark], [data-theme=dark] *));
 
 :root {
-  --background: #0B0E0C;
-  --foreground: #E2E7DE;
-  --card: #121815;
-  --card-foreground: #E2E7DE;
-  --popover: #121815;
-  --popover-foreground: #E2E7DE;
-  --primary: #f7fe72;
-  --primary-foreground: #0B0E0C;
-  --secondary: #18201A;
-  --secondary-foreground: #E2E7DE;
-  --muted: #1A221E;
-  --muted-foreground: #A0A594;
+  --background: #F4F6F5;
+  --foreground: #121815;
+  --card: #FFFFFF;
+  --card-foreground: #121815;
+  --popover: #FFFFFF;
+  --popover-foreground: #121815;
+  --primary: #7A5A00;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EAEFEA;
+  --secondary-foreground: #262A21;
+  --muted: #E2E7DE;
+  --muted-foreground: #505445;
   --accent: #f7fe72;
   --accent-foreground: #0B0E0C;
-  --border: rgba(117, 119, 97, 0.35);
-  --input: rgba(117, 119, 97, 0.4);
-  --ring: #f7fe72;
+  --border: rgba(117, 119, 97, 0.25);
+  --input: rgba(117, 119, 97, 0.3);
+  --ring: #7A5A00;
   --color-sage: #757761;
   --color-gold: #f4e76e;
   --color-lime: #f7fe72;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 .dark, [data-theme="dark"] {
@@ -74,16 +74,17 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #0B0E0C;
-  color: #E2E7DE;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 body {
-  background-color: #0B0E0C;
-  color: #E2E7DE;
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Custom subtle smoked obsidian & sage scrollbar */
