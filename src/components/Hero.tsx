@@ -195,7 +195,7 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
   const BadgeIcon = activeSlideData.badgeIcon;
 
   return (
-    <section className="dark-hero relative w-full max-h-fit  min-h-[70vh] lg:h-[74vh] flex flex-col justify-between overflow-hidden bg-[#0B0E0C] text-[#E2E7DE] border-b border-[#757761]/30">
+    <section className="dark-hero relative w-full max-h-fit  min-h-[70vh] lg:h-[96vh] flex flex-col justify-between overflow-hidden bg-[#0B0E0C] text-[#E2E7DE] border-b border-[#757761]/30">
       {/* Dynamic Unsplash Background Carousel with Smooth Crossfade */}
       <div className="absolute inset-0 z-0">
         {slides.map((slide, idx) => (
