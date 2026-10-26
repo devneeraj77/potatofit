@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { syncAuthUserToSupabase } from "@/lib/supabase";
+import { getAdminByEmail, isAdmin } from "@/lib/admin-store";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -11,28 +12,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        const email = credentials?.email as string;
+        const email = (credentials?.email as string)?.trim().toLowerCase();
         const password = credentials?.password as string;
 
         if (!email || !password) {
           return null;
         }
 
-        // Standard athlete credentials or demo login
-        // Demo credentials: david.kim@fitmeal.fit / fitmeal2026
-        // Also supports any registered fitness member with valid email and password >= 6 chars
+        // Check if user is in admin directory
+        const adminProfile = getAdminByEmail(email);
+
+        // Standard athlete credentials, demo login, or verified admin
         if (
-          (email.toLowerCase() === "david.kim@fitmeal.fit" && password === "fitmeal2026") ||
+          adminProfile ||
+          (email === "david.kim@fitmeal.fit" && password === "fitmeal2026") ||
           (email.includes("@") && password.length >= 6)
         ) {
-          const displayName = email.toLowerCase() === "david.kim@fitmeal.fit"
+          const displayName = adminProfile?.name
+            ? adminProfile.name
+            : email === "david.kim@fitmeal.fit"
             ? "David Kim"
             : email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
           const userObj = {
-            id: "user-" + email.toLowerCase().replace(/[^a-z0-9]/g, "-"),
+            id: adminProfile?.id || "user-" + email.replace(/[^a-z0-9]/g, "-"),
             name: displayName,
-            email: email.toLowerCase(),
+            email: email,
+            role: adminProfile ? adminProfile.role : "athlete",
           };
 
           // Synchronize user authentication record to Supabase database
@@ -56,12 +62,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        const u = user as { role?: string };
+        token.role = u.role || "athlete";
       }
+
+      if (token.email) {
+        const adminRecord = getAdminByEmail(token.email as string);
+        if (adminRecord && adminRecord.status === "active") {
+          token.role = adminRecord.role;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.id) {
-        session.user.id = token.id as string;
+      if (session.user) {
+        if (token.id) {
+          session.user.id = token.id as string;
+        }
+        const userWithMeta = session.user as typeof session.user & {
+          role?: string;
+          isAdmin?: boolean;
+        };
+        userWithMeta.role = (token.role as string) || "athlete";
+        userWithMeta.isAdmin = isAdmin(session.user.email);
       }
       return session;
     },

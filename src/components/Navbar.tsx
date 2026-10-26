@@ -22,6 +22,7 @@ import {
   Activity,
   HeartHandshake,
   BookOpen,
+  Shield,
 } from "lucide-react";
 import {
   FaXTwitter,
@@ -700,6 +701,15 @@ export default function Navbar({
                     </span>
                   </button>
 
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[#18201A] border border-[#757761]/40 text-[#f7fe72] text-[11px] font-mono font-bold hover:bg-[#202B24] transition-colors"
+                    title="Open Admin Control Center"
+                  >
+                    <Shield className="w-3 h-3" />
+                    <span>Admin</span>
+                  </Link>
+
                   <button
                     type="button"
                     onClick={() => signOut({ redirect: false })}
@@ -983,6 +993,15 @@ export default function Navbar({
                   >
                     <Award className="w-3.5 h-3.5 text-[#f4e76e]" />
                     <span>Rewards</span>
+                  </Link>
+
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-white/5 border border-[#757761]/35 text-xs font-bold text-[#f7fe72]"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-[#f7fe72]" />
+                    <span>Admin Ops</span>
                   </Link>
                 </div>
 

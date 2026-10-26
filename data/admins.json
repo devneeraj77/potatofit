@@ -1,0 +1,29 @@
+[
+  {
+    "id": "admin-neeraj",
+    "email": "dev.neerajrekwar@gmail.com",
+    "name": "Neeraj Rekwar",
+    "role": "super_admin",
+    "status": "active",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "notes": "Lead Founder & Super Admin"
+  },
+  {
+    "id": "admin-system",
+    "email": "admin@uchitatvam.com",
+    "name": "Uchitatvam Operations",
+    "role": "super_admin",
+    "status": "active",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "notes": "Core Platform Service Admin"
+  },
+  {
+    "id": "admin-david",
+    "email": "david.kim@fitmeal.fit",
+    "name": "David Kim",
+    "role": "admin",
+    "status": "active",
+    "createdAt": "2026-02-15T00:00:00.000Z",
+    "notes": "Head Performance & Biometrics Coach"
+  }
+]

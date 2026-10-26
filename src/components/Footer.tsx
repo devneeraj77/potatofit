@@ -76,7 +76,7 @@ export default function Footer() {
               <li><a href="/leaderboards" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Member Leaderboard</a></li>
               <li><a href="/rewards" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Digital Rewards &amp; Perks</a></li>
               <li><a href="#community" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Peer Support Network</a></li>
-              <li><a href="#" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">Clinical Advisory Board</a></li>
+              <li><Link href="/admin" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors text-[11px] font-mono font-semibold text-[#7A5A00] dark:text-[#f7fe72]">Admin Control Center →</Link></li>
             </ul>
           </div>
 
