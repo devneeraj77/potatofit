@@ -606,15 +606,7 @@ export default function Navbar({
                 <span>Rewards</span>
               </Link>
 
-              <Link
-                href="/#health-sync-section"
-                className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold text-[#505445] hover:text-[#121815] hover:bg-black/5 dark:text-[#CBD2C7] dark:hover:text-[#f7fe72] dark:hover:bg-white/5 transition-colors whitespace-nowrap"
-                title="Google Fit, Apple Health & Strava Biometrics"
-              >
-                <Activity className="w-3.5 h-3.5 text-[#7A5A00] dark:text-[#f7fe72]" />
-                <span>Health Sync</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              </Link>
+             
             </nav>
 
             {/* 3. Right Utility Cluster: Theme Toggle + Language + Auth + High-Voltage CTA */}
