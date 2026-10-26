@@ -124,7 +124,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
               {isInstallable ? (
                 <button
                   onClick={install}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
+                  className="inline-flex items-center mr-24 gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Install App</span>

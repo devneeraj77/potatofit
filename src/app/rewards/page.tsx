@@ -13,7 +13,6 @@ import {
   Store,
   ArrowRight,
   Dumbbell,
-  Award,
   LayoutDashboard,
   Gift,
   Utensils,
@@ -21,6 +20,7 @@ import {
 import CanvasBadge, { BadgeTier, BadgeRarity, EmblemType } from "@/components/CanvasBadge";
 import PotatoFitLogo from "@/components/PotatoFitLogo";
 import { fireTierUnlockConfetti, fireBadgeEquipGlint } from "@/lib/confetti";
+import RoadmapToNextTier from "@/components/RoadmapToNextTier";
 
 export interface RewardBadgeItem {
   id: string;
@@ -410,6 +410,21 @@ export default function RewardsPage() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  const handleAddXpFromRoadmap = (amount: number, reason: string) => {
+    const newXp = userXp + amount;
+    setUserXp(newXp);
+    setUserRank((prev) => Math.max(8, prev - Math.max(1, Math.ceil(amount / 90))));
+    setToastMessage(`⚡ ${reason} (+${amount} Arena XP)`);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const handleClaimMilestonePerk = (perkId: string, title: string) => {
+    const code = `KIRANA-MILESTONE-${Math.floor(1000 + Math.random() * 9000)}`;
+    setClaimedCodes((prev) => ({ ...prev, [perkId]: code }));
+    setToastMessage(`🎁 Successfully Claimed ${title}! Voucher Code: ${code}`);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
   const handleCopy = (id: string, code: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(code);
@@ -583,7 +598,18 @@ export default function RewardsPage() {
           </div>
         </section>
 
-        {/* 2. Interactive Tier Beam Progression */}
+        {/* 2. Visual Roadmap to Next Tier & Milestone Quests */}
+        <RoadmapToNextTier
+          userXp={userXp}
+          userRank={userRank}
+          activeTier={activeTier}
+          nextTier={nextTier}
+          onAddXp={handleAddXpFromRoadmap}
+          onClaimPerk={handleClaimMilestonePerk}
+          claimedCodes={claimedCodes}
+        />
+
+        {/* 3. Interactive Tier Beam Progression */}
         <section className="bg-[#121815] border border-[#757761]/30 rounded-3xl p-5 sm:p-7 space-y-6 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#757761]/25 pb-4">
             <div>

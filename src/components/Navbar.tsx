@@ -517,7 +517,7 @@ export default function Navbar({
                   height={36}
                   priority
                   referrerPolicy="no-referrer"
-                  className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0"
+                  className="w-14 h-14 sm:w-20 sm:h-20 object-contain shrink-0"
                 />
                 <span className="font-bold text-lg sm:text-xl tracking-tight text-white font-sans">
                   Uchitatvam
