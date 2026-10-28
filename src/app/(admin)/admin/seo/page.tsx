@@ -19,7 +19,10 @@ import {
   Plus,
   Trash2,
   BarChart,
+  BarChart2,
   HelpCircle,
+  Tag,
+  X,
 } from "lucide-react";
 import type {
   PageSeoConfig,
@@ -29,6 +32,7 @@ import type {
 } from "@/lib/seo-types";
 import { DEFAULT_SCHEMAS } from "@/lib/seo-types";
 import JsonLdSchemaBuilder from "@/components/admin/JsonLdSchemaBuilder";
+import KeywordDensityAnalyzer from "@/components/admin/KeywordDensityAnalyzer";
 
 export default function SeoCommandCenterPage() {
   const [data, setData] = useState<SeoStoreData | null>(null);
@@ -45,7 +49,13 @@ export default function SeoCommandCenterPage() {
 
   // Selected Page for editing modal/panel
   const [editingPage, setEditingPage] = useState<PageSeoConfig | null>(null);
+  const [modalTab, setModalTab] = useState<"meta" | "density">("meta");
+  const [newKeywordInput, setNewKeywordInput] = useState("");
   const [savingPage, setSavingPage] = useState(false);
+
+  // Standalone Analyzer state in On-Page SEO tab
+  const [showQuickAnalyzer, setShowQuickAnalyzer] = useState(false);
+  const [analyzerRoute, setAnalyzerRoute] = useState<string>("/");
 
   // Dev Mode state
   const [devMode, setDevMode] = useState(false);
@@ -466,6 +476,19 @@ export default function SeoCommandCenterPage() {
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => setShowQuickAnalyzer(!showQuickAnalyzer)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  showQuickAnalyzer
+                    ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs"
+                    : "bg-[#18211C] text-[#CBD2C7] hover:text-white border border-[#757761]/30"
+                }`}
+              >
+                <BarChart2 className="w-3.5 h-3.5 text-[#f7fe72]" />
+                <span>{showQuickAnalyzer ? "Hide Density Analyzer" : "Keyword Density Analyzer"}</span>
+              </button>
+
               <span className="text-[11px] font-mono text-[#757761] shrink-0">Type:</span>
               <select
                 value={pageTypeFilter}
@@ -478,6 +501,51 @@ export default function SeoCommandCenterPage() {
               </select>
             </div>
           </div>
+
+          {/* Standalone Quick Analyzer Drawer (if toggled open) */}
+          {showQuickAnalyzer && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#141A16] border border-[#757761]/30 text-xs font-mono">
+                <div className="flex items-center gap-2 text-white">
+                  <BarChart2 className="w-4 h-4 text-[#f7fe72]" />
+                  <span className="font-bold">Active Route Inspection:</span>
+                  <select
+                    value={analyzerRoute}
+                    onChange={(e) => setAnalyzerRoute(e.target.value)}
+                    className="px-2.5 py-1 rounded-xl bg-[#0B0E0C] border border-[#757761]/40 text-[#f7fe72] text-xs focus:outline-none focus:border-[#f7fe72]"
+                  >
+                    {pagesList.map((p) => (
+                      <option key={p.path} value={p.path}>
+                        {p.path} — {p.title.slice(0, 45)}...
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowQuickAnalyzer(false)}
+                  className="text-[#757761] hover:text-white text-xs"
+                >
+                  Close Analyzer ✕
+                </button>
+              </div>
+
+              {(() => {
+                const targetPage = pagesList.find((p) => p.path === analyzerRoute) || pagesList[0];
+                return (
+                  <KeywordDensityAnalyzer
+                    key={targetPage?.path || "default"}
+                    initialKeyword={targetPage?.keywords?.[0] || "athletic fuel"}
+                    availableKeywords={targetPage?.keywords || []}
+                    pagePath={targetPage?.path || "/"}
+                    pageTitle={targetPage?.title || ""}
+                    pageDescription={targetPage?.description || ""}
+                    pageDirectAnswer={targetPage?.directAnswer || ""}
+                  />
+                );
+              })()}
+            </div>
+          )}
 
           {/* Pages Table */}
           <div className="rounded-2xl border border-[#757761]/25 bg-white dark:bg-[#0E1310] overflow-hidden shadow-xs">
@@ -519,6 +587,24 @@ export default function SeoCommandCenterPage() {
                         <div className="text-[11px] text-[#505445] dark:text-[#A0A493] line-clamp-1 mt-0.5">
                           {page.description}
                         </div>
+                        {page.keywords && page.keywords.length > 0 && (
+                          <div className="flex items-center gap-1 mt-1 overflow-hidden">
+                            <span className="text-[9px] font-mono text-[#757761]">KW:</span>
+                            {page.keywords.slice(0, 3).map((kw) => (
+                              <span
+                                key={kw}
+                                className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#18211C] text-[#CBD2C7] border border-[#757761]/20 truncate"
+                              >
+                                {kw}
+                              </span>
+                            ))}
+                            {page.keywords.length > 3 && (
+                              <span className="text-[9px] font-mono text-[#757761]">
+                                +{page.keywords.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </td>
 
                       <td className="py-3 px-4">
@@ -550,13 +636,30 @@ export default function SeoCommandCenterPage() {
                       </td>
 
                       <td className="py-3 px-4 text-right">
-                        <button
-                          type="button"
-                          onClick={() => setEditingPage(page)}
-                          className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e7ee62] transition-colors cursor-pointer"
-                        >
-                          Edit SEO
-                        </button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingPage(page);
+                              setModalTab("density");
+                            }}
+                            className="px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold text-[#f7fe72] bg-[#18211C] hover:bg-[#25332C] border border-[#f7fe72]/30 transition-colors cursor-pointer flex items-center gap-1"
+                            title="Analyze Keyword Density"
+                          >
+                            <BarChart2 className="w-3.5 h-3.5 text-[#f7fe72]" />
+                            <span>Analyze</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingPage(page);
+                              setModalTab("meta");
+                            }}
+                            className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e7ee62] transition-colors cursor-pointer"
+                          >
+                            Edit SEO
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -1019,25 +1122,63 @@ export default function SeoCommandCenterPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* MODAL: EDIT PAGE SEO                                                      */}
+      {/* MODAL: EDIT PAGE SEO & KEYWORD DENSITY ANALYZER                           */}
       {/* ========================================================================= */}
       {editingPage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="w-full max-w-2xl rounded-3xl bg-[#0E1310] border border-[#757761]/35 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#757761]/25">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[#f7fe72]" />
-                <h3 className="text-base font-bold text-white">
-                  Edit SEO: <code className="text-[#f7fe72] font-mono">{editingPage.path}</code>
-                </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+          <div className="w-full max-w-4xl rounded-3xl bg-[#0E1310] border border-[#757761]/35 p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#757761]/25 gap-3">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-[#f7fe72]" />
+                  <h3 className="text-base font-bold text-white">
+                    SEO Editor: <code className="text-[#f7fe72] font-mono">{editingPage.path}</code>
+                  </h3>
+                </div>
+                <p className="text-[11px] text-[#A0A493]">
+                  Optimize meta tags, evaluate keyword density, and configure AEO grounding signals.
+                </p>
               </div>
-              <button
-                type="button"
-                onClick={() => setEditingPage(null)}
-                className="p-1 text-[#757761] hover:text-white rounded-lg"
-              >
-                ✕
-              </button>
+
+              <div className="flex items-center gap-2">
+                {/* Modal Sub-Tabs */}
+                <div className="flex items-center bg-[#141A16] p-1 rounded-xl border border-[#757761]/30 text-xs font-mono">
+                  <button
+                    type="button"
+                    onClick={() => setModalTab("meta")}
+                    className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                      modalTab === "meta"
+                        ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
+                        : "text-[#A0A493] hover:text-white"
+                    }`}
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Metadata &amp; Tags</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setModalTab("density")}
+                    className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                      modalTab === "density"
+                        ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold shadow-xs"
+                        : "text-[#A0A493] hover:text-white"
+                    }`}
+                  >
+                    <BarChart2 className="w-3.5 h-3.5 text-[#f7fe72]" />
+                    <span>Keyword Density Analyzer</span>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setEditingPage(null)}
+                  className="p-1.5 text-[#757761] hover:text-white rounded-xl hover:bg-[#141A16] cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Static Lock Warning if Dev Mode is disabled */}
@@ -1057,139 +1198,287 @@ export default function SeoCommandCenterPage() {
               </div>
             )}
 
-            <form onSubmit={handleSavePageSeo} className="space-y-4 text-xs">
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="font-mono text-[#A0A493]">HTML Title Tag (&lt;title&gt;)</label>
-                  <span className={`text-[10px] font-mono ${editingPage.title.length > 60 ? "text-amber-400" : "text-[#757761]"}`}>
-                    {editingPage.title.length} / 60 chars
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  required
-                  disabled={editingPage.isStatic && !devMode}
-                  value={editingPage.title}
-                  onChange={(e) => setEditingPage({ ...editingPage, title: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50"
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="font-mono text-[#A0A493]">Meta Description</label>
-                  <span className={`text-[10px] font-mono ${editingPage.description.length > 160 ? "text-amber-400" : "text-[#757761]"}`}>
-                    {editingPage.description.length} / 160 chars
-                  </span>
-                </div>
-                <textarea
-                  rows={3}
-                  required
-                  disabled={editingPage.isStatic && !devMode}
-                  value={editingPage.description}
-                  onChange={(e) => setEditingPage({ ...editingPage, description: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50"
-                />
-              </div>
-
-              <div>
-                <label className="block font-mono text-[#A0A493] mb-1">
-                  AEO Direct Answer (for AI Search Perplexity / Gemini)
-                </label>
-                <textarea
-                  rows={2}
-                  disabled={editingPage.isStatic && !devMode}
-                  value={editingPage.directAnswer || ""}
-                  onChange={(e) => setEditingPage({ ...editingPage, directAnswer: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50"
-                />
-              </div>
-
-              <div>
-                <label className="block font-mono text-[#A0A493] mb-1">OpenGraph Image URL</label>
-                <input
-                  type="url"
-                  disabled={editingPage.isStatic && !devMode}
-                  value={editingPage.ogImage}
-                  onChange={(e) => setEditingPage({ ...editingPage, ogImage: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white font-mono disabled:opacity-50"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+            {/* TAB 1: METADATA & TAGS FORM */}
+            {modalTab === "meta" && (
+              <form onSubmit={handleSavePageSeo} className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-mono text-[#A0A493] mb-1">Crawl Priority (0.1 - 1.0)</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="font-mono text-[#A0A493]">HTML Title Tag (&lt;title&gt;)</label>
+                    <span className={`text-[10px] font-mono ${editingPage.title.length > 60 ? "text-amber-400 font-bold" : "text-[#757761]"}`}>
+                      {editingPage.title.length} / 60 chars {editingPage.title.length > 60 && "(Truncation Warning)"}
+                    </span>
+                  </div>
                   <input
-                    type="number"
-                    step="0.1"
-                    min="0.1"
-                    max="1.0"
+                    type="text"
+                    required
                     disabled={editingPage.isStatic && !devMode}
-                    value={editingPage.priority}
-                    onChange={(e) => setEditingPage({ ...editingPage, priority: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white font-mono disabled:opacity-50"
+                    value={editingPage.title}
+                    onChange={(e) => setEditingPage({ ...editingPage, title: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50 focus:outline-none focus:border-[#f7fe72]"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-mono text-[#A0A493] mb-1">Change Frequency</label>
-                  <select
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="font-mono text-[#A0A493]">Meta Description</label>
+                    <span className={`text-[10px] font-mono ${editingPage.description.length > 160 ? "text-amber-400 font-bold" : "text-[#757761]"}`}>
+                      {editingPage.description.length} / 160 chars {editingPage.description.length > 160 && "(Truncation Warning)"}
+                    </span>
+                  </div>
+                  <textarea
+                    rows={3}
+                    required
                     disabled={editingPage.isStatic && !devMode}
-                    value={editingPage.changeFreq}
-                    onChange={(e) => setEditingPage({ ...editingPage, changeFreq: e.target.value as PageSeoConfig["changeFreq"] })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50"
+                    value={editingPage.description}
+                    onChange={(e) => setEditingPage({ ...editingPage, description: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50 focus:outline-none focus:border-[#f7fe72]"
+                  />
+                </div>
+
+                {/* Target Keywords Taxonomy Manager */}
+                <div className="p-4 rounded-2xl bg-[#141A16] border border-[#757761]/25 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <label className="font-mono text-[#A0A493] flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <span>Target Keywords Taxonomy</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setModalTab("density")}
+                      className="text-[10px] font-mono text-[#f7fe72] hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <BarChart2 className="w-3 h-3 text-[#f7fe72]" />
+                      <span>Audit Keyword Density &rarr;</span>
+                    </button>
+                  </div>
+
+                  {/* Active Keyword Chips */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {editingPage.keywords && editingPage.keywords.map((kw, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#18211C] border border-[#757761]/35 text-xs text-white font-mono"
+                      >
+                        <span>{kw}</span>
+                        {(!editingPage.isStatic || devMode) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = editingPage.keywords.filter((_, idx) => idx !== i);
+                              setEditingPage({ ...editingPage, keywords: updated });
+                            }}
+                            className="text-[#757761] hover:text-red-400 cursor-pointer"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </span>
+                    ))}
+                    {(!editingPage.keywords || editingPage.keywords.length === 0) && (
+                      <span className="text-[11px] text-[#757761] italic">
+                        No target keywords configured. Add your primary search terms below.
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Add Keyword Input */}
+                  {(!editingPage.isStatic || devMode) && (
+                    <div className="flex items-center gap-2 pt-1">
+                      <input
+                        type="text"
+                        placeholder="Add new target keyword (e.g. vegetable mandi nutrition)..."
+                        value={newKeywordInput}
+                        onChange={(e) => setNewKeywordInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (newKeywordInput.trim()) {
+                              const trimmed = newKeywordInput.trim();
+                              if (!editingPage.keywords.includes(trimmed)) {
+                                setEditingPage({
+                                  ...editingPage,
+                                  keywords: [...(editingPage.keywords || []), trimmed],
+                                });
+                              }
+                              setNewKeywordInput("");
+                            }
+                          }
+                        }}
+                        className="flex-1 px-3 py-1.5 rounded-xl bg-[#0B0E0C] border border-[#757761]/30 text-white placeholder-[#757761] focus:outline-none focus:border-[#f7fe72]"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (newKeywordInput.trim()) {
+                            const trimmed = newKeywordInput.trim();
+                            if (!editingPage.keywords.includes(trimmed)) {
+                              setEditingPage({
+                                ...editingPage,
+                                keywords: [...(editingPage.keywords || []), trimmed],
+                              });
+                            }
+                            setNewKeywordInput("");
+                          }
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-[#18211C] text-[#f7fe72] border border-[#f7fe72]/30 font-bold hover:bg-[#25332C] cursor-pointer"
+                      >
+                        + Add
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block font-mono text-[#A0A493] mb-1">
+                    AEO Direct Answer (for AI Search Perplexity / Gemini Grounding)
+                  </label>
+                  <textarea
+                    rows={2}
+                    disabled={editingPage.isStatic && !devMode}
+                    value={editingPage.directAnswer || ""}
+                    onChange={(e) => setEditingPage({ ...editingPage, directAnswer: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50 focus:outline-none focus:border-[#f7fe72]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-mono text-[#A0A493] mb-1">OpenGraph Image URL</label>
+                  <input
+                    type="url"
+                    disabled={editingPage.isStatic && !devMode}
+                    value={editingPage.ogImage}
+                    onChange={(e) => setEditingPage({ ...editingPage, ogImage: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white font-mono disabled:opacity-50 focus:outline-none focus:border-[#f7fe72]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-mono text-[#A0A493] mb-1">Crawl Priority (0.1 - 1.0)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      min="0.1"
+                      max="1.0"
+                      disabled={editingPage.isStatic && !devMode}
+                      value={editingPage.priority}
+                      onChange={(e) => setEditingPage({ ...editingPage, priority: Number(e.target.value) })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white font-mono disabled:opacity-50 focus:outline-none focus:border-[#f7fe72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-mono text-[#A0A493] mb-1">Change Frequency</label>
+                    <select
+                      disabled={editingPage.isStatic && !devMode}
+                      value={editingPage.changeFreq}
+                      onChange={(e) => setEditingPage({ ...editingPage, changeFreq: e.target.value as PageSeoConfig["changeFreq"] })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#141A16] border border-[#757761]/30 text-white disabled:opacity-50 focus:outline-none focus:border-[#f7fe72]"
+                    >
+                      <option value="always">Always</option>
+                      <option value="hourly">Hourly</option>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Indexing checkboxes */}
+                <div className="flex items-center gap-6 pt-2 border-t border-[#757761]/25">
+                  <label className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      disabled={editingPage.isStatic && !devMode}
+                      checked={editingPage.allowIndexing}
+                      onChange={(e) => setEditingPage({ ...editingPage, allowIndexing: e.target.checked })}
+                      className="rounded border-[#757761]/30 text-[#f7fe72]"
+                    />
+                    <span className="text-white">Allow Search Indexing</span>
+                  </label>
+
+                  <label className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      disabled={editingPage.isStatic && !devMode}
+                      checked={editingPage.allowFollow}
+                      onChange={(e) => setEditingPage({ ...editingPage, allowFollow: e.target.checked })}
+                      className="rounded border-[#757761]/30 text-[#f7fe72]"
+                    />
+                    <span className="text-white">Follow Outbound Links</span>
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#757761]/25">
+                  <button
+                    type="button"
+                    onClick={() => setEditingPage(null)}
+                    className="px-3 py-1.5 rounded-xl text-xs text-[#A0A493] hover:text-white cursor-pointer"
                   >
-                    <option value="always">Always</option>
-                    <option value="hourly">Hourly</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                  </select>
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={savingPage || (editingPage.isStatic && !devMode)}
+                    className="px-4 py-1.5 rounded-xl text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e7ee62] transition-colors cursor-pointer disabled:opacity-30"
+                  >
+                    {savingPage ? "Saving..." : "Save Page SEO"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* TAB 2: KEYWORD DENSITY ANALYZER */}
+            {modalTab === "density" && (
+              <div className="space-y-4">
+                <KeywordDensityAnalyzer
+                  initialKeyword={editingPage.keywords?.[0] || ""}
+                  availableKeywords={editingPage.keywords || []}
+                  pagePath={editingPage.path}
+                  pageTitle={editingPage.title}
+                  pageDescription={editingPage.description}
+                  pageDirectAnswer={editingPage.directAnswer || ""}
+                  onUpdateTitle={(newTitle) => setEditingPage({ ...editingPage, title: newTitle })}
+                  onUpdateDescription={(newDesc) => setEditingPage({ ...editingPage, description: newDesc })}
+                  onAddKeyword={(kw) => {
+                    if (!editingPage.keywords.includes(kw)) {
+                      setEditingPage({
+                        ...editingPage,
+                        keywords: [...(editingPage.keywords || []), kw],
+                      });
+                    }
+                  }}
+                />
+
+                <div className="flex items-center justify-between pt-3 border-t border-[#757761]/25">
+                  <button
+                    type="button"
+                    onClick={() => setModalTab("meta")}
+                    className="px-3 py-1.5 rounded-xl text-xs font-mono text-[#f7fe72] bg-[#18211C] border border-[#f7fe72]/30 hover:bg-[#25332C] cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span>&larr; Back to Metadata &amp; Tags</span>
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditingPage(null)}
+                      className="px-3 py-1.5 rounded-xl text-xs text-[#A0A493] hover:text-white cursor-pointer"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSavePageSeo}
+                      disabled={savingPage || (editingPage.isStatic && !devMode)}
+                      className="px-4 py-1.5 rounded-xl text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e7ee62] transition-colors cursor-pointer disabled:opacity-30"
+                    >
+                      {savingPage ? "Saving..." : "Save Optimized SEO"}
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              {/* Indexing checkboxes */}
-              <div className="flex items-center gap-6 pt-2 border-t border-[#757761]/25">
-                <label className="inline-flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    disabled={editingPage.isStatic && !devMode}
-                    checked={editingPage.allowIndexing}
-                    onChange={(e) => setEditingPage({ ...editingPage, allowIndexing: e.target.checked })}
-                    className="rounded border-[#757761]/30 text-[#f7fe72]"
-                  />
-                  <span className="text-white">Allow Search Indexing</span>
-                </label>
-
-                <label className="inline-flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    disabled={editingPage.isStatic && !devMode}
-                    checked={editingPage.allowFollow}
-                    onChange={(e) => setEditingPage({ ...editingPage, allowFollow: e.target.checked })}
-                    className="rounded border-[#757761]/30 text-[#f7fe72]"
-                  />
-                  <span className="text-white">Follow Outbound Links</span>
-                </label>
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#757761]/25">
-                <button
-                  type="button"
-                  onClick={() => setEditingPage(null)}
-                  className="px-3 py-1.5 rounded-xl text-xs text-[#A0A493] hover:text-white"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={savingPage || (editingPage.isStatic && !devMode)}
-                  className="px-4 py-1.5 rounded-xl text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e7ee62] transition-colors cursor-pointer disabled:opacity-30"
-                >
-                  {savingPage ? "Saving..." : "Save Page SEO"}
-                </button>
-              </div>
-            </form>
+            )}
           </div>
         </div>
       )}
