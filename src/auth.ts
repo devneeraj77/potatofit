@@ -1,3 +1,12 @@
+// Sanitize invalid or corrupted environment URLs to prevent NextAuth ERR_INVALID_URL crashes
+if (process.env.NEXTAUTH_URL && !process.env.NEXTAUTH_URL.startsWith("http")) {
+  delete process.env.NEXTAUTH_URL;
+}
+if (process.env.AUTH_URL && !process.env.AUTH_URL.startsWith("http")) {
+  delete process.env.AUTH_URL;
+}
+process.env.AUTH_TRUST_HOST = "true";
+
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { syncAuthUserToSupabase } from "@/lib/supabase";
@@ -53,11 +62,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             role: adminProfile ? adminProfile.role : "athlete",
           };
 
-          // Synchronize user authentication record to Supabase database
-          try {
-            await syncAuthUserToSupabase(userObj);
-          } catch (err) {
-            console.warn("[Auth] Supabase sync caught:", err);
+          // Synchronize athlete user record to Supabase asynchronously without blocking auth
+          if (!adminProfile) {
+            syncAuthUserToSupabase(userObj).catch((err) => {
+              console.warn("[Auth] Supabase sync caught:", err);
+            });
           }
 
           return userObj;

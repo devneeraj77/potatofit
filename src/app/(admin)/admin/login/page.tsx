@@ -2,7 +2,7 @@
 
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import {
   Lock,
@@ -20,7 +20,6 @@ import {
 import PotatoFitLogo from "@/components/PotatoFitLogo";
 
 function AdminLoginContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
   const errorParam = searchParams.get("error");
@@ -49,14 +48,14 @@ function AdminLoginContent() {
         redirect: false,
         email: email.trim().toLowerCase(),
         password,
+        callbackUrl: callbackUrl || "/admin",
       });
 
       if (res?.error) {
         setErrorMessage("Invalid administrator credentials. Please check your credentials or run `npm run admin:seed`.");
         setIsLoading(false);
       } else {
-        router.push(callbackUrl);
-        router.refresh();
+        window.location.href = callbackUrl || "/admin";
       }
     } catch {
       setErrorMessage("An unexpected authentication error occurred. Please try again.");
@@ -75,14 +74,14 @@ function AdminLoginContent() {
         redirect: false,
         email: adminEmail,
         password: adminPass,
+        callbackUrl: callbackUrl || "/admin",
       });
 
       if (res?.error) {
         setErrorMessage("Administrator authentication failed. Please verify admin record.");
         setIsLoading(false);
       } else {
-        router.push(callbackUrl);
-        router.refresh();
+        window.location.href = callbackUrl || "/admin";
       }
     } catch {
       setErrorMessage("Authentication error occurred.");
