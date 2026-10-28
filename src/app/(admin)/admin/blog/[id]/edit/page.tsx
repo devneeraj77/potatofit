@@ -9,6 +9,7 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle2,
+} from "lucide-react";
 import dynamic from "next/dynamic";
 import type { BlogPost, BlogCategory } from "@/lib/blog-store";
 
@@ -193,6 +194,8 @@ export default function EditBlogPage({
             </span>
             <span className="text-xs text-[#757761]">·</span>
             <span className="text-xs font-mono text-[#A0A493]">ID: {id}</span>
+            <span className="text-xs text-[#757761]">·</span>
+            <span className="text-xs font-mono text-[#A0A493]">{views.toLocaleString()} views</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#121815] dark:text-white line-clamp-1">
             Edit: {title}

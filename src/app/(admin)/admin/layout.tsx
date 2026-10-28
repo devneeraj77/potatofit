@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -68,10 +68,15 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // If visiting /admin/login, render standalone login view without administrative frame
+  if (pathname === "/admin/login" || pathname?.startsWith("/admin/login")) {
+    return <>{children}</>;
+  }
 
   const userEmail = session?.user?.email || "dev.neerajrekwar@gmail.com";
   const userName = session?.user?.name || "Neeraj Rekwar";
@@ -263,5 +268,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </main>
       </div>
     </div>
+  );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#080B09] text-[#CBD2C7] text-xs font-mono">
+          Loading Control Center...
+        </div>
+      }
+    >
+      <AdminLayoutInner>{children}</AdminLayoutInner>
+    </Suspense>
   );
 }

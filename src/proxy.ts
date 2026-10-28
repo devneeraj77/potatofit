@@ -9,6 +9,11 @@ const AUTH_COOKIE_NAMES = [
 ];
 
 export function isProtectedAdminRoute(pathname: string): boolean {
+  // Always permit access to the admin login portal without redirection loops
+  if (pathname === "/admin/login" || pathname.startsWith("/admin/login/")) {
+    return false;
+  }
+
   return (
     pathname === "/admin" ||
     pathname.startsWith("/admin/") ||
@@ -36,7 +41,7 @@ export function extractAuthSession(request: NextRequest): {
     }
   }
 
-  // Also check custom admin authorization header or bypass for development/terminal verification
+  // Check custom admin authorization header or token for development/terminal verification
   const devAdminHeader = request.headers.get("x-admin-token");
   if (devAdminHeader === "uchitatvam-admin-secret-2026") {
     return {
@@ -59,9 +64,15 @@ export function extractAuthSession(request: NextRequest): {
 
 /**
  * Core proxy guard preventing unauthorized access to all /(admin)/admin pages and APIs
+ * Unauthenticated requests to /admin are redirected directly to /admin/login
  */
 export async function adminGuard(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
+
+  // Never block the admin login route itself
+  if (pathname === "/admin/login" || pathname.startsWith("/admin/login/")) {
+    return NextResponse.next();
+  }
 
   // Only protect admin routes
   if (!isProtectedAdminRoute(pathname)) {
@@ -77,14 +88,14 @@ export async function adminGuard(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json(
         {
           error: "Unauthorized",
-          message: "Administrative privileges are required to access this endpoint.",
+          message: "Administrative credentials required to access this endpoint.",
         },
         { status: 401 }
       );
     }
 
-    // For web browser navigation to /admin, redirect to signin with callbackUrl
-    const redirectUrl = new URL("/signin", request.url);
+    // For web browser navigation to /admin, redirect directly to /admin/login with callbackUrl
+    const redirectUrl = new URL("/admin/login", request.url);
     redirectUrl.searchParams.set("callbackUrl", pathname);
     redirectUrl.searchParams.set("error", "AdminAccessRequired");
     return NextResponse.redirect(redirectUrl);
