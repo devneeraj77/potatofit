@@ -63,6 +63,7 @@ import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { OfflineIndicator } from "@/components/PWAInstallButton";
 import CookieConsentBanner from "@/components/CookieConsentBanner";
+import StructuredData from "@/components/StructuredData";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <StructuredData />
       </head>
       <body className="min-h-full flex flex-col bg-[#F4F6F5] text-[#121815] dark:bg-[#0B0E0C] dark:text-[#E2E7DE] transition-colors">
         <ThemeProvider
