@@ -424,3 +424,77 @@ export function deleteBlog(id: string): { success: boolean; error?: string } {
   saveBlogs(filtered);
   return { success: true };
 }
+
+export function bulkUpdateBlogs(
+  ids: string[],
+  updates: { status?: "published" | "draft" | "archived"; categoryId?: string }
+): { success: boolean; count: number; updatedBlogs: BlogPost[] } {
+  const blogs = getBlogs();
+  const idSet = new Set(ids);
+  const now = new Date().toISOString();
+
+  let newCatName: string | undefined = undefined;
+  if (updates.categoryId) {
+    const categories = getCategories();
+    const cat = categories.find((c) => c.id === updates.categoryId);
+    if (cat) newCatName = cat.name;
+  }
+
+  let count = 0;
+  const updatedBlogs: BlogPost[] = [];
+  const modified = blogs.map((b) => {
+    if (!idSet.has(b.id)) return b;
+    count++;
+    const postUpdated: BlogPost = {
+      ...b,
+      status: updates.status !== undefined ? updates.status : b.status,
+      categoryId: updates.categoryId !== undefined ? updates.categoryId : b.categoryId,
+      categoryName: updates.categoryId ? (newCatName || b.categoryName) : b.categoryName,
+      updatedAt: now,
+      publishedAt:
+        updates.status === "published" && !b.publishedAt ? now : b.publishedAt,
+    };
+    updatedBlogs.push(postUpdated);
+    return postUpdated;
+  });
+
+  saveBlogs(modified);
+  return { success: true, count, updatedBlogs };
+}
+
+export function bulkToggleBlogStatus(
+  ids: string[]
+): { success: boolean; count: number; updatedBlogs: BlogPost[] } {
+  const blogs = getBlogs();
+  const idSet = new Set(ids);
+  const now = new Date().toISOString();
+
+  let count = 0;
+  const updatedBlogs: BlogPost[] = [];
+  const modified = blogs.map((b) => {
+    if (!idSet.has(b.id)) return b;
+    count++;
+    const nextStatus = b.status === "published" ? "draft" : "published";
+    const postUpdated: BlogPost = {
+      ...b,
+      status: nextStatus,
+      updatedAt: now,
+      publishedAt: nextStatus === "published" && !b.publishedAt ? now : b.publishedAt,
+    };
+    updatedBlogs.push(postUpdated);
+    return postUpdated;
+  });
+
+  saveBlogs(modified);
+  return { success: true, count, updatedBlogs };
+}
+
+export function bulkDeleteBlogs(ids: string[]): { success: boolean; count: number } {
+  const blogs = getBlogs();
+  const idSet = new Set(ids);
+  const filtered = blogs.filter((b) => !idSet.has(b.id));
+  const count = blogs.length - filtered.length;
+
+  saveBlogs(filtered);
+  return { success: true, count };
+}

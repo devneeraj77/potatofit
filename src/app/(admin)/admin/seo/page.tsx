@@ -26,7 +26,9 @@ import type {
   GlobalSeoSettings,
   SeoStoreData,
   LocalSeoLocation,
-} from "@/lib/seo-store";
+} from "@/lib/seo-types";
+import { DEFAULT_SCHEMAS } from "@/lib/seo-types";
+import JsonLdSchemaBuilder from "@/components/admin/JsonLdSchemaBuilder";
 
 export default function SeoCommandCenterPage() {
   const [data, setData] = useState<SeoStoreData | null>(null);
@@ -804,10 +806,18 @@ export default function SeoCommandCenterPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* TAB 4: TECHNICAL SEO (SITEMAP & ROBOTS)                                    */}
+      {/* TAB 4: TECHNICAL SEO (JSON-LD SCHEMAS, SITEMAP & ROBOTS)                  */}
       {/* ========================================================================= */}
       {activeTab === "technical" && globalSettings && (
-        <div className="space-y-6">
+        <div className="space-y-8">
+          {/* JSON-LD Schema Builder & Root Metadata Pipeline */}
+          <JsonLdSchemaBuilder
+            schemas={globalSettings.schemas || DEFAULT_SCHEMAS}
+            devModeEnabled={devMode}
+            onRefresh={loadSeoData}
+            onToggleDevMode={handleToggleDevMode}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
             {/* Sitemap & Robots Links */}
             <div className="p-6 rounded-3xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 space-y-4">

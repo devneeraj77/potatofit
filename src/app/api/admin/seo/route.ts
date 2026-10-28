@@ -5,14 +5,20 @@ import {
   updatePageSeo,
   toggleDevMode,
   saveSeoConfig,
+  saveSchema,
+  deleteSchema,
+  toggleSchema,
   DEFAULT_GLOBAL_SEO,
   DEFAULT_PAGE_SEO,
+  DEFAULT_SCHEMAS,
   PageSeoConfig,
+  JsonLdSnippet,
 } from "@/lib/seo-store";
 
 export async function GET() {
   try {
     const config = getSeoConfig();
+    const schemas = config.global.schemas || DEFAULT_SCHEMAS;
     return NextResponse.json({
       success: true,
       config,
@@ -24,6 +30,10 @@ export async function GET() {
         backlinksCount: config.global.backlinks.length,
         locationsCount: config.global.locations.length,
         aeoFaqsCount: config.global.aeoFaqSnippets.length,
+        schemasCount: schemas.length,
+        activeSchemasCount: schemas.filter((s) => s.enabled).length,
+        staticSchemasCount: schemas.filter((s) => s.targetType === "static").length,
+        dynamicSchemasCount: schemas.filter((s) => s.targetType === "dynamic").length,
       },
     });
   } catch (error: unknown) {
@@ -58,7 +68,44 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: true, global: result.global });
     }
 
-    // 3. Adding a new dynamic route rule or custom page
+    // 3. Schema snippet operations
+    if (body.type === "save_schema") {
+      const { snippet, forceDevMode } = body as { snippet: JsonLdSnippet; forceDevMode?: boolean };
+      if (!snippet || !snippet.name || !snippet.jsonContent) {
+        return NextResponse.json({ success: false, error: "Snippet name and JSON content are required" }, { status: 400 });
+      }
+      const result = saveSchema(snippet, forceDevMode);
+      if (!result.success) {
+        return NextResponse.json({ success: false, error: result.error }, { status: 403 });
+      }
+      return NextResponse.json({ success: true, snippet: result.snippet });
+    }
+
+    if (body.type === "toggle_schema") {
+      const { id, enabled, forceDevMode } = body;
+      if (!id) {
+        return NextResponse.json({ success: false, error: "Schema ID is required" }, { status: 400 });
+      }
+      const result = toggleSchema(id, enabled, forceDevMode);
+      if (!result.success) {
+        return NextResponse.json({ success: false, error: result.error }, { status: 403 });
+      }
+      return NextResponse.json({ success: true, enabled: result.enabled });
+    }
+
+    if (body.type === "delete_schema") {
+      const { id, forceDevMode } = body;
+      if (!id) {
+        return NextResponse.json({ success: false, error: "Schema ID is required" }, { status: 400 });
+      }
+      const result = deleteSchema(id, forceDevMode);
+      if (!result.success) {
+        return NextResponse.json({ success: false, error: result.error }, { status: 403 });
+      }
+      return NextResponse.json({ success: true, message: "Schema deleted successfully" });
+    }
+
+    // 4. Adding a new dynamic route rule or custom page
     if (body.type === "add_page") {
       const { page } = body as { page: PageSeoConfig };
       if (!page || !page.path) {
@@ -93,10 +140,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, devModeEnabled: newStatus });
     }
 
+    // Schema Actions via POST
+    if (body.action === "save_schema") {
+      const { snippet, forceDevMode } = body as { snippet: JsonLdSnippet; forceDevMode?: boolean };
+      const result = saveSchema(snippet, forceDevMode);
+      if (!result.success) {
+        return NextResponse.json({ success: false, error: result.error }, { status: 403 });
+      }
+      return NextResponse.json({ success: true, snippet: result.snippet });
+    }
+
+    if (body.action === "toggle_schema") {
+      const { id, enabled, forceDevMode } = body;
+      const result = toggleSchema(id, enabled, forceDevMode);
+      if (!result.success) {
+        return NextResponse.json({ success: false, error: result.error }, { status: 403 });
+      }
+      return NextResponse.json({ success: true, enabled: result.enabled });
+    }
+
+    if (body.action === "delete_schema") {
+      const { id, forceDevMode } = body;
+      const result = deleteSchema(id, forceDevMode);
+      if (!result.success) {
+        return NextResponse.json({ success: false, error: result.error }, { status: 403 });
+      }
+      return NextResponse.json({ success: true, message: "Schema deleted successfully" });
+    }
+
     // Reset all SEO to optimum defaults
     if (body.action === "reset_defaults") {
       const freshData = {
-        global: DEFAULT_GLOBAL_SEO,
+        global: {
+          ...DEFAULT_GLOBAL_SEO,
+          schemas: DEFAULT_SCHEMAS,
+        },
         pages: DEFAULT_PAGE_SEO,
         updatedAt: new Date().toISOString(),
       };
