@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   Bell,
   BellRing,
-  Sparkles,
 } from "lucide-react";
 import { usePWA } from "@/hooks/usePWA";
 
@@ -112,65 +111,74 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
     return (
       <>
         {iosModal}
-        <div className="bg-[#0E1310] border-b border-[#757761]/35 py-2 px-4 text-white text-xs shadow-md">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-7 w-7 rounded-lg bg-emerald-500/15 text-[#34d399] items-center justify-center shrink-0 border border-emerald-500/30">
-                <CheckCircle2 className="w-4 h-4" />
-              </span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="font-bold text-white text-xs">
-                    Uchitatvam PWA Standalone Active
-                  </p>
-                  <span
-                    className={`text-[9px] font-mono px-2 py-0.5 rounded-full border font-bold ${
-                      notificationPermission === "granted"
-                        ? "bg-emerald-500/15 text-[#34d399] border-emerald-500/30"
-                        : "bg-amber-500/15 text-amber-400 border-amber-500/30"
-                    }`}
-                  >
-                    {notificationPermission === "granted"
-                      ? "Both Notifications Allowed ✓"
-                      : "Notifications Pending"}
+        <aside
+          role="region"
+          aria-label="PWA standalone notification banner"
+          className="w-full flex justify-center px-3 sm:px-6 pb-4 pt-1 transition-all"
+        >
+          <div className="w-full max-w-7xl">
+            <div className="rounded-2xl border border-[#757761]/35 bg-[#0E1310]/95 shadow-xl shadow-black/50 backdrop-blur-xl px-4 sm:px-6 py-3 text-white text-xs sm:text-sm">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="flex h-8 w-8 rounded-xl bg-emerald-500/15 text-[#34d399] items-center justify-center shrink-0 border border-emerald-500/30">
+                    <CheckCircle2 className="w-4 h-4" />
                   </span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-bold text-white text-xs sm:text-sm truncate">
+                        Uchitatvam PWA Standalone Active
+                      </p>
+                      <span
+                        className={`text-[9px] font-mono px-2 py-0.5 rounded-full border font-bold ${
+                          notificationPermission === "granted"
+                            ? "bg-emerald-500/15 text-[#34d399] border-emerald-500/30"
+                            : "bg-amber-500/15 text-amber-400 border-amber-500/30"
+                        }`}
+                      >
+                        {notificationPermission === "granted"
+                          ? "Both Notifications Allowed ✓"
+                          : "Notifications Pending"}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#A0A493] hidden sm:block">
+                      Biometric readiness tracking &amp; daily vegetable mandi nutrition alerts.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-[11px] text-[#A0A493] hidden sm:block">
-                  Biometric readiness tracking &amp; daily vegetable mandi nutrition alerts.
-                </p>
+
+                <div className="flex items-center gap-2.5 shrink-0 flex-wrap self-end sm:self-auto">
+                  {notificationPermission === "granted" ? (
+                    <button
+                      onClick={handleTestBothAlerts}
+                      disabled={isNotifLoading}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 text-xs font-semibold cursor-pointer transition-all shadow-xs"
+                      title="Test both dual notifications"
+                    >
+                      <Bell className="w-3.5 h-3.5 text-[#34d399]" />
+                      <span>{testSentMsg || (isNotifLoading ? "Sending..." : "Alerts Active ✓")}</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={openMobilePermissionDialog}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
+                    >
+                      <BellRing className="w-3.5 h-3.5" />
+                      <span>Allow Alerts</span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => setBannerDismissed(true)}
+                    className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 cursor-pointer transition-colors"
+                    aria-label="Dismiss banner"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              {notificationPermission === "granted" ? (
-                <button
-                  onClick={handleTestBothAlerts}
-                  disabled={isNotifLoading}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold cursor-pointer transition-colors"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-[#f7fe72]" />
-                  <span>{testSentMsg || (isNotifLoading ? "Sending..." : "Test Both Alerts")}</span>
-                </button>
-              ) : (
-                <button
-                  onClick={openMobilePermissionDialog}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
-                >
-                  <BellRing className="w-3.5 h-3.5" />
-                  <span>Allow Notifications (Under Policy)</span>
-                </button>
-              )}
-
-              <button
-                onClick={() => setBannerDismissed(true)}
-                className="p-1 text-slate-400 hover:text-white rounded cursor-pointer"
-                aria-label="Dismiss banner"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
           </div>
-        </div>
+        </aside>
       </>
     );
   }
@@ -180,64 +188,80 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
     return (
       <>
         {iosModal}
-        <div className="bg-[#121815] border-b border-[#757761]/35 py-2.5 px-4 text-white text-xs sm:text-sm shadow-md">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-7 w-7 rounded-lg bg-[#f7fe72]/15 text-[#f7fe72] items-center justify-center shrink-0 border border-[#f7fe72]/30">
-                <Smartphone className="w-4 h-4" />
-              </span>
-              <div>
-                <p className="font-bold text-white text-xs sm:text-sm">
-                  Install Uchitatvam Web App
-                </p>
-                <p className="text-[11px] text-[#A0A493] hidden sm:block">
-                  Offline biometric caching, instant workout pacing, and dual push notifications.
-                </p>
+        <aside
+          role="region"
+          aria-label="Install web application and notification banner"
+          className="w-full flex justify-center px-3 sm:px-6 pb-4 pt-1 transition-all"
+        >
+          <div className="w-full max-w-7xl">
+            <div className="rounded-2xl border border-[#757761]/35 bg-[#121815]/95 shadow-xl shadow-black/50 backdrop-blur-xl px-4 sm:px-6 py-3 text-white text-xs sm:text-sm">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="flex h-8 w-8 rounded-xl bg-[#f7fe72]/15 text-[#f7fe72] items-center justify-center shrink-0 border border-[#f7fe72]/30">
+                    <Smartphone className="w-4 h-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-bold text-white text-xs sm:text-sm">
+                      Install Uchitatvam Web App
+                    </p>
+                    <p className="text-[11px] text-[#A0A493] hidden sm:block">
+                      Offline biometric caching, instant workout pacing, and dual push notifications.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 shrink-0 flex-wrap self-end sm:self-auto">
+                  <button
+                    onClick={openMobilePermissionDialog}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
+                      notificationPermission === "granted"
+                        ? "bg-emerald-500/15 border-emerald-500/35 text-emerald-400 hover:bg-emerald-500/25"
+                        : "bg-white/10 hover:bg-white/20 border-white/20 text-white"
+                    }`}
+                    title="Manage notification policies and alerts"
+                  >
+                    {notificationPermission === "granted" ? (
+                      <Bell className="w-3.5 h-3.5 text-[#34d399]" />
+                    ) : (
+                      <BellRing className="w-3.5 h-3.5 text-[#f7fe72]" />
+                    )}
+                    <span>
+                      {notificationPermission === "granted"
+                        ? "Alerts Active ✓"
+                        : "Allow Alerts"}
+                    </span>
+                  </button>
+
+                  {isInstallable ? (
+                    <button
+                      onClick={install}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Install App</span>
+                    </button>
+                  ) : isIOS ? (
+                    <button
+                      onClick={() => setShowIOSGuide(true)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Install on iOS</span>
+                    </button>
+                  ) : null}
+
+                  <button
+                    onClick={() => setBannerDismissed(true)}
+                    className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 cursor-pointer transition-colors"
+                    aria-label="Dismiss install banner"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={openMobilePermissionDialog}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold cursor-pointer transition-colors"
-                title="Manage notification policies and alerts"
-              >
-                <Bell className="w-3.5 h-3.5 text-[#f7fe72]" />
-                <span>
-                  {notificationPermission === "granted"
-                    ? "Notifications Active"
-                    : "Notification Policy"}
-                </span>
-              </button>
-
-              {isInstallable ? (
-                <button
-                  onClick={install}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Install App</span>
-                </button>
-              ) : isIOS ? (
-                <button
-                  onClick={() => setShowIOSGuide(true)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Install on iOS</span>
-                </button>
-              ) : null}
-
-              <button
-                onClick={() => setBannerDismissed(true)}
-                className="p-1 text-slate-400 hover:text-white rounded cursor-pointer"
-                aria-label="Dismiss install banner"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
           </div>
-        </div>
+        </aside>
       </>
     );
   }

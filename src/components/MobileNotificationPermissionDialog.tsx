@@ -76,8 +76,8 @@ export default function MobileNotificationPermissionDialog() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="w-full max-w-lg bg-[#0E1310] border-t sm:border border-[#757761]/40 rounded-t-3xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl text-white max-h-[92vh] overflow-y-auto space-y-5 animate-in slide-in-from-bottom duration-300">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-2.5 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="w-full max-w-lg bg-[#0E1310] border border-[#757761]/40 rounded-3xl p-5 sm:p-7 shadow-2xl text-white max-h-[92vh] overflow-y-auto space-y-5 animate-in slide-in-from-bottom duration-300">
         
         {/* Top Header */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#757761]/25">

@@ -18,9 +18,67 @@ import {
   AlertCircle,
   ArrowRightLeft,
   ChevronRight,
+  Gauge,
+  Footprints,
 } from "lucide-react";
 import { usePWA } from "@/hooks/usePWA";
 import { useHealthSync, HealthProvider } from "@/hooks/useHealthSync";
+
+export function ProviderAppIcon({
+  id,
+  className = "w-10 h-10",
+}: {
+  id: string;
+  className?: string;
+}) {
+  switch (id) {
+    case "applehealth":
+      return (
+        <div
+          className={`${className} rounded-2xl bg-gradient-to-br from-[#FF2D55] to-[#D61439] flex items-center justify-center text-white shadow-md shadow-[#FF2D55]/25 shrink-0`}
+          title="Apple Health"
+        >
+          <Heart className="w-5 h-5 fill-white text-white" />
+        </div>
+      );
+    case "googlefit":
+      return (
+        <div
+          className={`${className} rounded-2xl bg-gradient-to-br from-[#4285F4] to-[#1A73E8] flex items-center justify-center text-white shadow-md shadow-[#4285F4]/25 shrink-0 relative overflow-hidden`}
+          title="Google Fit / Health Connect"
+        >
+          <Activity className="w-5 h-5 text-white" />
+          <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[#34A853]" />
+        </div>
+      );
+    case "strava":
+      return (
+        <div
+          className={`${className} rounded-2xl bg-gradient-to-br from-[#FC4C02] to-[#E34402] flex items-center justify-center text-white shadow-md shadow-[#FC4C02]/25 shrink-0`}
+          title="Strava"
+        >
+          <Flame className="w-5 h-5 fill-white text-white" />
+        </div>
+      );
+    case "whoop":
+      return (
+        <div
+          className={`${className} rounded-2xl bg-gradient-to-br from-[#1E2621] to-[#0E1310] border border-[#f7fe72]/40 flex items-center justify-center text-[#f7fe72] shadow-md shadow-black/50 shrink-0`}
+          title="WHOOP"
+        >
+          <Gauge className="w-5 h-5 text-[#f7fe72]" />
+        </div>
+      );
+    default:
+      return (
+        <div
+          className={`${className} rounded-2xl bg-[#1D2520] flex items-center justify-center text-white shrink-0`}
+        >
+          <Activity className="w-5 h-5" />
+        </div>
+      );
+  }
+}
 
 interface ConnectedHealthEngineProps {
   onOpenLocalMeals?: () => void;
