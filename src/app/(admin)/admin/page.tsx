@@ -15,6 +15,12 @@ import {
   CheckCircle2,
   Clock,
   Sparkles,
+  ShieldCheck,
+  Trophy,
+  Store,
+  Image as ImageIcon,
+  Globe,
+  MessageSquare,
 } from "lucide-react";
 import type { BlogPost, BlogCategory } from "@/lib/blog-store";
 
@@ -227,8 +233,113 @@ export default function AdminOverviewPage() {
             </div>
           </div>
           <div className="pt-3 text-[11px] font-mono text-[#757761]">
-            Super Admin: dev.neerajrekwar@gmail.com
+            Super Admin: neerajrekwar817@gmail.com
           </div>
+        </div>
+      </div>
+
+      {/* Complete Website Management Modules Grid */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-bold text-[#121815] dark:text-white uppercase font-mono tracking-wider">
+              Website &amp; Platform Management Hub
+            </h2>
+            <span className="text-xs text-[#757761]">/</span>
+            <span className="text-xs font-mono text-[#34d399]">All Essential Pages</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <Link
+            href="/admin/admins"
+            className="p-3.5 rounded-2xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 hover:border-[#f7fe72]/50 transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#141A16] border border-[#757761]/30 flex items-center justify-center text-[#f7fe72]">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-[#121815] dark:text-white group-hover:text-[#f7fe72] transition-colors">
+                Administrators
+              </div>
+              <div className="text-[10px] text-[#757761] font-mono">Neon DB &amp; Roles</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/quests"
+            className="p-3.5 rounded-2xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 hover:border-[#f7fe72]/50 transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#141A16] border border-[#757761]/30 flex items-center justify-center text-yellow-400">
+              <Trophy className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-[#121815] dark:text-white group-hover:text-[#f7fe72] transition-colors">
+                Daily Quests
+              </div>
+              <div className="text-[10px] text-[#757761] font-mono">XP &amp; Token Loops</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/vendors"
+            className="p-3.5 rounded-2xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 hover:border-[#f7fe72]/50 transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#141A16] border border-[#757761]/30 flex items-center justify-center text-emerald-400">
+              <Store className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-[#121815] dark:text-white group-hover:text-[#f7fe72] transition-colors">
+                Local Grocers
+              </div>
+              <div className="text-[10px] text-[#757761] font-mono">Mandi Mapping</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/media"
+            className="p-3.5 rounded-2xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 hover:border-[#f7fe72]/50 transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#141A16] border border-[#757761]/30 flex items-center justify-center text-blue-400">
+              <ImageIcon className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-[#121815] dark:text-white group-hover:text-[#f7fe72] transition-colors">
+                Media CDN
+              </div>
+              <div className="text-[10px] text-[#757761] font-mono">Banners &amp; Badges</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/seo"
+            className="p-3.5 rounded-2xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 hover:border-[#f7fe72]/50 transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#141A16] border border-[#757761]/30 flex items-center justify-center text-purple-400">
+              <Globe className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-[#121815] dark:text-white group-hover:text-[#f7fe72] transition-colors">
+                SEO &amp; Social
+              </div>
+              <div className="text-[10px] text-[#757761] font-mono">OpenGraph &amp; Meta</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/inquiries"
+            className="p-3.5 rounded-2xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 hover:border-[#f7fe72]/50 transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#141A16] border border-[#757761]/30 flex items-center justify-center text-cyan-400">
+              <MessageSquare className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-[#121815] dark:text-white group-hover:text-[#f7fe72] transition-colors">
+                Support Inbox
+              </div>
+              <div className="text-[10px] text-[#757761] font-mono">Athletes &amp; Vendors</div>
+            </div>
+          </Link>
         </div>
       </div>
 

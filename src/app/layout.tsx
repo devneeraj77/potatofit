@@ -81,7 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col bg-[#F4F6F5] text-[#121815] dark:bg-[#0B0E0C] dark:text-[#E2E7DE] transition-colors">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange={false}
         >

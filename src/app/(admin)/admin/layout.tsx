@@ -19,9 +19,14 @@ import {
   Sparkles,
   ExternalLink,
   Terminal,
+  ShieldCheck,
+  Trophy,
+  Store,
+  Image as ImageIcon,
+  Globe,
+  MessageSquare,
 } from "lucide-react";
 import PotatoFitLogo from "@/components/PotatoFitLogo";
-import ThemeToggleGlide from "@/components/ThemeToggleGlide";
 
 interface NavItem {
   label: string;
@@ -47,6 +52,12 @@ const NAV_ITEMS: NavItem[] = [
     icon: <Tags className="w-4 h-4" />,
   },
   {
+    label: "Administrators",
+    href: "/admin/admins",
+    icon: <ShieldCheck className="w-4 h-4" />,
+    badge: "Neon",
+  },
+  {
     label: "Athletes & Users",
     href: "/admin/users",
     icon: <Users className="w-4 h-4" />,
@@ -55,6 +66,31 @@ const NAV_ITEMS: NavItem[] = [
     label: "Workout Protocols",
     href: "/admin/protocols",
     icon: <Dumbbell className="w-4 h-4" />,
+  },
+  {
+    label: "Quests & Challenges",
+    href: "/admin/quests",
+    icon: <Trophy className="w-4 h-4" />,
+  },
+  {
+    label: "Vendors & Grocers",
+    href: "/admin/vendors",
+    icon: <Store className="w-4 h-4" />,
+  },
+  {
+    label: "Media & Assets",
+    href: "/admin/media",
+    icon: <ImageIcon className="w-4 h-4" />,
+  },
+  {
+    label: "SEO & Social",
+    href: "/admin/seo",
+    icon: <Globe className="w-4 h-4" />,
+  },
+  {
+    label: "Inquiries & Inbox",
+    href: "/admin/inquiries",
+    icon: <MessageSquare className="w-4 h-4" />,
   },
   {
     label: "Platform Telemetry",
@@ -78,7 +114,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  const userEmail = session?.user?.email || "dev.neerajrekwar@gmail.com";
+  const userEmail = session?.user?.email || "neerajrekwar817@gmail.com";
   const userName = session?.user?.name || "Neeraj Rekwar";
   const userRole = (session?.user as { role?: string })?.role || "super_admin";
 
@@ -100,7 +136,6 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggleGlide size="sm" />
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -119,9 +154,9 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         }`}
       >
         {/* Top brand & navigation */}
-        <div className="p-4 space-y-6">
+        <div className="p-4 space-y-4 flex-1 overflow-y-auto">
           {/* Brand header */}
-          <div className="flex items-center justify-between pb-4 border-b border-[#757761]/20">
+          <div className="flex items-center justify-between pb-3 border-b border-[#757761]/20">
             <div>
               <div className="flex items-center gap-2">
                 <PotatoFitLogo size="sm" variant="dark" />
@@ -164,7 +199,13 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                     {item.icon}
                     <span>{item.label}</span>
                   </div>
-                  {active && <span className="w-1.5 h-1.5 rounded-full bg-[#f7fe72]" />}
+                  {item.badge ? (
+                    <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#141A16] text-[#34d399] border border-[#34d399]/30">
+                      {item.badge}
+                    </span>
+                  ) : active ? (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f7fe72]" />
+                  ) : null}
                 </Link>
               );
             })}
@@ -183,7 +224,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Bottom Profile and Links */}
-        <div className="p-4 border-t border-[#757761]/20 bg-[#E2E8E2]/60 dark:bg-[#0E1310] space-y-3">
+        <div className="p-4 border-t border-[#757761]/20 bg-[#E2E8E2]/60 dark:bg-[#0E1310] space-y-3 shrink-0">
           {/* Admin user info */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2.5 min-w-0">
@@ -204,7 +245,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          {/* Quick links & theme */}
+          {/* Quick links */}
           <div className="flex items-center justify-between pt-1">
             <Link
               href="/"
@@ -214,17 +255,14 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               <ExternalLink className="w-3 h-3" />
             </Link>
 
-            <div className="flex items-center gap-2">
-              <ThemeToggleGlide size="sm" />
-              <button
-                type="button"
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="p-1.5 rounded-lg text-[#505445] dark:text-[#A0A493] hover:text-red-400 hover:bg-red-950/20 transition-colors"
-                title="Sign Out"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="p-1.5 rounded-lg text-[#505445] dark:text-[#A0A493] hover:text-red-400 hover:bg-red-950/20 transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
       </aside>

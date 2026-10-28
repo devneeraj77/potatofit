@@ -33,7 +33,6 @@ import {
   FaWhatsapp,
 } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
-import { ThemeToggleGlide, ThemeToggleQuick } from "./ThemeToggleGlide";
 
 export interface NavbarProps {
   onOpenStreak?: () => void;
@@ -608,13 +607,8 @@ export default function Navbar({
               </Link>
             </nav>
 
-            {/* 3. Right Utility Cluster: Theme Toggle + Language + Auth + High-Voltage CTA */}
+            {/* 3. Right Utility Cluster: Language + Auth + High-Voltage CTA */}
             <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-              
-              {/* Desktop Quick 1-Click Theme Switcher */}
-              <div className="flex items-center shrink-0">
-                <ThemeToggleQuick />
-              </div>
 
               {/* Language Selector Popover (Desktop) */}
               <div className="relative hidden sm:block" ref={langRef}>
@@ -1005,20 +999,6 @@ export default function Navbar({
                   </Link>
                 </div>
 
-                {/* Mobile Theme Switcher Glide */}
-                <div className="pt-2 border-t border-[#757761]/25 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#A0A493]">
-                      Theme Mode / रूपरेखा
-                    </span>
-                    <span className="text-[10px] font-mono text-[#f7fe72]">
-                      Manual &amp; System Sync
-                    </span>
-                  </div>
-                  <div className="flex justify-center w-full">
-                    <ThemeToggleGlide size="sm" className="w-full max-w-xs" />
-                  </div>
-                </div>
 
                 {/* Mobile Language Switcher */}
                 <div className="pt-2 border-t border-[#757761]/25 space-y-1.5">

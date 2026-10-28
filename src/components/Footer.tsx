@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import PotatoFitLogo from "./PotatoFitLogo";
-import ThemeToggleGlide from "./ThemeToggleGlide";
 
 export default function Footer() {
   return (
@@ -87,10 +86,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
             <p>© 2026 Uchitatvam Inc. All rights reserved.</p>
             <span className="hidden sm:inline text-[#757761]/40">•</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono text-[#505445] dark:text-[#A0A594]">Theme:</span>
-              <ThemeToggleGlide size="sm" />
-            </div>
+            <span className="text-[11px] font-mono text-[#505445] dark:text-[#A0A594]">Theme: Auto (System)</span>
           </div>
           <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
             <Link href="/privacy" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">
