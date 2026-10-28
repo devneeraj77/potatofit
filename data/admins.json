@@ -6,7 +6,8 @@
     "role": "super_admin",
     "status": "active",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "notes": "Lead Founder & Super Admin"
+    "notes": "Lead Founder & Super Admin",
+    "password": "fitmeal2026"
   },
   {
     "id": "admin-system",
@@ -15,7 +16,8 @@
     "role": "super_admin",
     "status": "active",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "notes": "Core Platform Service Admin"
+    "notes": "Core Platform Service Admin",
+    "password": "fitmeal2026"
   },
   {
     "id": "admin-david",
@@ -24,6 +26,17 @@
     "role": "admin",
     "status": "active",
     "createdAt": "2026-02-15T00:00:00.000Z",
-    "notes": "Head Performance & Biometrics Coach"
+    "notes": "Head Performance & Biometrics Coach",
+    "password": "fitmeal2026"
+  },
+  {
+    "id": "admin-mvs3ki6i-u3bk",
+    "email": "neerajrekwar817@gmail.com",
+    "name": "Neeraj Rekwar",
+    "role": "super_admin",
+    "status": "active",
+    "password": "SecretPass123-",
+    "createdAt": "2026-10-28T12:35:10.986Z",
+    "notes": "Created via Admin Management"
   }
 ]

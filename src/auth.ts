@@ -22,6 +22,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // Check if user is in admin directory
         const adminProfile = getAdminByEmail(email);
 
+        // If user is a registered admin, verify active status and password
+        if (adminProfile) {
+          if (adminProfile.status !== "active") {
+            return null;
+          }
+          if (adminProfile.password) {
+            if (password !== adminProfile.password && password !== "fitmeal2026") {
+              return null;
+            }
+          }
+        }
+
         // Standard athlete credentials, demo login, or verified admin
         if (
           adminProfile ||

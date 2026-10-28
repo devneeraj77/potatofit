@@ -93,15 +93,30 @@ function handleList() {
 async function handleCreate() {
   const email = args[1];
   const name = args[2];
-  const role = (args[3] as "super_admin" | "admin" | "editor") || "admin";
+  let role: "super_admin" | "admin" | "editor" = "admin";
+  let password = "SecretPass123-";
+
+  for (let i = 3; i < args.length; i++) {
+    const rawArg = args[i];
+    const cleanArg = rawArg.replace(/^--/, "");
+    if (cleanArg.startsWith("role=")) {
+      role = cleanArg.replace("role=", "") as "super_admin" | "admin" | "editor";
+    } else if (cleanArg.startsWith("password=")) {
+      password = cleanArg.replace("password=", "");
+    } else if (["super_admin", "admin", "editor"].includes(cleanArg)) {
+      role = cleanArg as "super_admin" | "admin" | "editor";
+    } else if (i === 4 || (!cleanArg.includes("=") && cleanArg.length >= 6)) {
+      password = cleanArg;
+    }
+  }
 
   if (!email || !name) {
     console.error("\x1b[31mError: Both <email> and <name> are required.\x1b[0m");
-    console.log('Usage: npm run admin:manage create <email> <name> [role]');
+    console.log('Usage: npm run admin:manage create <email> <name> [role] [password]');
     process.exit(1);
   }
 
-  const res = await createAdminAsync({ email, name, role });
+  const res = await createAdminAsync({ email, name, role, password });
   if (!res.success) {
     console.error(`\x1b[31mError: ${res.error}\x1b[0m`);
     process.exit(1);
@@ -131,6 +146,8 @@ async function handleUpdate() {
       updates.role = cleanArg.replace("role=", "") as "super_admin" | "admin" | "editor";
     } else if (cleanArg.startsWith("status=")) {
       updates.status = cleanArg.replace("status=", "") as "active" | "suspended";
+    } else if (cleanArg.startsWith("password=")) {
+      updates.password = cleanArg.replace("password=", "");
     } else if (cleanArg.startsWith("notes=")) {
       updates.notes = cleanArg.replace("notes=", "").replace(/^["']|["']$/g, "");
     } else if (["super_admin", "admin", "editor"].includes(cleanArg)) {

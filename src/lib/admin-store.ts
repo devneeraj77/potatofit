@@ -15,6 +15,7 @@ export interface AdminUser {
   createdAt: string;
   lastLogin?: string;
   notes?: string;
+  password?: string;
 }
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -22,11 +23,22 @@ const ADMINS_FILE = path.join(DATA_DIR, "admins.json");
 
 export const DEFAULT_ADMINS: AdminUser[] = [
   {
+    id: "admin-neeraj-817",
+    email: "neerajrekwar817@gmail.com",
+    name: "Neeraj Rekwar",
+    role: "super_admin",
+    status: "active",
+    password: "SecretPass123-",
+    createdAt: "2026-01-01T00:00:00.000Z",
+    notes: "Super Admin (neerajrekwar817@gmail.com)",
+  },
+  {
     id: "admin-neeraj",
     email: "dev.neerajrekwar@gmail.com",
     name: "Neeraj Rekwar",
     role: "super_admin",
     status: "active",
+    password: "fitmeal2026",
     createdAt: "2026-01-01T00:00:00.000Z",
     notes: "Lead Founder & Super Admin",
   },
@@ -36,6 +48,7 @@ export const DEFAULT_ADMINS: AdminUser[] = [
     name: "Uchitatvam Operations",
     role: "super_admin",
     status: "active",
+    password: "fitmeal2026",
     createdAt: "2026-01-01T00:00:00.000Z",
     notes: "Core Platform Service Admin",
   },
@@ -45,6 +58,7 @@ export const DEFAULT_ADMINS: AdminUser[] = [
     name: "David Kim",
     role: "admin",
     status: "active",
+    password: "fitmeal2026",
     createdAt: "2026-02-15T00:00:00.000Z",
     notes: "Head Performance & Biometrics Coach",
   },
@@ -105,6 +119,7 @@ export function createAdmin(input: {
   name: string;
   role?: "super_admin" | "admin" | "editor";
   notes?: string;
+  password?: string;
 }): { success: boolean; admin?: AdminUser; error?: string } {
   const email = input.email.trim().toLowerCase();
   if (!email || !email.includes("@")) {
@@ -122,6 +137,7 @@ export function createAdmin(input: {
     name: input.name?.trim() || email.split("@")[0],
     role: input.role || "admin",
     status: "active",
+    password: input.password || "SecretPass123-",
     createdAt: new Date().toISOString(),
     notes: input.notes?.trim() || "Created via Admin Management",
   };
@@ -137,6 +153,7 @@ export function createAdmin(input: {
     role: newAdmin.role,
     status: newAdmin.status,
     notes: newAdmin.notes,
+    password: newAdmin.password,
   }).catch((err) => console.warn("[admin-store] Neon async sync error:", err));
 
   return { success: true, admin: newAdmin };
@@ -147,6 +164,7 @@ export async function createAdminAsync(input: {
   name: string;
   role?: "super_admin" | "admin" | "editor";
   notes?: string;
+  password?: string;
 }): Promise<{ success: boolean; admin?: AdminUser; neonSynced?: boolean; error?: string }> {
   const res = createAdmin(input);
   if (!res.success || !res.admin) {
@@ -162,6 +180,7 @@ export async function createAdminAsync(input: {
       role: res.admin.role,
       status: res.admin.status,
       notes: res.admin.notes,
+      password: res.admin.password,
     });
   } catch (err) {
     console.warn("[admin-store] Neon insert error:", err);
@@ -197,6 +216,7 @@ export function updateAdmin(
     role: updated.role,
     status: updated.status,
     notes: updated.notes,
+    password: updated.password,
   }).catch((err) => console.warn("[admin-store] Neon async sync error:", err));
 
   return { success: true, admin: updated };
@@ -220,6 +240,7 @@ export async function updateAdminAsync(
       role: res.admin.role,
       status: res.admin.status,
       notes: res.admin.notes,
+      password: res.admin.password,
     });
   } catch (err) {
     console.warn("[admin-store] Neon update error:", err);
@@ -231,8 +252,11 @@ export async function updateAdminAsync(
 export function deleteAdmin(email: string): { success: boolean; error?: string } {
   const normEmail = email.trim().toLowerCase();
   // Prevent deleting primary super admin
-  if (normEmail === "dev.neerajrekwar@gmail.com") {
-    return { success: false, error: "Cannot delete the lead super admin dev.neerajrekwar@gmail.com" };
+  if (
+    normEmail === "dev.neerajrekwar@gmail.com" ||
+    normEmail === "neerajrekwar817@gmail.com"
+  ) {
+    return { success: false, error: `Cannot delete the super admin ${email}` };
   }
 
   const admins = getAdmins();
@@ -280,6 +304,12 @@ export function seedAdmins(): { count: number; admins: AdminUser[] } {
     if (!existingEmails.has(def.email.toLowerCase())) {
       existing.push(def);
       added++;
+    } else {
+      // Update password/status if defined in default
+      const idx = existing.findIndex((a) => a.email.toLowerCase() === def.email.toLowerCase());
+      if (idx !== -1 && def.password && !existing[idx].password) {
+        existing[idx].password = def.password;
+      }
     }
   }
 
@@ -296,6 +326,7 @@ export function seedAdmins(): { count: number; admins: AdminUser[] } {
           role: a.role,
           status: a.status,
           notes: a.notes,
+          password: a.password,
         });
       }
     })
@@ -323,6 +354,7 @@ export async function seedAdminsAsync(): Promise<{
           role: a.role,
           status: a.status,
           notes: a.notes,
+          password: a.password,
         });
       }
       neonSynced = true;

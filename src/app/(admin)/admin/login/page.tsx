@@ -25,8 +25,8 @@ function AdminLoginContent() {
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
   const errorParam = searchParams.get("error");
 
-  const [email, setEmail] = useState("dev.neerajrekwar@gmail.com");
-  const [password, setPassword] = useState("fitmeal2026");
+  const [email, setEmail] = useState("neerajrekwar817@gmail.com");
+  const [password, setPassword] = useState("SecretPass123-");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(
     errorParam === "AdminAccessRequired"
@@ -222,6 +222,28 @@ function AdminLoginContent() {
               <button
                 type="button"
                 onClick={() =>
+                  handleQuickAdminLogin("neerajrekwar817@gmail.com", "SecretPass123-")
+                }
+                disabled={isLoading}
+                className="w-full flex items-center justify-between p-2.5 rounded-xl bg-[#141A16] hover:bg-[#1B231D] border border-[#f7fe72]/40 text-left transition-colors cursor-pointer ring-1 ring-[#f7fe72]/20"
+              >
+                <div>
+                  <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#f7fe72]" />
+                    <span>Neeraj Rekwar (Super Admin)</span>
+                  </div>
+                  <div className="text-[10px] font-mono text-[#f7fe72]">
+                    neerajrekwar817@gmail.com
+                  </div>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-[#0B0E0C] bg-[#f7fe72] px-2 py-0.5 rounded font-semibold">
+                  1-Click Login →
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
                   handleQuickAdminLogin("dev.neerajrekwar@gmail.com", "fitmeal2026")
                 }
                 disabled={isLoading}
@@ -229,8 +251,8 @@ function AdminLoginContent() {
               >
                 <div>
                   <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#f7fe72]" />
-                    <span>Neeraj Rekwar (Super Admin)</span>
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#A0A493]" />
+                    <span>Dev Account (Super Admin)</span>
                   </div>
                   <div className="text-[10px] font-mono text-[#757761]">
                     dev.neerajrekwar@gmail.com

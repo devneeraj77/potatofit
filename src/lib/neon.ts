@@ -8,6 +8,7 @@ export interface NeonAdmin {
   status: string;
   created_at?: string;
   notes?: string;
+  password?: string;
 }
 
 const DATABASE_URL = process.env.DATABASE_URL;
@@ -32,9 +33,17 @@ export async function initNeonSchema() {
         role VARCHAR(50) NOT NULL DEFAULT 'admin',
         status VARCHAR(50) NOT NULL DEFAULT 'active',
         created_at TIMESTAMPTZ DEFAULT NOW(),
-        notes TEXT
+        notes TEXT,
+        password TEXT
       );
     `;
+
+    // Ensure password column exists if table was created previously
+    try {
+      await sql`ALTER TABLE admins ADD COLUMN IF NOT EXISTS password TEXT;`;
+    } catch {
+      // Column may already exist
+    }
 
     await sql`
       CREATE TABLE IF NOT EXISTS blogs (
@@ -92,22 +101,50 @@ export async function fetchNeonAdmins(): Promise<NeonAdmin[] | null> {
   }
 }
 
+let schemaInitialized = false;
+
 export async function insertNeonAdmin(admin: NeonAdmin): Promise<boolean> {
   const sql = getNeonSql();
   if (!sql) return false;
 
+  if (!schemaInitialized) {
+    await initNeonSchema();
+    schemaInitialized = true;
+  }
+
   try {
     await sql`
-      INSERT INTO admins (id, email, name, role, status, notes)
-      VALUES (${admin.id}, ${admin.email.toLowerCase()}, ${admin.name}, ${admin.role}, ${admin.status}, ${admin.notes || ""})
+      INSERT INTO admins (id, email, name, role, status, notes, password)
+      VALUES (${admin.id}, ${admin.email.toLowerCase()}, ${admin.name}, ${admin.role}, ${admin.status}, ${admin.notes || ""}, ${admin.password || null})
       ON CONFLICT (email) DO UPDATE SET
         name = EXCLUDED.name,
         role = EXCLUDED.role,
         status = EXCLUDED.status,
-        notes = EXCLUDED.notes;
+        notes = EXCLUDED.notes,
+        password = COALESCE(EXCLUDED.password, admins.password);
     `;
     return true;
-  } catch (err) {
+  } catch (err: unknown) {
+    const errorObj = err as { code?: string };
+    if (errorObj?.code === "42P01") {
+      await initNeonSchema();
+      try {
+        await sql`
+          INSERT INTO admins (id, email, name, role, status, notes, password)
+          VALUES (${admin.id}, ${admin.email.toLowerCase()}, ${admin.name}, ${admin.role}, ${admin.status}, ${admin.notes || ""}, ${admin.password || null})
+          ON CONFLICT (email) DO UPDATE SET
+            name = EXCLUDED.name,
+            role = EXCLUDED.role,
+            status = EXCLUDED.status,
+            notes = EXCLUDED.notes,
+            password = COALESCE(EXCLUDED.password, admins.password);
+        `;
+        return true;
+      } catch (retryErr) {
+        console.warn("[Neon DB] insertNeonAdmin retry error:", retryErr);
+        return false;
+      }
+    }
     console.warn("[Neon DB] insertNeonAdmin caught:", err);
     return false;
   }
