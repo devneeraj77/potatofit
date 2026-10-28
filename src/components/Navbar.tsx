@@ -509,7 +509,7 @@ export default function Navbar({
                 aria-label="Uchitatvam Home"
               >
                 <Image
-                  src="/uchitatvam-logo.svg"
+                  src="/universal-uchi-logo.svg"
                   alt="Uchitatvam"
                   width={34}
                   height={34}
@@ -517,9 +517,14 @@ export default function Navbar({
                   referrerPolicy="no-referrer"
                   className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0"
                 />
-                <span className="font-bold hidden sm:block text-base sm:text-lg tracking-tight text-white font-sans">
-                  Uchitatvam
-                </span>
+                <div className="hidden sm:flex flex-col justify-center">
+                  <span className="font-bold text-base sm:text-lg uppercase tracking-[0.15em] text-white font-heading leading-tight">
+                    Uchitatvam
+                  </span>
+                  <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.24em] font-mono text-[#f7fe72]/90 leading-none mt-0.5">
+                    Appropriateness
+                  </span>
+                </div>
               </Link>
 
               {/* Streak Trigger */}

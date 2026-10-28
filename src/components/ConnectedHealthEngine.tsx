@@ -31,7 +31,13 @@ export default function ConnectedHealthEngine({
   onOpenLocalMeals,
   className = "",
 }: ConnectedHealthEngineProps) {
-  const { triggerNotification, notificationPermission, requestNotificationPermission } = usePWA();
+  const {
+    triggerNotification,
+    notificationPermission,
+    requestNotificationPermission,
+    triggerBothNotifications,
+    openMobilePermissionDialog,
+  } = usePWA();
   const {
     providers,
     hasAnyConnected,
@@ -833,15 +839,41 @@ export default function ConnectedHealthEngine({
                 </div>
               </div>
 
-              <span
-                className={`text-xs font-bold px-3 py-1 rounded-full border font-mono ${
-                  notificationPermission === "granted"
-                    ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                    : "bg-amber-500/20 text-amber-300 border-amber-500/30"
-                }`}
+              <div className="flex items-center gap-2">
+                <span
+                  className={`text-xs font-bold px-3 py-1 rounded-full border font-mono ${
+                    notificationPermission === "granted"
+                      ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                      : "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                  }`}
+                >
+                  {notificationPermission === "granted" ? "PERMISSIONS GRANTED (BOTH STREAMS)" : "PERMISSION REQUIRED"}
+                </span>
+                <button
+                  onClick={openMobilePermissionDialog}
+                  className="px-3 py-1 rounded-xl text-xs font-bold font-mono text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e7ee62] transition-all cursor-pointer"
+                >
+                  Policy Dialog
+                </button>
+              </div>
+            </div>
+
+            {/* Test Both Dual Stream Button */}
+            <div className="mt-4 p-3.5 rounded-2xl bg-black/40 border border-[#757761]/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div>
+                <span className="font-bold text-white text-xs block">
+                  Dual-Stream Verification (Biometrics + Daily Quests)
+                </span>
+                <span className="text-[11px] text-[#A0A493]">
+                  Dispatches both Channel 1 (Recovery HRV Alert) and Channel 2 (Mandi Produce Harvest) to your notification tray.
+                </span>
+              </div>
+              <button
+                onClick={triggerBothNotifications}
+                className="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold font-mono text-[#0B0E0C] bg-gradient-to-r from-[#34d399] to-[#2ecc71] hover:brightness-110 transition-all shrink-0 cursor-pointer shadow-sm"
               >
-                {notificationPermission === "granted" ? "PERMISSIONS GRANTED" : "PERMISSION REQUIRED"}
-              </span>
+                Trigger Both Alerts Now
+              </button>
             </div>
 
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">

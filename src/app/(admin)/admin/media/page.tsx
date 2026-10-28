@@ -72,7 +72,7 @@ const INITIAL_ASSETS: MediaAsset[] = [
     id: "media-6",
     title: "Uchitatvam Emblem Cyber Lime Vector",
     category: "Logos",
-    url: "/uchitatvam-logo.svg",
+    url: "/universal-uchi-logo.svg",
     dimensions: "512 × 512",
     size: "12 KB",
     uploadedAt: "2026-01-01",

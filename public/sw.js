@@ -1,5 +1,5 @@
-// Uchitatvam Progressive Web App Service Worker
-const CACHE_NAME = 'uchitatvam-pwa-v1';
+// Uchitatvam Progressive Web App Service Worker (Production-Grade)
+const CACHE_NAME = 'uchitatvam-pwa-v2';
 const STATIC_ASSETS = [
   '/',
   '/favicon.ico',
@@ -74,37 +74,77 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Service Worker Push Event Handler
-self.addEventListener('push', (event) => {
-  let data = {
-    title: 'Uchitatvam Live Alert',
-    body: 'Your fitness telemetry and recovery metrics are synchronized.',
-    icon: '/android-chrome-192x192.png',
-    badge: '/android-chrome-192x192.png',
-    data: { url: '/' },
-  };
+// Helper to build notification configuration for both core channels
+function buildNotificationConfig(type, rawData = {}) {
+  const isBiometric = type === 'biometrics';
+  const isQuest = type === 'quests';
 
-  if (event.data) {
-    try {
-      data = event.data.json();
-    } catch {
-      data.body = event.data.text();
+  let title = rawData.title || (isBiometric ? '⚡ Biometric Recovery Sync' : isQuest ? '🥕 Daily Quest & Mandi Fuel' : 'Uchitatvam Live Alert');
+  let body = rawData.body;
+  let tag = rawData.tag || (isBiometric ? 'uchitatvam-biometrics' : isQuest ? 'uchitatvam-quests' : 'uchitatvam-general');
+  let url = rawData.data?.url || (isBiometric ? '/#health-sync-section' : isQuest ? '/rewards' : '/');
+
+  if (!body) {
+    if (isBiometric) {
+      body = 'Recovery readiness at 92%. Parasympathetic Box Breathing window open for optimal training adaptation.';
+    } else if (isQuest) {
+      body = 'Morning Mandi harvest ready! Claim +150 Potato Tokens and log your seasonal farm produce.';
+    } else {
+      body = 'Your athletic telemetry and daily quests are synchronized.';
     }
   }
 
-  const options = {
-    body: data.body,
-    icon: data.icon || '/android-chrome-192x192.png',
-    badge: data.badge || '/android-chrome-192x192.png',
-    vibrate: [100, 50, 100],
-    data: data.data || { url: '/' },
-    actions: [
-      { action: 'open', title: 'Open App' },
-      { action: 'close', title: 'Dismiss' },
-    ],
-  };
+  const actions = isBiometric
+    ? [
+        { action: 'open_biometrics', title: 'View Telemetry' },
+        { action: 'close', title: 'Dismiss' },
+      ]
+    : isQuest
+    ? [
+        { action: 'open_quests', title: 'Claim Tokens' },
+        { action: 'close', title: 'Dismiss' },
+      ]
+    : [
+        { action: 'open', title: 'Open App' },
+        { action: 'close', title: 'Dismiss' },
+      ];
 
-  event.waitUntil(self.registration.showNotification(data.title, options));
+  return {
+    title,
+    options: {
+      body,
+      icon: rawData.icon || '/android-chrome-192x192.png',
+      badge: rawData.badge || '/android-chrome-192x192.png',
+      tag,
+      renotify: true,
+      requireInteraction: false,
+      vibrate: isBiometric ? [150, 60, 150] : [200, 80, 200, 80],
+      timestamp: Date.now(),
+      data: {
+        url,
+        type,
+        ...(rawData.data || {}),
+      },
+      actions,
+    },
+  };
+}
+
+// Service Worker Push Event Handler
+self.addEventListener('push', (event) => {
+  let payload = {};
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch {
+      payload = { body: event.data.text() };
+    }
+  }
+
+  const type = payload.type || 'general';
+  const config = buildNotificationConfig(type, payload);
+
+  event.waitUntil(self.registration.showNotification(config.title, config.options));
 });
 
 // Notification Click Event Handler
@@ -113,7 +153,12 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'close') return;
 
-  const targetUrl = event.notification.data?.url || '/';
+  let targetUrl = event.notification.data?.url || '/';
+  if (event.action === 'open_biometrics') {
+    targetUrl = '/#health-sync-section';
+  } else if (event.action === 'open_quests') {
+    targetUrl = '/rewards';
+  }
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
@@ -130,16 +175,28 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-// Client Message Listener: allows the web application to trigger native service worker notifications
+// Client Message Listener: allows web application to trigger native service worker notifications
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
-    const { title, options } = event.data;
-    self.registration.showNotification(title || 'Uchitatvam Alert', {
-      body: options?.body || 'Fitness alert triggered.',
-      icon: options?.icon || '/android-chrome-192x192.png',
-      badge: options?.badge || '/android-chrome-192x192.png',
-      vibrate: [150, 80, 150],
-      data: options?.data || { url: '/' },
+  if (!event.data) return;
+
+  if (event.data.type === 'SHOW_NOTIFICATION') {
+    const { title, options, notificationCategory } = event.data;
+    const config = buildNotificationConfig(notificationCategory || 'general', {
+      title,
+      ...options,
     });
+    self.registration.showNotification(config.title, config.options);
+  }
+
+  if (event.data.type === 'SHOW_BOTH_NOTIFICATIONS') {
+    const bioConfig = buildNotificationConfig('biometrics', event.data.biometrics || {});
+    const questConfig = buildNotificationConfig('quests', event.data.quests || {});
+
+    self.registration.showNotification(bioConfig.title, bioConfig.options);
+
+    // Stagger second notification slightly for clear mobile OS distinction
+    setTimeout(() => {
+      self.registration.showNotification(questConfig.title, questConfig.options);
+    }, 900);
   }
 });

@@ -1,10 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -62,6 +71,7 @@ export const metadata: Metadata = {
 import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { OfflineIndicator } from "@/components/PWAInstallButton";
+import MobileNotificationPermissionDialog from "@/components/MobileNotificationPermissionDialog";
 import CookieConsentBanner from "@/components/CookieConsentBanner";
 import StructuredData from "@/components/StructuredData";
 
@@ -70,7 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${plusJakartaSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -90,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             {children}
             <OfflineIndicator />
+            <MobileNotificationPermissionDialog />
             <CookieConsentBanner />
           </AuthProvider>
         </ThemeProvider>

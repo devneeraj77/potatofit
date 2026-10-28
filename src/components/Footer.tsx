@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import PotatoFitLogo from "./PotatoFitLogo";
+import UchitatvamLogo from "./UchitatvamLogo";
 
 export default function Footer() {
   return (
@@ -14,7 +14,7 @@ export default function Footer() {
           
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-4">
-            <PotatoFitLogo size="sm" variant="dark" />
+            <UchitatvamLogo size="md" variant="dark" subtext="Appropriateness" />
 
             <p className="text-xs sm:text-sm text-[#505445] dark:text-[#A0A493] leading-relaxed max-w-sm">
               Science-backed longevity, hybrid strength protocols, and restorative recovery engineered for everyday human performance.

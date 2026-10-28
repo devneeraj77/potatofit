@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Download, Smartphone, X, CheckCircle2, Bell } from "lucide-react";
+import {
+  Download,
+  Smartphone,
+  X,
+  CheckCircle2,
+  Bell,
+  BellRing,
+  Sparkles,
+} from "lucide-react";
 import { usePWA } from "@/hooks/usePWA";
 
 interface PWAInstallButtonProps {
@@ -13,27 +21,35 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
   className = "",
   variant = "pill",
 }) => {
-  const { isInstallable, isInstalled, isIOS, install, notificationPermission, triggerNotification } = usePWA();
+  const {
+    isInstallable,
+    isInstalled,
+    isIOS,
+    install,
+    notificationPermission,
+    triggerBothNotifications,
+    openMobilePermissionDialog,
+  } = usePWA();
+
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [isNotifLoading, setIsNotifLoading] = useState(false);
+  const [testSentMsg, setTestSentMsg] = useState<string | null>(null);
 
-  const handleTestAlert = async () => {
+  const handleTestBothAlerts = async () => {
     setIsNotifLoading(true);
-    const success = await triggerNotification("Uchitatvam // PWA Alert", {
-      body: "⚡ Service Worker Alert: Recovery readiness 88%. Optimal window for Box Breathing protocol!",
-      icon: "/android-chrome-192x192.png",
-    });
+    if (notificationPermission !== "granted") {
+      openMobilePermissionDialog();
+      setIsNotifLoading(false);
+      return;
+    }
+    const success = await triggerBothNotifications();
     setIsNotifLoading(false);
-    if (!success && notificationPermission === "denied") {
-      alert("Please allow notification permissions in your browser settings to receive alerts.");
+    if (success) {
+      setTestSentMsg("Both Alerts Sent ✓");
+      setTimeout(() => setTestSentMsg(null), 3000);
     }
   };
-
-  // If already installed as standalone PWA
-  if (isInstalled && variant === "banner") {
-    return null;
-  }
 
   // iOS Safari Guide Modal
   const iosModal = showIOSGuide && (
@@ -46,7 +62,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
           </div>
           <button
             onClick={() => setShowIOSGuide(false)}
-            className="p-1 rounded-lg text-slate-400 hover:text-white"
+            className="p-1 rounded-lg text-slate-400 hover:text-white cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -74,7 +90,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
               3
             </span>
             <span>
-              Confirm <strong>Add</strong> to launch Uchitatvam with native fullscreen and service worker alerts.
+              Confirm <strong>Add</strong>. Launch from Home Screen to enable Web Push &amp; background alerts under iOS policies.
             </span>
           </li>
         </ol>
@@ -89,7 +105,77 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
     </div>
   );
 
-  // Banner variant
+  // Banner variant when already installed in standalone mode
+  if (variant === "banner" && isInstalled) {
+    if (bannerDismissed) return null;
+
+    return (
+      <>
+        {iosModal}
+        <div className="bg-[#0E1310] border-b border-[#757761]/35 py-2 px-4 text-white text-xs shadow-md">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-7 w-7 rounded-lg bg-emerald-500/15 text-[#34d399] items-center justify-center shrink-0 border border-emerald-500/30">
+                <CheckCircle2 className="w-4 h-4" />
+              </span>
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-bold text-white text-xs">
+                    Uchitatvam PWA Standalone Active
+                  </p>
+                  <span
+                    className={`text-[9px] font-mono px-2 py-0.5 rounded-full border font-bold ${
+                      notificationPermission === "granted"
+                        ? "bg-emerald-500/15 text-[#34d399] border-emerald-500/30"
+                        : "bg-amber-500/15 text-amber-400 border-amber-500/30"
+                    }`}
+                  >
+                    {notificationPermission === "granted"
+                      ? "Both Notifications Allowed ✓"
+                      : "Notifications Pending"}
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#A0A493] hidden sm:block">
+                  Biometric readiness tracking &amp; daily vegetable mandi nutrition alerts.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {notificationPermission === "granted" ? (
+                <button
+                  onClick={handleTestBothAlerts}
+                  disabled={isNotifLoading}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold cursor-pointer transition-colors"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#f7fe72]" />
+                  <span>{testSentMsg || (isNotifLoading ? "Sending..." : "Test Both Alerts")}</span>
+                </button>
+              ) : (
+                <button
+                  onClick={openMobilePermissionDialog}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
+                >
+                  <BellRing className="w-3.5 h-3.5" />
+                  <span>Allow Notifications (Under Policy)</span>
+                </button>
+              )}
+
+              <button
+                onClick={() => setBannerDismissed(true)}
+                className="p-1 text-slate-400 hover:text-white rounded cursor-pointer"
+                aria-label="Dismiss banner"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Banner variant before installation
   if (variant === "banner" && !bannerDismissed && (isInstallable || isIOS || !isInstalled)) {
     return (
       <>
@@ -105,26 +191,29 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
                   Install Uchitatvam Web App
                 </p>
                 <p className="text-[11px] text-[#A0A493] hidden sm:block">
-                  Offline biometric caching, instant workout pacing, and fullscreen athletic telemetry.
+                  Offline biometric caching, instant workout pacing, and dual push notifications.
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button
-                onClick={handleTestAlert}
-                disabled={isNotifLoading}
+                onClick={openMobilePermissionDialog}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold cursor-pointer transition-colors"
-                title="Send test service worker alert"
+                title="Manage notification policies and alerts"
               >
                 <Bell className="w-3.5 h-3.5 text-[#f7fe72]" />
-                <span>Test Alert</span>
+                <span>
+                  {notificationPermission === "granted"
+                    ? "Notifications Active"
+                    : "Notification Policy"}
+                </span>
               </button>
 
               {isInstallable ? (
                 <button
                   onClick={install}
-                  className="inline-flex items-center mr-24 gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] text-xs font-black shadow hover:brightness-110 active:scale-95 cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Install App</span>
@@ -141,7 +230,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
 
               <button
                 onClick={() => setBannerDismissed(true)}
-                className="p-1 text-slate-400 hover:text-white rounded"
+                className="p-1 text-slate-400 hover:text-white rounded cursor-pointer"
                 aria-label="Dismiss install banner"
               >
                 <X className="w-4 h-4" />
@@ -158,6 +247,26 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
     <>
       {iosModal}
       <div className={`inline-flex items-center gap-2 ${className}`}>
+        {notificationPermission === "granted" ? (
+          <button
+            onClick={handleTestBothAlerts}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono hover:bg-emerald-500/25 transition-all cursor-pointer"
+            title="Test both notifications"
+          >
+            <Bell className="w-3 h-3 text-[#34d399]" />
+            <span>Alerts Active ✓</span>
+          </button>
+        ) : (
+          <button
+            onClick={openMobilePermissionDialog}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#18211C] border border-[#f7fe72]/30 text-[#f7fe72] text-[11px] font-mono hover:bg-[#222E26] transition-all cursor-pointer"
+            title="Configure notifications under policy"
+          >
+            <BellRing className="w-3 h-3" />
+            <span>Allow Alerts</span>
+          </button>
+        )}
+
         {isInstallable ? (
           <button
             onClick={install}
