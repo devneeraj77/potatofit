@@ -17,9 +17,7 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <UchitatvamLogo size="md" variant="dark" subtext="Appropriateness" />
-              <div className="self-start sm:self-auto">
-                <PWAInstallButton variant="pill" className="text-xs" />
-              </div>
+              
             </div>
 
             <p className="text-xs sm:text-sm text-[#505445] dark:text-[#A0A493] leading-relaxed max-w-sm">
