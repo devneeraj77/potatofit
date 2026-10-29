@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Dropdown, Button, Label, Description } from "@heroui/react";
 import {
   Trophy,
   Lock,
@@ -16,6 +18,9 @@ import {
   LayoutDashboard,
   Gift,
   Utensils,
+  ChevronDown,
+  Compass,
+  ArrowLeft,
 } from "lucide-react";
 import CanvasBadge, { BadgeTier, BadgeRarity, EmblemType } from "@/components/CanvasBadge";
 import PotatoFitLogo from "@/components/PotatoFitLogo";
@@ -58,6 +63,7 @@ export interface TierData {
 }
 
 export default function RewardsPage() {
+  const router = useRouter();
   const [userXp, setUserXp] = useState(8420);
   const [userRank, setUserRank] = useState(42);
   const [selectedTierId, setSelectedTierId] = useState<BadgeTier>("gold");
@@ -444,7 +450,7 @@ export default function RewardsPage() {
       )}
 
       {/* Top Header Navigation */}
-      <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-[#0B0E0C]/90 backdrop-blur-md border-b border-[#757761]/25">
+      <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-[#0B0E0C]/90 backdrop-blur-md border-b border-[#757761]/25">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           <Link
             href="/"
@@ -454,23 +460,68 @@ export default function RewardsPage() {
             <PotatoFitLogo size="sm" variant="dark" />
           </Link>
 
+          {/* HeroUI Arena Navigation Dropdown - Eliminates navbar overlaying & crowding */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/leaderboards"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#505445] dark:text-[#f7fe72] bg-[#EAEFEA] dark:bg-[#18201A]/70 hover:bg-[#D5DCD5] dark:hover:bg-[#202b23] border border-[#757761]/30 dark:border-[#757761]/50 rounded-xl transition-all shadow-xs"
-            >
-              <Trophy className="w-3.5 h-3.5 text-[#f7fe72]" />
-              <span>Live Leaderboards</span>
-            </Link>
+            <Dropdown>
+              <Button
+                variant="secondary"
+                className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e8ef63] border border-[#f7fe72]/50 rounded-xl transition-all shadow-[0_0_15px_rgba(247,254,114,0.2)] cursor-pointer active:scale-95"
+                aria-label="Arena Portals & Navigation"
+              >
+                <Compass className="w-3.5 h-3.5 text-[#0B0E0C]" />
+                <span>Arena Portals</span>
+                <ChevronDown className="w-3.5 h-3.5 text-[#0B0E0C]" />
+              </Button>
+              <Dropdown.Popover className="min-w-[240px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+                <Dropdown.Menu
+                  aria-label="Arena Navigation Portals"
+                  onAction={(key) => router.push(String(key))}
+                  className="space-y-1 outline-none"
+                >
+                  <Dropdown.Item
+                    id="/leaderboards"
+                    textValue="Live Leaderboards"
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none"
+                  >
+                    <div className="p-1.5 rounded-lg bg-[#f7fe72]/15 text-[#f7fe72] shrink-0">
+                      <Trophy className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <Label className="text-xs font-bold text-white">Live Leaderboards</Label>
+                      <Description className="text-[11px] text-[#A0A594]">Global rankings, streak race & tier stats</Description>
+                    </div>
+                  </Dropdown.Item>
 
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#CBD2C7] bg-white/5 hover:bg-white/10 border border-[#757761]/30 rounded-xl transition-all"
-            >
-              <LayoutDashboard className="w-3.5 h-3.5 text-[#f4e76e]" />
-              <span className="hidden sm:inline">Personal </span>
-              <span>Dashboard</span>
-            </Link>
+                  <Dropdown.Item
+                    id="/dashboard"
+                    textValue="Personal Dashboard"
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none"
+                  >
+                    <div className="p-1.5 rounded-lg bg-[#f4e76e]/15 text-[#f4e76e] shrink-0">
+                      <LayoutDashboard className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <Label className="text-xs font-bold text-white">Personal Dashboard</Label>
+                      <Description className="text-[11px] text-[#A0A594]">Daily goals, health sync & workout logs</Description>
+                    </div>
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    id="/"
+                    textValue="Public Home"
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none border-t border-[#757761]/20 mt-1 pt-2"
+                  >
+                    <div className="p-1.5 rounded-lg bg-white/10 text-[#CBD2C7] shrink-0">
+                      <ArrowLeft className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <Label className="text-xs font-bold text-white">Public Homepage</Label>
+                      <Description className="text-[11px] text-[#A0A594]">Return to Uchitatvam platform home</Description>
+                    </div>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
+            </Dropdown>
           </div>
         </div>
       </header>

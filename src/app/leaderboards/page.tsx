@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Tabs } from "@heroui/react";
+import { Tabs, Dropdown, Button, Label, Description } from "@heroui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -26,6 +26,8 @@ import {
   ChevronDown,
   TrendingUp,
   Users,
+  Check,
+  Compass,
 } from "lucide-react";
 import CanvasBadge from "@/components/CanvasBadge";
 import PotatoFitLogo from "@/components/PotatoFitLogo";
@@ -656,7 +658,7 @@ export default function LeaderboardsPage() {
         )}
 
         {/* 1. Global Navigation Bar */}
-        <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#0B0E0C]/95 backdrop-blur-md border-b border-[#757761]/25 shadow-2xs">
+        <header className="sticky top-0 z-50 w-full bg-white/95 dark:bg-[#0B0E0C]/95 backdrop-blur-md border-b border-[#757761]/25 shadow-2xs">
           <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 min-h-[3.75rem] sm:h-20 py-2 sm:py-0 flex items-center justify-between gap-2 sm:gap-4">
             
             {/* Brand Mark */}
@@ -668,41 +670,73 @@ export default function LeaderboardsPage() {
               <PotatoFitLogo size="sm" variant="dark" />
             </Link>
 
-            {/* Quick Route Switches (Optimized for Mobile) */}
-            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-              <Link
-                href="/"
-                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#CBD2C7] hover:text-white rounded-lg hover:bg-white/5 transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Public Site</span>
-              </Link>
-
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold text-[#E2E7DE] bg-white/5 hover:bg-white/10 border border-[#757761]/30 rounded-xl transition-all shadow-2xs shrink-0"
-                title="Personal Athlete Dashboard"
-              >
-                <LayoutDashboard className="w-3.5 h-3.5 text-[#f4e76e]" />
-                <span className="hidden sm:inline">Personal </span>
-                <span>Dashboard</span>
-              </Link>
-
-              {/* DEDICATED REWARDS PAGE LINK */}
-              <Link
-                href="/rewards"
-                className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-black text-[#0B0E0C] bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:from-[#f4e76e] hover:to-[#dfd158] rounded-xl transition-all shadow-[0_0_15px_rgba(247,254,114,0.25)] active:scale-95 cursor-pointer shrink-0"
-                title="Dedicated Rewards & Tiers"
-              >
-                <Award className="w-3.5 h-3.5 text-[#0B0E0C]" />
-                <span>Rewards</span>
-                <span className="hidden sm:inline"> &amp; Tiers</span>
-              </Link>
-
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#18201A] border border-[#757761]/30 text-[11px] font-mono text-[#CBD2C7]">
+            {/* Quick Route Dropdown - Eliminates navbar overlaying & crowding */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#18201A] border border-[#757761]/30 text-[11px] font-mono text-[#CBD2C7]">
                 <span className="w-2 h-2 rounded-full bg-[#f7fe72] animate-pulse" />
                 <span>ARENA LIVE</span>
               </div>
+
+              <Dropdown>
+                <Button
+                  variant="secondary"
+                  className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e8ef63] border border-[#f7fe72]/50 rounded-xl transition-all shadow-[0_0_15px_rgba(247,254,114,0.2)] cursor-pointer active:scale-95"
+                  aria-label="Arena Navigation Portals"
+                >
+                  <Compass className="w-3.5 h-3.5 text-[#0B0E0C]" />
+                  <span>Arena Portals</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-[#0B0E0C]" />
+                </Button>
+                <Dropdown.Popover className="min-w-[240px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+                  <Dropdown.Menu
+                    aria-label="Arena Navigation Portals"
+                    onAction={(key) => router.push(String(key))}
+                    className="space-y-1 outline-none"
+                  >
+                    <Dropdown.Item
+                      id="/rewards"
+                      textValue="Rewards & Tiers"
+                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none"
+                    >
+                      <div className="p-1.5 rounded-lg bg-[#f7fe72]/15 text-[#f7fe72] shrink-0">
+                        <Award className="w-4 h-4" />
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <Label className="text-xs font-bold text-white">Rewards &amp; Tiers</Label>
+                        <Description className="text-[11px] text-[#A0A594]">Prestige vault, badges & sponsor perks</Description>
+                      </div>
+                    </Dropdown.Item>
+
+                    <Dropdown.Item
+                      id="/dashboard"
+                      textValue="Personal Dashboard"
+                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none"
+                    >
+                      <div className="p-1.5 rounded-lg bg-[#f4e76e]/15 text-[#f4e76e] shrink-0">
+                        <LayoutDashboard className="w-4 h-4" />
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <Label className="text-xs font-bold text-white">Personal Dashboard</Label>
+                        <Description className="text-[11px] text-[#A0A594]">Daily goals, health sync & workout logs</Description>
+                      </div>
+                    </Dropdown.Item>
+
+                    <Dropdown.Item
+                      id="/"
+                      textValue="Public Site"
+                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none border-t border-[#757761]/20 mt-1 pt-2"
+                    >
+                      <div className="p-1.5 rounded-lg bg-white/10 text-[#CBD2C7] shrink-0">
+                        <ArrowLeft className="w-4 h-4" />
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <Label className="text-xs font-bold text-white">Public Homepage</Label>
+                        <Description className="text-[11px] text-[#A0A594]">Return to Uchitatvam platform home</Description>
+                      </div>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown.Popover>
+              </Dropdown>
             </div>
           </div>
         </header>
@@ -1175,31 +1209,61 @@ export default function LeaderboardsPage() {
                   </Tabs.ListContainer>
                 </Tabs>
 
-                {/* Timeframe (HeroUI Tabs) */}
-                <div className="flex items-center gap-1 text-xs text-[#A0A594]">
-                  <span className="font-semibold text-[#757761]">Timeframe:</span>
-                  <Tabs
-                    selectedKey={timeframe}
-                    onSelectionChange={(key) => setTimeframe(key as "weekly" | "season" | "alltime")}
-                    className="w-auto"
-                  >
-                    <Tabs.ListContainer className="p-0 bg-transparent">
-                      <Tabs.List aria-label="Timeframe" className="flex items-center gap-1 p-1 bg-black/40 border border-[#757761]/30 rounded-xl text-xs font-semibold">
-                        <Tabs.Tab id="weekly" className="cursor-pointer">
-                          <span>This Week</span>
-                          <Tabs.Indicator />
-                        </Tabs.Tab>
-                        <Tabs.Tab id="season" className="cursor-pointer">
-                          <span>Season 4</span>
-                          <Tabs.Indicator />
-                        </Tabs.Tab>
-                        <Tabs.Tab id="alltime" className="cursor-pointer">
-                          <span>All-Time</span>
-                          <Tabs.Indicator />
-                        </Tabs.Tab>
-                      </Tabs.List>
-                    </Tabs.ListContainer>
-                  </Tabs>
+                {/* Timeframe (HeroUI Dropdown Selection) */}
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="font-semibold text-[#A0A594] shrink-0">Timeframe:</span>
+                  <Dropdown>
+                    <Button
+                      variant="secondary"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-[#E2E7DE] bg-black/40 hover:bg-black/60 border border-[#757761]/35 rounded-xl transition-all cursor-pointer shadow-xs focus-visible:ring-1 focus-visible:ring-[#f7fe72]"
+                      aria-label="Select Leaderboard Timeframe"
+                    >
+                      <Clock className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <span>{timeframe === "weekly" ? "This Week" : timeframe === "season" ? "Season 4" : "All-Time"}</span>
+                      <ChevronDown className="w-3 h-3 text-[#A0A594]" />
+                    </Button>
+                    <Dropdown.Popover className="min-w-[170px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+                      <Dropdown.Menu
+                        aria-label="Select Timeframe"
+                        selectionMode="single"
+                        selectedKeys={new Set([timeframe])}
+                        onSelectionChange={(keys) => {
+                          const selected = Array.from(keys)[0];
+                          if (selected) {
+                            setTimeframe(String(selected) as "weekly" | "season" | "alltime");
+                          }
+                        }}
+                        className="space-y-1 outline-none"
+                      >
+                        <Dropdown.Item
+                          id="weekly"
+                          textValue="This Week"
+                          className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                        >
+                          <Label className="text-xs font-semibold">This Week</Label>
+                          {timeframe === "weekly" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                        </Dropdown.Item>
+
+                        <Dropdown.Item
+                          id="season"
+                          textValue="Season 4"
+                          className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                        >
+                          <Label className="text-xs font-semibold">Season 4</Label>
+                          {timeframe === "season" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                        </Dropdown.Item>
+
+                        <Dropdown.Item
+                          id="alltime"
+                          textValue="All-Time"
+                          className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                        >
+                          <Label className="text-xs font-semibold">All-Time</Label>
+                          {timeframe === "alltime" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown.Popover>
+                  </Dropdown>
                 </div>
               </div>
             </div>
