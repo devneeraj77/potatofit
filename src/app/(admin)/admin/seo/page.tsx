@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { Tabs } from "@heroui/react";
 import {
   FileText,
   Save,
@@ -356,92 +357,49 @@ export default function SeoCommandCenterPage() {
         </div>
       )}
 
-      {/* 6 Comprehensive Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#757761]/25 text-xs font-mono">
-        <button
-          type="button"
-          onClick={() => setActiveTab("onpage")}
-          className={`px-3 py-2 rounded-xl transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "onpage"
-              ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-              : "text-[#505445] dark:text-[#A0A493] hover:text-[#121815] dark:hover:text-white"
-          }`}
-        >
-          <FileText className="w-3.5 h-3.5" />
-          <span>1. On-Page SEO (Static &amp; Dynamic)</span>
-        </button>
+      {/* 6 Comprehensive Tabs (HeroUI Tabs) */}
+      <Tabs
+        selectedKey={activeTab}
+        onSelectionChange={(key) => setActiveTab(key as "onpage" | "aeo" | "local" | "technical" | "offpage" | "international")}
+        className="w-full"
+      >
+        <Tabs.ListContainer className="overflow-x-auto pb-1 border-b border-[#757761]/25 bg-transparent">
+          <Tabs.List aria-label="SEO Administration Sections" className="flex items-center gap-1.5 p-1 bg-black/30 border border-[#757761]/20 rounded-xl text-xs font-mono">
+            <Tabs.Tab id="onpage" className="cursor-pointer shrink-0">
+              <FileText className="w-3.5 h-3.5" />
+              <span>1. On-Page SEO (Static &amp; Dynamic)</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="aeo" className="cursor-pointer shrink-0">
+              <Cpu className="w-3.5 h-3.5 text-[#34d399]" />
+              <span>2. AEO (Answer Engine &amp; AI Search)</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="local" className="cursor-pointer shrink-0">
+              <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+              <span>3. Local &amp; Mandi Grocer SEO</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="technical" className="cursor-pointer shrink-0">
+              <Zap className="w-3.5 h-3.5 text-yellow-400" />
+              <span>4. Technical SEO (Sitemap &amp; Robots)</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="offpage" className="cursor-pointer shrink-0">
+              <Link2 className="w-3.5 h-3.5 text-blue-400" />
+              <span>5. Off-Page &amp; Authority Signals</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="international" className="cursor-pointer shrink-0">
+              <Languages className="w-3.5 h-3.5 text-purple-400" />
+              <span>6. International &amp; Voice SEO</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs.ListContainer>
 
-        <button
-          type="button"
-          onClick={() => setActiveTab("aeo")}
-          className={`px-3 py-2 rounded-xl transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "aeo"
-              ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-              : "text-[#505445] dark:text-[#A0A493] hover:text-[#121815] dark:hover:text-white"
-          }`}
-        >
-          <Cpu className="w-3.5 h-3.5 text-[#34d399]" />
-          <span>2. AEO (Answer Engine &amp; AI Search)</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("local")}
-          className={`px-3 py-2 rounded-xl transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "local"
-              ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-              : "text-[#505445] dark:text-[#A0A493] hover:text-[#121815] dark:hover:text-white"
-          }`}
-        >
-          <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-          <span>3. Local &amp; Mandi Grocer SEO</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("technical")}
-          className={`px-3 py-2 rounded-xl transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "technical"
-              ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-              : "text-[#505445] dark:text-[#A0A493] hover:text-[#121815] dark:hover:text-white"
-          }`}
-        >
-          <Zap className="w-3.5 h-3.5 text-yellow-400" />
-          <span>4. Technical SEO (Sitemap &amp; Robots)</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("offpage")}
-          className={`px-3 py-2 rounded-xl transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "offpage"
-              ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-              : "text-[#505445] dark:text-[#A0A493] hover:text-[#121815] dark:hover:text-white"
-          }`}
-        >
-          <Link2 className="w-3.5 h-3.5 text-blue-400" />
-          <span>5. Off-Page &amp; Authority Signals</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("international")}
-          className={`px-3 py-2 rounded-xl transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "international"
-              ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-              : "text-[#505445] dark:text-[#A0A493] hover:text-[#121815] dark:hover:text-white"
-          }`}
-        >
-          <Languages className="w-3.5 h-3.5 text-purple-400" />
-          <span>6. International &amp; Voice SEO</span>
-        </button>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* TAB 1: ON-PAGE SEO (STATIC & DYNAMIC)                                      */}
-      {/* ========================================================================= */}
-      {activeTab === "onpage" && (
-        <div className="space-y-4">
+        {/* TAB 1: ON-PAGE SEO (STATIC & DYNAMIC) */}
+        <Tabs.Panel id="onpage" className="space-y-4">
           {/* Instructions Banner */}
           <div className="p-4 rounded-2xl bg-[#EAEFEA]/80 dark:bg-[#0E1310] border border-[#757761]/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="space-y-1">
@@ -667,14 +625,12 @@ export default function SeoCommandCenterPage() {
               </table>
             </div>
           </div>
-        </div>
-      )}
+        </Tabs.Panel>
 
-      {/* ========================================================================= */}
-      {/* TAB 2: AEO (ANSWER ENGINE OPTIMIZATION & AI SEARCH)                       */}
-      {/* ========================================================================= */}
-      {activeTab === "aeo" && globalSettings && (
-        <div className="space-y-6">
+        {/* TAB 2: AEO (ANSWER ENGINE OPTIMIZATION & AI SEARCH) */}
+        <Tabs.Panel id="aeo" className="space-y-6">
+          {globalSettings && (
+            <div className="space-y-6">
           <div className="p-5 rounded-3xl bg-gradient-to-r from-emerald-950/30 via-[#0E1310] to-[#0E1310] border border-[#34d399]/40 space-y-2">
             <div className="flex items-center gap-2">
               <Cpu className="w-5 h-5 text-[#34d399]" />
@@ -810,12 +766,12 @@ export default function SeoCommandCenterPage() {
           </div>
         </div>
       )}
+    </Tabs.Panel>
 
-      {/* ========================================================================= */}
-      {/* TAB 3: LOCAL & MANDI GROCER SEO                                           */}
-      {/* ========================================================================= */}
-      {activeTab === "local" && globalSettings && (
-        <div className="space-y-6">
+        {/* TAB 3: LOCAL & MANDI GROCER SEO */}
+        <Tabs.Panel id="local" className="space-y-6">
+          {globalSettings && (
+            <div className="space-y-6">
           <div className="p-5 rounded-3xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 space-y-2">
             <div className="flex items-center gap-2">
               <MapPin className="w-5 h-5 text-emerald-400" />
@@ -907,12 +863,12 @@ export default function SeoCommandCenterPage() {
           </div>
         </div>
       )}
+    </Tabs.Panel>
 
-      {/* ========================================================================= */}
-      {/* TAB 4: TECHNICAL SEO (JSON-LD SCHEMAS, SITEMAP & ROBOTS)                  */}
-      {/* ========================================================================= */}
-      {activeTab === "technical" && globalSettings && (
-        <div className="space-y-8">
+        {/* TAB 4: TECHNICAL SEO (JSON-LD SCHEMAS, SITEMAP & ROBOTS) */}
+        <Tabs.Panel id="technical" className="space-y-8">
+          {globalSettings && (
+            <div className="space-y-8">
           {/* JSON-LD Schema Builder & Root Metadata Pipeline */}
           <JsonLdSchemaBuilder
             schemas={globalSettings.schemas || DEFAULT_SCHEMAS}
@@ -1024,12 +980,12 @@ export default function SeoCommandCenterPage() {
           </div>
         </div>
       )}
+    </Tabs.Panel>
 
-      {/* ========================================================================= */}
-      {/* TAB 5: OFF-PAGE & AUTHORITY SIGNALS                                       */}
-      {/* ========================================================================= */}
-      {activeTab === "offpage" && globalSettings && (
-        <div className="space-y-6">
+        {/* TAB 5: OFF-PAGE & AUTHORITY SIGNALS */}
+        <Tabs.Panel id="offpage" className="space-y-6">
+          {globalSettings && (
+            <div className="space-y-6">
           <div className="p-5 rounded-3xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 space-y-2">
             <div className="flex items-center gap-2">
               <Link2 className="w-5 h-5 text-blue-400" />
@@ -1082,12 +1038,12 @@ export default function SeoCommandCenterPage() {
           </div>
         </div>
       )}
+    </Tabs.Panel>
 
-      {/* ========================================================================= */}
-      {/* TAB 6: INTERNATIONAL & VOICE SEO                                          */}
-      {/* ========================================================================= */}
-      {activeTab === "international" && globalSettings && (
-        <div className="space-y-6">
+        {/* TAB 6: INTERNATIONAL & VOICE SEO */}
+        <Tabs.Panel id="international" className="space-y-6">
+          {globalSettings && (
+            <div className="space-y-6">
           <div className="p-5 rounded-3xl bg-white dark:bg-[#0E1310] border border-[#757761]/25 space-y-2">
             <div className="flex items-center gap-2">
               <Languages className="w-5 h-5 text-purple-400" />
@@ -1120,6 +1076,8 @@ export default function SeoCommandCenterPage() {
           </div>
         </div>
       )}
+    </Tabs.Panel>
+      </Tabs>
 
       {/* ========================================================================= */}
       {/* MODAL: EDIT PAGE SEO & KEYWORD DENSITY ANALYZER                           */}
@@ -1142,34 +1100,27 @@ export default function SeoCommandCenterPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                {/* Modal Sub-Tabs */}
-                <div className="flex items-center bg-[#141A16] p-1 rounded-xl border border-[#757761]/30 text-xs font-mono">
-                  <button
-                    type="button"
-                    onClick={() => setModalTab("meta")}
-                    className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
-                      modalTab === "meta"
-                        ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold"
-                        : "text-[#A0A493] hover:text-white"
-                    }`}
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>Metadata &amp; Tags</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setModalTab("density")}
-                    className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
-                      modalTab === "density"
-                        ? "bg-[#18211C] text-[#f7fe72] border border-[#757761]/40 font-bold shadow-xs"
-                        : "text-[#A0A493] hover:text-white"
-                    }`}
-                  >
-                    <BarChart2 className="w-3.5 h-3.5 text-[#f7fe72]" />
-                    <span>Keyword Density Analyzer</span>
-                  </button>
-                </div>
+                {/* Modal Sub-Tabs (HeroUI Tabs) */}
+                <Tabs
+                  selectedKey={modalTab}
+                  onSelectionChange={(key) => setModalTab(key as "meta" | "density")}
+                  className="w-auto"
+                >
+                  <Tabs.ListContainer className="p-0 bg-transparent">
+                    <Tabs.List aria-label="Modal Sub-Tabs" className="flex items-center bg-[#141A16] p-1 rounded-xl border border-[#757761]/30 text-xs font-mono">
+                      <Tabs.Tab id="meta" className="cursor-pointer">
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>Metadata &amp; Tags</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="density" className="cursor-pointer">
+                        <BarChart2 className="w-3.5 h-3.5 text-[#f7fe72]" />
+                        <span>Keyword Density Analyzer</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                    </Tabs.List>
+                  </Tabs.ListContainer>
+                </Tabs>
 
                 <button
                   type="button"

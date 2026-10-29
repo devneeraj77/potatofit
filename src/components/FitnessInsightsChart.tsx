@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useSyncExternalStore } from "react";
+import { Tabs } from "@heroui/react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -178,47 +179,32 @@ export default function FitnessInsightsChart() {
           </p>
         </div>
 
-        {/* View Switcher Controls (Segmented Buttons) */}
-        <div className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl self-start lg:self-center">
-          <button
-            type="button"
-            onClick={() => setActiveMetricView("activity")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-              activeMetricView === "activity"
-                ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm font-black"
-                : "text-[#A0A493] hover:text-white"
-            }`}
-          >
-            <Flame className="w-3.5 h-3.5" />
-            <span>Burn &amp; Steps</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveMetricView("sleep_hrv")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-              activeMetricView === "sleep_hrv"
-                ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm font-black"
-                : "text-[#A0A493] hover:text-white"
-            }`}
-          >
-            <Moon className="w-3.5 h-3.5" />
-            <span>Sleep &amp; HRV</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveMetricView("recovery")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-              activeMetricView === "recovery"
-                ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm font-black"
-                : "text-[#A0A493] hover:text-white"
-            }`}
-          >
-            <HeartPulse className="w-3.5 h-3.5" />
-            <span>Readiness Score</span>
-          </button>
-        </div>
+        {/* View Switcher Controls (HeroUI Tabs) */}
+        <Tabs
+          selectedKey={activeMetricView}
+          onSelectionChange={(key) => setActiveMetricView(key as "activity" | "sleep_hrv" | "recovery")}
+          className="w-auto self-start lg:self-center"
+        >
+          <Tabs.ListContainer className="p-0 bg-transparent">
+            <Tabs.List aria-label="Metric views" className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
+              <Tabs.Tab id="activity" className="cursor-pointer">
+                <Flame className="w-3.5 h-3.5" />
+                <span>Burn &amp; Steps</span>
+                <Tabs.Indicator />
+              </Tabs.Tab>
+              <Tabs.Tab id="sleep_hrv" className="cursor-pointer">
+                <Moon className="w-3.5 h-3.5" />
+                <span>Sleep &amp; HRV</span>
+                <Tabs.Indicator />
+              </Tabs.Tab>
+              <Tabs.Tab id="recovery" className="cursor-pointer">
+                <HeartPulse className="w-3.5 h-3.5" />
+                <span>Readiness Score</span>
+                <Tabs.Indicator />
+              </Tabs.Tab>
+            </Tabs.List>
+          </Tabs.ListContainer>
+        </Tabs>
       </div>
 
       {/* Provider Connectivity Banner */}

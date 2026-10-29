@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import UchitatvamLogo from "./UchitatvamLogo";
+import { PWAInstallButton } from "./PWAInstallButton";
 
 export default function Footer() {
   return (
@@ -12,9 +13,14 @@ export default function Footer() {
         {/* Main Footer Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#757761]/20">
           
-          {/* Brand Column */}
+          {/* Brand Column (Top Left of Footer) */}
           <div className="lg:col-span-2 space-y-4">
-            <UchitatvamLogo size="md" variant="dark" subtext="Appropriateness" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <UchitatvamLogo size="md" variant="dark" subtext="Appropriateness" />
+              <div className="self-start sm:self-auto">
+                <PWAInstallButton variant="pill" className="text-xs" />
+              </div>
+            </div>
 
             <p className="text-xs sm:text-sm text-[#505445] dark:text-[#A0A493] leading-relaxed max-w-sm">
               Science-backed longevity, hybrid strength protocols, and restorative recovery engineered for everyday human performance.
@@ -83,10 +89,12 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-[#505445] dark:text-[#757761]">
-          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left flex-wrap">
             <p>© 2026 Uchitatvam Inc. All rights reserved.</p>
             <span className="hidden sm:inline text-[#757761]/40">•</span>
             <span className="text-[11px] font-mono text-[#505445] dark:text-[#A0A594]">Theme: Auto (System)</span>
+            <span className="hidden sm:inline text-[#757761]/40">•</span>
+            <PWAInstallButton variant="pill" className="text-xs" />
           </div>
           <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
             <Link href="/privacy" className="hover:text-[#121815] dark:hover:text-[#f7fe72] transition-colors">

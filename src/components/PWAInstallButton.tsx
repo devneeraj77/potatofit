@@ -274,19 +274,19 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
         {notificationPermission === "granted" ? (
           <button
             onClick={handleTestBothAlerts}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono hover:bg-emerald-500/25 transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-400 text-xs font-mono hover:bg-emerald-500/25 transition-all cursor-pointer shadow-xs"
             title="Test both notifications"
           >
-            <Bell className="w-3 h-3 text-[#34d399]" />
+            <Bell className="w-3.5 h-3.5 text-[#34d399]" />
             <span>Alerts Active ✓</span>
           </button>
         ) : (
           <button
             onClick={openMobilePermissionDialog}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#18211C] border border-[#f7fe72]/30 text-[#f7fe72] text-[11px] font-mono hover:bg-[#222E26] transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#18211C] border border-[#f7fe72]/35 text-[#f7fe72] text-xs font-mono hover:bg-[#222E26] transition-all cursor-pointer shadow-xs"
             title="Configure notifications under policy"
           >
-            <BellRing className="w-3 h-3" />
+            <BellRing className="w-3.5 h-3.5" />
             <span>Allow Alerts</span>
           </button>
         )}

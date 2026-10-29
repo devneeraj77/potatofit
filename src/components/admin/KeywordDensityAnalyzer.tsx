@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { Tabs } from "@heroui/react";
 import {
   Search,
   Sparkles,
@@ -635,68 +636,44 @@ Connecting wearable biometrics with daily grocery purchases empowers everyday at
         </div>
       </div>
 
-      {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 px-5 pt-3 border-b border-[#757761]/20 font-mono text-[11px] overflow-x-auto">
-        <button
-          type="button"
-          onClick={() => setActiveTab("overview")}
-          className={`pb-2.5 px-2 border-b-2 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
-            activeTab === "overview"
-              ? "border-[#f7fe72] text-[#121815] dark:text-white font-bold"
-              : "border-transparent text-[#757761] hover:text-white"
-          }`}
-        >
-          <TrendingUp className="w-3.5 h-3.5 text-[#34d399]" />
-          <span>Density Breakdown</span>
-        </button>
+      {/* Navigation Sub-Tabs (HeroUI Tabs) */}
+      <Tabs
+        selectedKey={activeTab}
+        onSelectionChange={(key) => setActiveTab(key as "overview" | "opportunities" | "ngrams" | "editor")}
+        className="w-full"
+      >
+        <Tabs.ListContainer className="px-5 pt-3 border-b border-[#757761]/20 bg-transparent">
+          <Tabs.List aria-label="Keyword Density Navigation" className="flex items-center gap-2 font-mono text-[11px] overflow-x-auto p-1 bg-black/30 border border-[#757761]/20 rounded-xl">
+            <Tabs.Tab id="overview" className="cursor-pointer">
+              <TrendingUp className="w-3.5 h-3.5 text-[#34d399]" />
+              <span>Density Breakdown</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
 
-        <button
-          type="button"
-          onClick={() => setActiveTab("opportunities")}
-          className={`pb-2.5 px-2 border-b-2 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
-            activeTab === "opportunities"
-              ? "border-[#f7fe72] text-[#121815] dark:text-white font-bold"
-              : "border-transparent text-[#757761] hover:text-white"
-          }`}
-        >
-          <Lightbulb className="w-3.5 h-3.5 text-[#f7fe72]" />
-          <span>Opportunities ({opportunities.filter((o) => o.status !== "pass").length} actions)</span>
-        </button>
+            <Tabs.Tab id="opportunities" className="cursor-pointer">
+              <Lightbulb className="w-3.5 h-3.5 text-[#f7fe72]" />
+              <span>Opportunities ({opportunities.filter((o) => o.status !== "pass").length} actions)</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
 
-        <button
-          type="button"
-          onClick={() => setActiveTab("ngrams")}
-          className={`pb-2.5 px-2 border-b-2 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
-            activeTab === "ngrams"
-              ? "border-[#f7fe72] text-[#121815] dark:text-white font-bold"
-              : "border-transparent text-[#757761] hover:text-white"
-          }`}
-        >
-          <Hash className="w-3.5 h-3.5 text-blue-400" />
-          <span>N-Gram Frequency</span>
-        </button>
+            <Tabs.Tab id="ngrams" className="cursor-pointer">
+              <Hash className="w-3.5 h-3.5 text-blue-400" />
+              <span>N-Gram Frequency</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
 
-        <button
-          type="button"
-          onClick={() => setActiveTab("editor")}
-          className={`pb-2.5 px-2 border-b-2 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
-            activeTab === "editor"
-              ? "border-[#f7fe72] text-[#121815] dark:text-white font-bold"
-              : "border-transparent text-[#757761] hover:text-white"
-          }`}
-        >
-          <FileText className="w-3.5 h-3.5 text-purple-400" />
-          <span>Live Content Simulator</span>
-        </button>
-      </div>
+            <Tabs.Tab id="editor" className="cursor-pointer">
+              <FileText className="w-3.5 h-3.5 text-purple-400" />
+              <span>Live Content Simulator</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs.ListContainer>
 
-      {/* Sub-Tab Content */}
-      <div className="p-5">
-        {/* ========================================================================= */}
-        {/* TAB 1: OVERVIEW / DENSITY BREAKDOWN                                       */}
-        {/* ========================================================================= */}
-        {activeTab === "overview" && (
-          <div className="space-y-5">
+        {/* Sub-Tab Content */}
+        <div className="p-5">
+          {/* TAB 1: OVERVIEW / DENSITY BREAKDOWN */}
+          <Tabs.Panel id="overview" className="space-y-5">
             {/* Density Range Visual Slider / Gauge */}
             <div className="p-4 rounded-2xl bg-[#F4F6F5]/50 dark:bg-[#141A16] border border-[#757761]/25 space-y-3">
               <div className="flex items-center justify-between text-xs font-bold text-[#121815] dark:text-white">
@@ -804,14 +781,10 @@ Connecting wearable biometrics with daily grocery purchases empowers everyday at
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </Tabs.Panel>
 
-        {/* ========================================================================= */}
-        {/* TAB 2: OPTIMIZATION OPPORTUNITIES CHECKLIST                               */}
-        {/* ========================================================================= */}
-        {activeTab === "opportunities" && (
-          <div className="space-y-3">
+          {/* TAB 2: OPTIMIZATION OPPORTUNITIES CHECKLIST */}
+          <Tabs.Panel id="opportunities" className="space-y-3">
             <div className="flex items-center justify-between pb-1">
               <span className="text-xs text-[#505445] dark:text-[#A0A493]">
                 Actionable search ranking checklist for target query:{" "}
@@ -876,14 +849,10 @@ Connecting wearable biometrics with daily grocery purchases empowers everyday at
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          </Tabs.Panel>
 
-        {/* ========================================================================= */}
-        {/* TAB 3: N-GRAM FREQUENCY                                                   */}
-        {/* ========================================================================= */}
-        {activeTab === "ngrams" && (
-          <div className="space-y-4">
+          {/* TAB 3: N-GRAM FREQUENCY */}
+          <Tabs.Panel id="ngrams" className="space-y-4">
             <p className="text-[11px] text-[#505445] dark:text-[#A0A493]">
               Examines recurring multi-word clusters across the page. Detect if accidental filler words are diluting your primary search focus.
             </p>
@@ -952,14 +921,10 @@ Connecting wearable biometrics with daily grocery purchases empowers everyday at
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </Tabs.Panel>
 
-        {/* ========================================================================= */}
-        {/* TAB 4: LIVE CONTENT SIMULATOR                                             */}
-        {/* ========================================================================= */}
-        {activeTab === "editor" && (
-          <div className="space-y-3">
+          {/* TAB 4: LIVE CONTENT SIMULATOR */}
+          <Tabs.Panel id="editor" className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-[#505445] dark:text-[#A0A493]">
                 Simulate or edit the page&apos;s body content to test live keyword density adjustments:
@@ -995,9 +960,9 @@ Connecting wearable biometrics with daily grocery purchases empowers everyday at
                 )
               </span>
             </div>
-          </div>
-        )}
-      </div>
+          </Tabs.Panel>
+        </div>
+      </Tabs>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { Tabs } from "@heroui/react";
 import Image from "next/image";
 import {
   MapPin,
@@ -840,25 +841,27 @@ export default function PulseAINutritionEngine() {
               </div>
             </div>
 
-            {/* Sourcing Segmented Control */}
-            <div className="flex items-center bg-[#0B0E0C] p-1 rounded-2xl border border-[#757761]/25 self-stretch sm:self-auto overflow-x-auto">
-              {SOURCING_OPTIONS.map((mode) => {
-                const isActive = sourcingMode === mode;
-                return (
-                  <button
-                    key={mode}
-                    onClick={() => setSourcingMode(mode)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A493] hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {mode}
-                  </button>
-                );
-              })}
-            </div>
+            {/* Sourcing Tabs (HeroUI Tabs) */}
+            <Tabs
+              selectedKey={sourcingMode}
+              onSelectionChange={(key) => setSourcingMode(key as typeof SOURCING_OPTIONS[number])}
+              className="w-auto self-stretch sm:self-auto"
+            >
+              <Tabs.ListContainer className="p-0 bg-transparent">
+                <Tabs.List aria-label="Sourcing mode" className="flex items-center bg-[#0B0E0C] p-1 rounded-2xl border border-[#757761]/25 overflow-x-auto">
+                  {SOURCING_OPTIONS.map((mode) => (
+                    <Tabs.Tab
+                      key={mode}
+                      id={mode}
+                      className="cursor-pointer px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap"
+                    >
+                      <span>{mode}</span>
+                      <Tabs.Indicator />
+                    </Tabs.Tab>
+                  ))}
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
           </div>
 
           {/* Dietary & Budget Filter Pills */}

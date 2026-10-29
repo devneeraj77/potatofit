@@ -176,3 +176,85 @@ span.avatar__fallback,
 [data-slot="avatar-group"] > * + * {
   margin-inline-start: -0.65rem !important;
 }
+
+/* ========================================================
+   HeroUI Tabs Styles (Uchitatvam Obsidian & Lime Theme)
+   ======================================================== */
+.tabs {
+  position: relative;
+  width: 100%;
+}
+
+.tabs__list-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.tabs__list-container__scroller {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  width: 100%;
+}
+
+.tabs__list-container__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs__list {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(117, 119, 97, 0.25);
+  background-color: rgba(18, 24, 21, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #A0A594;
+  transition: all 0.15s ease-in-out;
+  outline: none;
+  white-space: nowrap;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.tabs__tab:hover:not([data-selected="true"]) {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tabs__tab[data-selected="true"] {
+  color: #0B0E0C !important;
+  font-weight: 700;
+  background-color: #f7fe72 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-color: rgba(247, 254, 114, 0.3);
+}
+
+.tabs__tab[data-selected="true"] svg {
+  color: #0B0E0C !important;
+}
+
+.tabs__indicator {
+  display: none;
+}
+
+.tabs__panel {
+  outline: none;
+}
+

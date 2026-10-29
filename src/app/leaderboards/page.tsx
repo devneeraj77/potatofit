@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { Tabs } from "@heroui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -655,23 +656,23 @@ export default function LeaderboardsPage() {
         )}
 
         {/* 1. Global Navigation Bar */}
-        <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-[#0B0E0C]/90 backdrop-blur-md border-b border-[#757761]/25 shadow-2xs">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#0B0E0C]/95 backdrop-blur-md border-b border-[#757761]/25 shadow-2xs">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 min-h-[3.75rem] sm:h-20 py-2 sm:py-0 flex items-center justify-between gap-2 sm:gap-4">
             
             {/* Brand Mark */}
             <Link
               href="/"
-              className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-lg p-1"
+              className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7fe72] rounded-lg p-0.5 shrink-0"
               aria-label="Uchitatvam Home"
             >
               <PotatoFitLogo size="sm" variant="dark" />
             </Link>
 
-            {/* Quick Route Switches */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            {/* Quick Route Switches (Optimized for Mobile) */}
+            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
               <Link
                 href="/"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#CBD2C7] hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#CBD2C7] hover:text-white rounded-lg hover:bg-white/5 transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Public Site</span>
@@ -679,7 +680,8 @@ export default function LeaderboardsPage() {
 
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-[#E2E7DE] bg-white/5 hover:bg-white/10 border border-[#757761]/30 rounded-xl transition-all shadow-2xs"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold text-[#E2E7DE] bg-white/5 hover:bg-white/10 border border-[#757761]/30 rounded-xl transition-all shadow-2xs shrink-0"
+                title="Personal Athlete Dashboard"
               >
                 <LayoutDashboard className="w-3.5 h-3.5 text-[#f4e76e]" />
                 <span className="hidden sm:inline">Personal </span>
@@ -689,13 +691,15 @@ export default function LeaderboardsPage() {
               {/* DEDICATED REWARDS PAGE LINK */}
               <Link
                 href="/rewards"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-black text-[#0B0E0C] bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:from-[#f4e76e] hover:to-[#dfd158] rounded-xl transition-all shadow-[0_0_15px_rgba(247,254,114,0.25)] active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-black text-[#0B0E0C] bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:from-[#f4e76e] hover:to-[#dfd158] rounded-xl transition-all shadow-[0_0_15px_rgba(247,254,114,0.25)] active:scale-95 cursor-pointer shrink-0"
+                title="Dedicated Rewards & Tiers"
               >
                 <Award className="w-3.5 h-3.5 text-[#0B0E0C]" />
-                <span>Rewards &amp; Tiers</span>
+                <span>Rewards</span>
+                <span className="hidden sm:inline"> &amp; Tiers</span>
               </Link>
 
-              <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#18201A] border border-[#757761]/30 text-[11px] font-mono text-[#CBD2C7]">
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#18201A] border border-[#757761]/30 text-[11px] font-mono text-[#CBD2C7]">
                 <span className="w-2 h-2 rounded-full bg-[#f7fe72] animate-pulse" />
                 <span>ARENA LIVE</span>
               </div>
@@ -1115,123 +1119,87 @@ export default function LeaderboardsPage() {
               {/* Segmented Controls Cluster */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#757761]/25">
                 
-                {/* Geographic Scope Filter */}
-                <div className="flex items-center gap-1 p-1 bg-black/40 border border-[#757761]/30 rounded-xl text-xs font-semibold">
-                  <button
-                    onClick={() => setScope("global")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      scope === "global"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Global (100+)
-                  </button>
-                  <button
-                    onClick={() => setScope("squad")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      scope === "squad"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Squad / Friends
-                  </button>
-                  <button
-                    onClick={() => setScope("regional")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      scope === "regional"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Delhi NCR
-                  </button>
-                  <button
-                    onClick={() => setScope("local")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      scope === "local"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Hyper-Local (&lt;5km)
-                  </button>
-                </div>
+                {/* Geographic Scope Filter (HeroUI Tabs) */}
+                <Tabs
+                  selectedKey={scope}
+                  onSelectionChange={(key) => setScope(key as "global" | "squad" | "regional" | "local")}
+                  className="w-auto"
+                >
+                  <Tabs.ListContainer className="p-0 bg-transparent">
+                    <Tabs.List aria-label="Geographic Scope" className="flex items-center gap-1 p-1 bg-black/40 border border-[#757761]/30 rounded-xl text-xs font-semibold overflow-x-auto">
+                      <Tabs.Tab id="global" className="cursor-pointer">
+                        <span>Global (100+)</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="squad" className="cursor-pointer">
+                        <span>Squad / Friends</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="regional" className="cursor-pointer">
+                        <span>Delhi NCR</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="local" className="cursor-pointer">
+                        <span>Hyper-Local (&lt;5km)</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                    </Tabs.List>
+                  </Tabs.ListContainer>
+                </Tabs>
 
-                {/* Metric Selector */}
-                <div className="flex items-center gap-1 p-1 bg-black/40 border border-[#757761]/30 rounded-xl text-xs font-semibold">
-                  <button
-                    onClick={() => setMetric("xp")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      metric === "xp"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Arena XP
-                  </button>
-                  <button
-                    onClick={() => setMetric("volume")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      metric === "volume"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Volume (kg)
-                  </button>
-                  <button
-                    onClick={() => setMetric("nutrition")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      metric === "nutrition"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Kirana Diet %
-                  </button>
-                  <button
-                    onClick={() => setMetric("streak")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                      metric === "streak"
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A594] hover:text-white"
-                    }`}
-                  >
-                    Streak Days
-                  </button>
-                </div>
+                {/* Metric Selector (HeroUI Tabs) */}
+                <Tabs
+                  selectedKey={metric}
+                  onSelectionChange={(key) => setMetric(key as "xp" | "volume" | "nutrition" | "streak")}
+                  className="w-auto"
+                >
+                  <Tabs.ListContainer className="p-0 bg-transparent">
+                    <Tabs.List aria-label="Metric Selector" className="flex items-center gap-1 p-1 bg-black/40 border border-[#757761]/30 rounded-xl text-xs font-semibold overflow-x-auto">
+                      <Tabs.Tab id="xp" className="cursor-pointer">
+                        <span>Arena XP</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="volume" className="cursor-pointer">
+                        <span>Volume (kg)</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="nutrition" className="cursor-pointer">
+                        <span>Kirana Diet %</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                      <Tabs.Tab id="streak" className="cursor-pointer">
+                        <span>Streak Days</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                    </Tabs.List>
+                  </Tabs.ListContainer>
+                </Tabs>
 
-                {/* Timeframe */}
+                {/* Timeframe (HeroUI Tabs) */}
                 <div className="flex items-center gap-1 text-xs text-[#A0A594]">
                   <span className="font-semibold text-[#757761]">Timeframe:</span>
-                  <button
-                    onClick={() => setTimeframe("weekly")}
-                    className={`px-2 py-1 rounded transition-colors ${
-                      timeframe === "weekly" ? "font-black text-[#f7fe72] underline" : "hover:text-white"
-                    }`}
+                  <Tabs
+                    selectedKey={timeframe}
+                    onSelectionChange={(key) => setTimeframe(key as "weekly" | "season" | "alltime")}
+                    className="w-auto"
                   >
-                    This Week
-                  </button>
-                  <span>·</span>
-                  <button
-                    onClick={() => setTimeframe("season")}
-                    className={`px-2 py-1 rounded transition-colors ${
-                      timeframe === "season" ? "font-black text-[#f7fe72] underline" : "hover:text-white"
-                    }`}
-                  >
-                    Season 4
-                  </button>
-                  <span>·</span>
-                  <button
-                    onClick={() => setTimeframe("alltime")}
-                    className={`px-2 py-1 rounded transition-colors ${
-                      timeframe === "alltime" ? "font-black text-[#f7fe72] underline" : "hover:text-white"
-                    }`}
-                  >
-                    All-Time
-                  </button>
+                    <Tabs.ListContainer className="p-0 bg-transparent">
+                      <Tabs.List aria-label="Timeframe" className="flex items-center gap-1 p-1 bg-black/40 border border-[#757761]/30 rounded-xl text-xs font-semibold">
+                        <Tabs.Tab id="weekly" className="cursor-pointer">
+                          <span>This Week</span>
+                          <Tabs.Indicator />
+                        </Tabs.Tab>
+                        <Tabs.Tab id="season" className="cursor-pointer">
+                          <span>Season 4</span>
+                          <Tabs.Indicator />
+                        </Tabs.Tab>
+                        <Tabs.Tab id="alltime" className="cursor-pointer">
+                          <span>All-Time</span>
+                          <Tabs.Indicator />
+                        </Tabs.Tab>
+                      </Tabs.List>
+                    </Tabs.ListContainer>
+                  </Tabs>
                 </div>
               </div>
             </div>
@@ -1510,18 +1478,18 @@ export default function LeaderboardsPage() {
                 <CanvasBadge tier="gold" emblem="trophy" size={42} className="shrink-0" />
               </Link>
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-black text-sm text-white">David Kim</span>
-                  <span className="text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] px-2 py-0.5 rounded font-mono">
-                    Rank #{userRank} Global
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  <span className="font-black text-xs sm:text-sm text-white">David Kim</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] px-1.5 sm:px-2 py-0.5 rounded font-mono">
+                    #{userRank} Global
                   </span>
                   <Link
                     href="/rewards"
-                    className="text-xs font-black text-[#0B0E0C] bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 border border-[#f7fe72]/60 px-2.5 py-0.5 rounded flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
+                    className="text-[10px] sm:text-xs font-black text-[#0B0E0C] bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] hover:brightness-110 border border-[#f7fe72]/60 px-2 py-0.5 rounded flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
                     title="View dedicated Rewards &amp; Tiers page"
                   >
                     <Award className="w-3 h-3 text-[#0B0E0C]" />
-                    <span>Tier: Gold I</span>
+                    <span>Gold I</span>
                   </Link>
                   <Link
                     href="/rewards"

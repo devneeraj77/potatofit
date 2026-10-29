@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { Tabs } from "@heroui/react";
 import {
   Dumbbell,
   Utensils,
@@ -193,27 +194,32 @@ export default function BentoGrid() {
                 </div>
               </div>
 
-              {/* Equipment Interactive Filter Buttons */}
-              <div className="flex flex-wrap items-center gap-1.5 p-1 bg-[#0B0E0C] rounded-xl mb-6 border border-[#757761]/25">
-                {[
-                  { id: "all" as EquipmentType, label: "All Equipment" },
-                  { id: "gym" as EquipmentType, label: "Full Commercial Gym" },
-                  { id: "dumbbells" as EquipmentType, label: "Dumbbells Only" },
-                  { id: "home" as EquipmentType, label: "Home & Bodyweight" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setEquipmentFilter(tab.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                      equipmentFilter === tab.id
-                        ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black"
-                        : "text-[#A0A493] hover:text-white"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+              {/* Equipment Interactive Filter (HeroUI Tabs) */}
+              <Tabs
+                selectedKey={equipmentFilter}
+                onSelectionChange={(key) => setEquipmentFilter(key as EquipmentType)}
+                className="w-full mb-6"
+              >
+                <Tabs.ListContainer className="p-0 bg-transparent">
+                  <Tabs.List aria-label="Equipment Filter" className="flex flex-wrap items-center gap-1.5 p-1 bg-[#0B0E0C] rounded-xl border border-[#757761]/25">
+                    {[
+                      { id: "all" as EquipmentType, label: "All Equipment" },
+                      { id: "gym" as EquipmentType, label: "Full Commercial Gym" },
+                      { id: "dumbbells" as EquipmentType, label: "Dumbbells Only" },
+                      { id: "home" as EquipmentType, label: "Home & Bodyweight" },
+                    ].map((tab) => (
+                      <Tabs.Tab
+                        key={tab.id}
+                        id={tab.id}
+                        className="cursor-pointer text-xs font-semibold whitespace-nowrap"
+                      >
+                        <span>{tab.label}</span>
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                    ))}
+                  </Tabs.List>
+                </Tabs.ListContainer>
+              </Tabs>
 
               {/* Dynamic Workout Planner List */}
               <div className="space-y-3">
@@ -293,33 +299,29 @@ export default function BentoGrid() {
                 </div>
               </div>
 
-              {/* Meal Selector Tabs */}
-              <div className="flex items-center gap-1 p-1 bg-[#0B0E0C] rounded-xl mb-4 border border-[#757761]/25">
-                <button
-                  onClick={() => setSelectedMeal("postWorkout")}
-                  className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                    selectedMeal === "postWorkout" ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black" : "text-[#A0A493] hover:text-white"
-                  }`}
-                >
-                  Post-Workout
-                </button>
-                <button
-                  onClick={() => setSelectedMeal("cleanKeto")}
-                  className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                    selectedMeal === "cleanKeto" ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black" : "text-[#A0A493] hover:text-white"
-                  }`}
-                >
-                  Clean Protein
-                </button>
-                <button
-                  onClick={() => setSelectedMeal("metabolic")}
-                  className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                    selectedMeal === "metabolic" ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs font-black" : "text-[#A0A493] hover:text-white"
-                  }`}
-                >
-                  Dinner Fuel
-                </button>
-              </div>
+              {/* Meal Selector Tabs (HeroUI Tabs) */}
+              <Tabs
+                selectedKey={selectedMeal}
+                onSelectionChange={(key) => setSelectedMeal(key as "postWorkout" | "cleanKeto" | "metabolic")}
+                className="w-full mb-4"
+              >
+                <Tabs.ListContainer className="p-0 bg-transparent">
+                  <Tabs.List aria-label="Meal Fuel Selection" className="flex items-center gap-1 p-1 bg-[#0B0E0C] rounded-xl border border-[#757761]/25 w-full">
+                    <Tabs.Tab id="postWorkout" className="flex-1 cursor-pointer text-center">
+                      <span>Post-Workout</span>
+                      <Tabs.Indicator />
+                    </Tabs.Tab>
+                    <Tabs.Tab id="cleanKeto" className="flex-1 cursor-pointer text-center">
+                      <span>Clean Protein</span>
+                      <Tabs.Indicator />
+                    </Tabs.Tab>
+                    <Tabs.Tab id="metabolic" className="flex-1 cursor-pointer text-center">
+                      <span>Dinner Fuel</span>
+                      <Tabs.Indicator />
+                    </Tabs.Tab>
+                  </Tabs.List>
+                </Tabs.ListContainer>
+              </Tabs>
 
               {/* Active Meal Card */}
               <div className="p-3.5 rounded-2xl bg-[#0B0E0C] border border-[#757761]/25 mb-5">

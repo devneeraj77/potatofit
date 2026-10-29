@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Tabs } from "@heroui/react";
 import {
   Activity,
   Heart,
@@ -249,54 +250,35 @@ export default function ConnectedHealthEngine({
         </div>
       )}
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center gap-2 mt-5 border-b border-white/10 pb-2 overflow-x-auto">
-        <button
-          onClick={() => setActiveTab("overview")}
-          className={`py-1.5 px-3.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "overview"
-              ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm"
-              : "text-slate-400 hover:text-white hover:bg-white/5"
-          }`}
-        >
-          Telemetry Overview {hasAnyConnected ? `(${primaryProvider?.name})` : "(Choose App)"}
-        </button>
-        <button
-          onClick={() => setActiveTab("diet_analysis")}
-          className={`py-1.5 px-3.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "diet_analysis"
-              ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm"
-              : "text-slate-400 hover:text-white hover:bg-white/5"
-          }`}
-        >
-          Adaptive Diet &amp; Macros ({hasAnyConnected ? `+${activeBurnExtraKcal} kcal` : "Baseline"})
-        </button>
-        <button
-          onClick={() => setActiveTab("providers")}
-          className={`py-1.5 px-3.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "providers"
-              ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm"
-              : "text-slate-400 hover:text-white hover:bg-white/5"
-          }`}
-        >
-          {hasAnyConnected ? `Switch App (${primaryProvider?.name} Active)` : "Choose Fitness App"}
-        </button>
-        <button
-          onClick={() => setActiveTab("notifications")}
-          className={`py-1.5 px-3.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "notifications"
-              ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm"
-              : "text-slate-400 hover:text-white hover:bg-white/5"
-          }`}
-        >
-          PWA Service Worker Alerts
-        </button>
-      </div>
+      {/* HeroUI Navigation Tabs */}
+      <Tabs
+        selectedKey={activeTab}
+        onSelectionChange={(key) => setActiveTab(key as "overview" | "diet_analysis" | "providers" | "notifications")}
+        className="w-full mt-5"
+      >
+        <Tabs.ListContainer className="overflow-x-auto pb-2 border-b border-white/10">
+          <Tabs.List aria-label="Connected Health Engine Navigation" className="flex items-center gap-1.5 p-1 bg-[#121815] border border-white/10 rounded-xl">
+            <Tabs.Tab id="overview" className="cursor-pointer">
+              <span>Telemetry Overview {hasAnyConnected ? `(${primaryProvider?.name})` : "(Choose App)"}</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="diet_analysis" className="cursor-pointer">
+              <span>Adaptive Diet &amp; Macros ({hasAnyConnected ? `+${activeBurnExtraKcal} kcal` : "Baseline"})</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="providers" className="cursor-pointer">
+              <span>{hasAnyConnected ? `Switch App (${primaryProvider?.name} Active)` : "Choose Fitness App"}</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="notifications" className="cursor-pointer">
+              <span>PWA Service Worker Alerts</span>
+              <Tabs.Indicator />
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs.ListContainer>
 
-      {/* Tab 1: Overview */}
-      {activeTab === "overview" && (
-        <div className="mt-5 space-y-6 animate-in fade-in duration-300">
-          
+        {/* Tab 1: Overview */}
+        <Tabs.Panel id="overview" className="mt-5 space-y-6 animate-in fade-in duration-300">
           {/* STATE A: NO TRACKER CONNECTED -> Streamlined 1-Choice App Picker */}
           {!hasAnyConnected && (
             <div className="p-5 sm:p-7 rounded-3xl bg-[#0B0E0C] border border-[#f7fe72]/30 text-white relative overflow-hidden shadow-2xl">
@@ -317,47 +299,54 @@ export default function ConnectedHealthEngine({
                 </p>
               </div>
 
-              {/* 4 Tracker Options */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6">
+              {/* 4 Modern Compact Tracker Options */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-5">
                 {providers.map((p) => (
                   <div
                     key={p.id}
-                    className="p-4 rounded-2xl bg-[#121815] border border-[#757761]/35 hover:border-[#f7fe72] transition-all flex flex-col justify-between group hover:shadow-lg hover:shadow-black/60"
+                    className="p-4 rounded-2xl bg-[#121815] hover:bg-[#161F1A] border border-[#757761]/35 hover:border-[#f7fe72]/70 transition-all duration-200 flex flex-col justify-between group hover:shadow-xl hover:shadow-black/60"
                   >
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className={`w-8 h-8 rounded-xl ${p.iconBg} flex items-center justify-center font-bold text-white text-xs shadow-md`}>
-                          {p.name[0]}
-                        </span>
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300">
-                          {p.category}
+                      {/* Top Row: Authentic App Icon + Category Tag */}
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <ProviderAppIcon id={p.id} className="w-10 h-10" />
+                        <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300">
+                          {p.category.split(" ")[0]}
                         </span>
                       </div>
 
-                      <h4 className="font-bold text-white text-base group-hover:text-[#f7fe72] transition-colors">
+                      <h4 className="font-bold text-white text-base group-hover:text-[#f7fe72] transition-colors leading-snug">
                         {p.name}
                       </h4>
-                      <p className="text-xs text-slate-400 mt-1.5 leading-snug">
+                      <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                         {p.description}
                       </p>
 
-                      <div className="mt-3 pt-2.5 border-t border-white/5">
-                        <span className="text-[10px] font-mono text-[#f7fe72] uppercase tracking-wider block font-bold">
-                          Supplies 100% Telemetry:
+                      {/* Visual Metric Coverage Strip (No walls of text) */}
+                      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-white/5 text-[10px] text-slate-400">
+                        <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10" title="Steps Telemetry">
+                          <Footprints className="w-3 h-3 text-[#4285F4]" />
+                          <span>Steps</span>
                         </span>
-                        <div className="text-[11px] text-slate-300 font-mono mt-1 space-y-0.5">
-                          <div>• Steps: {p.telemetry.dailySteps.toLocaleString()}</div>
-                          <div>• Burn: +{p.telemetry.activeBurnKcal} kcal</div>
-                          <div>• Heart: {p.telemetry.restingHeartRate} bpm / {p.telemetry.hrvMs} ms</div>
-                          <div>• Sleep: {p.telemetry.sleepFormatted}</div>
-                        </div>
+                        <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10" title="Active Calorie Burn">
+                          <Flame className="w-3 h-3 text-[#FC4C02]" />
+                          <span>Burn</span>
+                        </span>
+                        <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10" title="Heart Rate & HRV">
+                          <Heart className="w-3 h-3 text-[#FA2D48]" />
+                          <span>HR</span>
+                        </span>
+                        <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10" title="Sleep Architecture">
+                          <Moon className="w-3 h-3 text-[#A855F7]" />
+                          <span>Sleep</span>
+                        </span>
                       </div>
                     </div>
 
                     <button
                       onClick={() => connectProvider(p.id)}
                       disabled={isSyncing}
-                      className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] font-black text-xs hover:brightness-110 active:scale-98 transition-all shadow-md shadow-[#f7fe72]/15 flex items-center justify-center gap-1.5 cursor-pointer"
+                      className="mt-3.5 w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#f7fe72] to-[#f4e76e] text-[#0B0E0C] font-bold text-xs hover:brightness-110 active:scale-98 transition-all shadow-md shadow-[#f7fe72]/10 flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <Link2 className="w-3.5 h-3.5 text-[#0B0E0C]" />
                       <span>Use {p.name.split(" ")[0]} Only</span>
@@ -393,9 +382,7 @@ export default function ConnectedHealthEngine({
                     </span>
                   </div>
                   <div className="flex items-center gap-3 mt-1">
-                    <span className={`w-10 h-10 rounded-2xl ${primaryProvider.iconBg} text-white flex items-center justify-center font-bold text-sm shadow-md`}>
-                      {primaryProvider.name[0]}
-                    </span>
+                    <ProviderAppIcon id={primaryProvider.id} className="w-11 h-11" />
                     <div>
                       <h3 className="text-xl sm:text-2xl font-black text-white">
                         {primaryProvider.name} Live Biometric Stream
@@ -612,12 +599,10 @@ export default function ConnectedHealthEngine({
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </Tabs.Panel>
 
-      {/* Tab 2: Adaptive Diet & Macros */}
-      {activeTab === "diet_analysis" && (
-        <div className="mt-5 space-y-5 animate-in fade-in duration-300">
+        {/* Tab 2: Adaptive Diet & Macros */}
+        <Tabs.Panel id="diet_analysis" className="mt-5 space-y-5 animate-in fade-in duration-300">
           
           {/* Telemetry Status Banner */}
           {hasAnyConnected ? (
@@ -766,12 +751,10 @@ export default function ConnectedHealthEngine({
               ))}
             </div>
           </div>
-        </div>
-      )}
+        </Tabs.Panel>
 
-      {/* Tab 3: Choose / Switch Fitness App */}
-      {activeTab === "providers" && (
-        <div className="mt-5 space-y-4 animate-in fade-in duration-300">
+        {/* Tab 3: Choose / Switch Fitness App */}
+        <Tabs.Panel id="providers" className="mt-5 space-y-4 animate-in fade-in duration-300">
           <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-slate-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -798,15 +781,13 @@ export default function ConnectedHealthEngine({
                   className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
                     isPrimary
                       ? "bg-gradient-to-br from-[#14231b] to-[#121815] border-emerald-500/40 shadow-lg"
-                      : "bg-[#121815] border-white/10 hover:border-white/25"
+                      : "bg-[#121815] hover:bg-[#161F1A] border-white/10 hover:border-white/25"
                   }`}
                 >
                   <div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2 mb-3">
                       <div className="flex items-center gap-2.5">
-                        <span className={`w-8 h-8 rounded-xl ${provider.iconBg} text-white flex items-center justify-center font-bold text-xs shadow`}>
-                          {provider.name[0]}
-                        </span>
+                        <ProviderAppIcon id={provider.id} className="w-9 h-9" />
                         <div>
                           <h4 className="font-bold text-white text-sm">{provider.name}</h4>
                           <span className="text-[11px] text-slate-400">{provider.category}</span>
@@ -820,28 +801,38 @@ export default function ConnectedHealthEngine({
                             : "bg-white/5 text-slate-400 border-white/10"
                         }`}
                       >
-                        {isPrimary ? "CURRENTLY ACTIVE" : "AVAILABLE"}
+                        {isPrimary ? "ACTIVE" : "READY"}
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-300 mt-3">
+                    <p className="text-xs text-slate-300 mt-2 line-clamp-2 leading-relaxed">
                       {provider.description}
                     </p>
 
-                    <div className="mt-3 pt-2.5 border-t border-white/5 text-[11px] font-mono text-slate-300">
-                      <div className="text-[10px] text-slate-500 uppercase font-semibold mb-1">Provides All Metrics:</div>
-                      <div className="grid grid-cols-2 gap-1 text-[11px]">
-                        <div>Steps: {provider.telemetry.dailySteps.toLocaleString()}</div>
-                        <div>Burn: +{provider.telemetry.activeBurnKcal} kcal</div>
-                        <div>HR: {provider.telemetry.restingHeartRate} bpm</div>
-                        <div>Sleep: {provider.telemetry.sleepFormatted}</div>
-                      </div>
+                    {/* Compact Visual Telemetry Indicators */}
+                    <div className="flex items-center gap-1.5 mt-3 pt-2.5 border-t border-white/5 text-[10px] text-slate-400">
+                      <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+                        <Footprints className="w-3 h-3 text-[#4285F4]" />
+                        <span>Steps</span>
+                      </span>
+                      <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+                        <Flame className="w-3 h-3 text-[#FC4C02]" />
+                        <span>Burn</span>
+                      </span>
+                      <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+                        <Heart className="w-3 h-3 text-[#FA2D48]" />
+                        <span>HR</span>
+                      </span>
+                      <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+                        <Moon className="w-3 h-3 text-[#A855F7]" />
+                        <span>Sleep</span>
+                      </span>
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <div className="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-between">
                     <span className="text-[11px] text-slate-400 font-mono">
-                      {isPrimary ? `Last sync: ${provider.lastSync}` : "Ready to connect"}
+                      {isPrimary ? `Synced: ${provider.lastSync}` : "Ready to connect"}
                     </span>
 
                     {isPrimary ? (
@@ -875,12 +866,10 @@ export default function ConnectedHealthEngine({
               );
             })}
           </div>
-        </div>
-      )}
+        </Tabs.Panel>
 
-      {/* Tab 4: PWA Service Worker Alerts */}
-      {activeTab === "notifications" && (
-        <div className="mt-5 space-y-4 animate-in fade-in duration-300">
+        {/* Tab 4: PWA Service Worker Alerts */}
+        <Tabs.Panel id="notifications" className="mt-5 space-y-4 animate-in fade-in duration-300">
           <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
               <div className="flex items-center gap-3">
@@ -984,8 +973,8 @@ export default function ConnectedHealthEngine({
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </Tabs.Panel>
+      </Tabs>
     </div>
   );
 }

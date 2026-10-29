@@ -15,7 +15,6 @@ import SignInModal from "@/components/SignInModal";
 import DashboardView from "@/components/DashboardView";
 import PulseAINutritionEngine from "@/components/PulseAINutritionEngine";
 import ConnectedHealthEngine from "@/components/ConnectedHealthEngine";
-import { PWAInstallButton } from "@/components/PWAInstallButton";
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<"landing" | "dashboard">("landing");
@@ -60,8 +59,6 @@ export default function Home() {
         onOpenDashboard={() => setViewMode("dashboard")}
       />
 
-      {/* PWA Install Notification Bar */}
-      <PWAInstallButton variant="banner" />
 
       <main className="flex-1">
         {/* 2. Kinetic Hero Banner */}

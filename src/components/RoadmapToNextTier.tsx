@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { Tabs } from "@heroui/react";
 import {
   Trophy,
   Dumbbell,
@@ -735,22 +736,27 @@ export default function RoadmapToNextTier({
               </p>
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-[#757761]/30 shrink-0">
-              {(["all", "strength", "nutrition", "recovery"] as const).map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActionCategory(cat)}
-                  className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    actionCategory === cat
-                      ? "bg-[#f7fe72] text-[#0B0E0C] shadow-xs"
-                      : "text-[#A0A594] hover:text-white"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+            {/* Category Filter Tabs (HeroUI Tabs) */}
+            <Tabs
+              selectedKey={actionCategory}
+              onSelectionChange={(key) => setActionCategory(key as "all" | "strength" | "nutrition" | "recovery")}
+              className="w-auto shrink-0"
+            >
+              <Tabs.ListContainer className="p-0 bg-transparent">
+                <Tabs.List aria-label="Action Category Filter" className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-[#757761]/30">
+                  {(["all", "strength", "nutrition", "recovery"] as const).map((cat) => (
+                    <Tabs.Tab
+                      key={cat}
+                      id={cat}
+                      className="cursor-pointer text-[10px] font-mono uppercase tracking-wider"
+                    >
+                      <span>{cat}</span>
+                      <Tabs.Indicator />
+                    </Tabs.Tab>
+                  ))}
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
           </div>
 
           {/* Action Cards Listing */}

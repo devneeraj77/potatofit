@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { Tabs } from "@heroui/react";
 import * as d3 from "d3";
 import {
   Calendar,
@@ -497,47 +498,32 @@ export default function ActivityCalendarHeatmap() {
 
         {/* View Switcher Controls (Metric Mode & Filter) */}
         <div className="flex flex-wrap items-center gap-2 self-start lg:self-center">
-          {/* Metric Selector */}
-          <div className="flex items-center gap-1 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
-            <button
-              type="button"
-              onClick={() => setMetricMode("intensity")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                metricMode === "intensity"
-                  ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm font-black"
-                  : "text-[#A0A493] hover:text-white"
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5" />
-              <span>Training Goals</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMetricMode("burn")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                metricMode === "burn"
-                  ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm font-black"
-                  : "text-[#A0A493] hover:text-white"
-              }`}
-            >
-              <Flame className="w-3.5 h-3.5" />
-              <span>Burn (kcal)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMetricMode("steps")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                metricMode === "steps"
-                  ? "bg-[#f7fe72] text-[#0B0E0C] shadow-sm font-black"
-                  : "text-[#A0A493] hover:text-white"
-              }`}
-            >
-              <Footprints className="w-3.5 h-3.5" />
-              <span>Steps</span>
-            </button>
-          </div>
+          {/* Metric Selector (HeroUI Tabs) */}
+          <Tabs
+            selectedKey={metricMode}
+            onSelectionChange={(key) => setMetricMode(key as "intensity" | "burn" | "steps")}
+            className="w-auto"
+          >
+            <Tabs.ListContainer className="p-0 bg-transparent">
+              <Tabs.List aria-label="Metric Mode" className="flex items-center gap-1 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
+                <Tabs.Tab id="intensity" className="cursor-pointer">
+                  <Zap className="w-3.5 h-3.5" />
+                  <span>Training Goals</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+                <Tabs.Tab id="burn" className="cursor-pointer">
+                  <Flame className="w-3.5 h-3.5" />
+                  <span>Burn (kcal)</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+                <Tabs.Tab id="steps" className="cursor-pointer">
+                  <Footprints className="w-3.5 h-3.5" />
+                  <span>Steps</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+              </Tabs.List>
+            </Tabs.ListContainer>
+          </Tabs>
         </div>
       </div>
 
@@ -624,61 +610,40 @@ export default function ActivityCalendarHeatmap() {
         </div>
       </div>
 
-      {/* 3. Filter Tabs Strip */}
+      {/* 3. Filter Tabs Strip (HeroUI Tabs) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-        <div className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl self-start overflow-x-auto max-w-full">
+        <div className="flex items-center gap-2">
           <span className="px-2 py-1 text-[11px] font-mono font-bold text-[#757761] uppercase flex items-center gap-1">
             <Filter className="w-3 h-3 text-[#f7fe72]" />
             <span>Filter:</span>
           </span>
 
-          <button
-            type="button"
-            onClick={() => setActiveFilter("all")}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              activeFilter === "all"
-                ? "bg-[#18201A] text-[#f7fe72] border border-[#f7fe72]/40 font-bold"
-                : "text-[#A0A493] hover:text-white"
-            }`}
+          <Tabs
+            selectedKey={activeFilter}
+            onSelectionChange={(key) => setActiveFilter(key as "all" | "goals_met" | "peak" | "recovery")}
+            className="w-auto"
           >
-            All Activity (365d)
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveFilter("goals_met")}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              activeFilter === "goals_met"
-                ? "bg-[#18201A] text-[#f7fe72] border border-[#f7fe72]/40 font-bold"
-                : "text-[#A0A493] hover:text-white"
-            }`}
-          >
-            Goals Met ({consistencyStats.goalsMetCount}d)
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveFilter("peak")}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              activeFilter === "peak"
-                ? "bg-[#18201A] text-[#f7fe72] border border-[#f7fe72]/40 font-bold"
-                : "text-[#A0A493] hover:text-white"
-            }`}
-          >
-            Peak Days &gt;120% ({consistencyStats.peakDays}d)
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveFilter("recovery")}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              activeFilter === "recovery"
-                ? "bg-[#18201A] text-[#f7fe72] border border-[#f7fe72]/40 font-bold"
-                : "text-[#A0A493] hover:text-white"
-            }`}
-          >
-            Rest &amp; Mobility
-          </button>
+            <Tabs.ListContainer className="p-0 bg-transparent">
+              <Tabs.List aria-label="Activity Filter" className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl overflow-x-auto">
+                <Tabs.Tab id="all" className="cursor-pointer">
+                  <span>All Activity (365d)</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+                <Tabs.Tab id="goals_met" className="cursor-pointer">
+                  <span>Goals Met ({consistencyStats.goalsMetCount}d)</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+                <Tabs.Tab id="peak" className="cursor-pointer">
+                  <span>Peak Days &gt;120% ({consistencyStats.peakDays}d)</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+                <Tabs.Tab id="recovery" className="cursor-pointer">
+                  <span>Rest &amp; Mobility</span>
+                  <Tabs.Indicator />
+                </Tabs.Tab>
+              </Tabs.List>
+            </Tabs.ListContainer>
+          </Tabs>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-[#A0A493] font-mono">
