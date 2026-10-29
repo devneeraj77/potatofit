@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useSyncExternalStore } from "react";
-import { Tabs } from "@heroui/react";
+import { Tabs, Dropdown, Button, Label } from "@heroui/react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -23,6 +23,8 @@ import {
   TrendingUp,
   ArrowRight,
   Zap,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 import { useHealthSync, DailyActivityRecord } from "@/hooks/useHealthSync";
 
@@ -157,7 +159,7 @@ export default function FitnessInsightsChart() {
     <section
       id="fitness-insights-module"
       aria-label="7-Day Fitness Insights"
-      className="bg-[#121815] rounded-3xl border border-[#757761]/30 shadow-2xl p-5 sm:p-7 mb-8 transition-all"
+      className="bg-[#121815] rounded-3xl border border-[#757761]/30 shadow-2xl p-5 sm:p-7 mb-8 transition-all scroll-mt-20 sm:scroll-mt-24"
     >
       {/* Top Header: Title, Active Provider Badge, and View Switcher */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#757761]/25">
@@ -179,32 +181,112 @@ export default function FitnessInsightsChart() {
           </p>
         </div>
 
-        {/* View Switcher Controls (HeroUI Tabs) */}
-        <Tabs
-          selectedKey={activeMetricView}
-          onSelectionChange={(key) => setActiveMetricView(key as "activity" | "sleep_hrv" | "recovery")}
-          className="w-auto self-start lg:self-center"
-        >
-          <Tabs.ListContainer className="p-0 bg-transparent">
-            <Tabs.List aria-label="Metric views" className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
-              <Tabs.Tab id="activity" className="cursor-pointer">
-                <Flame className="w-3.5 h-3.5" />
-                <span>Burn &amp; Steps</span>
-                <Tabs.Indicator />
-              </Tabs.Tab>
-              <Tabs.Tab id="sleep_hrv" className="cursor-pointer">
-                <Moon className="w-3.5 h-3.5" />
-                <span>Sleep &amp; HRV</span>
-                <Tabs.Indicator />
-              </Tabs.Tab>
-              <Tabs.Tab id="recovery" className="cursor-pointer">
-                <HeartPulse className="w-3.5 h-3.5" />
-                <span>Readiness Score</span>
-                <Tabs.Indicator />
-              </Tabs.Tab>
-            </Tabs.List>
-          </Tabs.ListContainer>
-        </Tabs>
+        {/* View Switcher Controls (HeroUI Dropdown on Mobile + HeroUI Tabs on Desktop) */}
+        <div className="self-start lg:self-center">
+          {/* Mobile HeroUI Dropdown */}
+          <div className="sm:hidden">
+            <Dropdown>
+              <Button
+                variant="secondary"
+                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-[#E2E7DE] bg-[#0B0E0C] hover:bg-black/60 border border-[#757761]/40 rounded-xl cursor-pointer"
+                aria-label="Select Metric View"
+              >
+                {activeMetricView === "activity" ? (
+                  <Flame className="w-3.5 h-3.5 text-[#f7fe72]" />
+                ) : activeMetricView === "sleep_hrv" ? (
+                  <Moon className="w-3.5 h-3.5 text-[#f7fe72]" />
+                ) : (
+                  <HeartPulse className="w-3.5 h-3.5 text-[#f7fe72]" />
+                )}
+                <span>
+                  {activeMetricView === "activity"
+                    ? "Burn & Steps"
+                    : activeMetricView === "sleep_hrv"
+                    ? "Sleep & HRV"
+                    : "Readiness Score"}
+                </span>
+                <ChevronDown className="w-3 h-3 text-[#A0A594]" />
+              </Button>
+              <Dropdown.Popover className="min-w-[190px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+                <Dropdown.Menu
+                  aria-label="Select Metric View"
+                  selectionMode="single"
+                  selectedKeys={new Set([activeMetricView])}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0];
+                    if (selected) setActiveMetricView(String(selected) as "activity" | "sleep_hrv" | "recovery");
+                  }}
+                  className="space-y-1 outline-none"
+                >
+                  <Dropdown.Item
+                    id="activity"
+                    textValue="Burn & Steps"
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Flame className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <Label className="text-xs font-semibold">Burn &amp; Steps</Label>
+                    </div>
+                    {activeMetricView === "activity" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    id="sleep_hrv"
+                    textValue="Sleep & HRV"
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Moon className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <Label className="text-xs font-semibold">Sleep &amp; HRV</Label>
+                    </div>
+                    {activeMetricView === "sleep_hrv" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    id="recovery"
+                    textValue="Readiness Score"
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <div className="flex items-center gap-2">
+                      <HeartPulse className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <Label className="text-xs font-semibold">Readiness Score</Label>
+                    </div>
+                    {activeMetricView === "recovery" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
+            </Dropdown>
+          </div>
+
+          {/* Desktop HeroUI Tabs */}
+          <div className="hidden sm:block">
+            <Tabs
+              selectedKey={activeMetricView}
+              onSelectionChange={(key) => setActiveMetricView(key as "activity" | "sleep_hrv" | "recovery")}
+              className="w-auto"
+            >
+              <Tabs.ListContainer className="p-0 bg-transparent">
+                <Tabs.List aria-label="Metric views" className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
+                  <Tabs.Tab id="activity" className="cursor-pointer">
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>Burn &amp; Steps</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="sleep_hrv" className="cursor-pointer">
+                    <Moon className="w-3.5 h-3.5" />
+                    <span>Sleep &amp; HRV</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="recovery" className="cursor-pointer">
+                    <HeartPulse className="w-3.5 h-3.5" />
+                    <span>Readiness Score</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
+          </div>
+        </div>
       </div>
 
       {/* Provider Connectivity Banner */}

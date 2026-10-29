@@ -254,6 +254,11 @@ span.avatar__fallback,
   display: none;
 }
 
+.tabs__list-container__scroll-prev,
+.tabs__list-container__scroll-next {
+  display: none !important;
+}
+
 .tabs__panel {
   outline: none;
 }

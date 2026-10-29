@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { Tabs } from "@heroui/react";
+import { Tabs, Dropdown, Button, Label } from "@heroui/react";
 import * as d3 from "d3";
 import {
   Calendar,
@@ -15,6 +15,8 @@ import {
   Sparkles,
   Info,
   RotateCcw,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 import { useHealthSync } from "@/hooks/useHealthSync";
 
@@ -467,7 +469,7 @@ export default function ActivityCalendarHeatmap() {
     <section
       id="activity-heatmap-module"
       aria-label="Annual Activity Consistency Heatmap"
-      className="bg-[#121815] rounded-3xl border border-[#757761]/30 shadow-2xl p-5 sm:p-7 mb-8 transition-all"
+      className="bg-[#121815] rounded-3xl border border-[#757761]/30 shadow-2xl p-5 sm:p-7 mb-8 transition-all scroll-mt-20 sm:scroll-mt-24"
     >
       {/* 1. Header Row: Title, Provider Source, & Interactive Controls */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#757761]/25">
@@ -496,34 +498,93 @@ export default function ActivityCalendarHeatmap() {
           </p>
         </div>
 
-        {/* View Switcher Controls (Metric Mode & Filter) */}
+        {/* View Switcher Controls (Metric Mode: Dropdown on Mobile, Tabs on Desktop) */}
         <div className="flex flex-wrap items-center gap-2 self-start lg:self-center">
-          {/* Metric Selector (HeroUI Tabs) */}
-          <Tabs
-            selectedKey={metricMode}
-            onSelectionChange={(key) => setMetricMode(key as "intensity" | "burn" | "steps")}
-            className="w-auto"
-          >
-            <Tabs.ListContainer className="p-0 bg-transparent">
-              <Tabs.List aria-label="Metric Mode" className="flex items-center gap-1 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
-                <Tabs.Tab id="intensity" className="cursor-pointer">
-                  <Zap className="w-3.5 h-3.5" />
-                  <span>Training Goals</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-                <Tabs.Tab id="burn" className="cursor-pointer">
-                  <Flame className="w-3.5 h-3.5" />
-                  <span>Burn (kcal)</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-                <Tabs.Tab id="steps" className="cursor-pointer">
-                  <Footprints className="w-3.5 h-3.5" />
-                  <span>Steps</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-              </Tabs.List>
-            </Tabs.ListContainer>
-          </Tabs>
+          {/* Mobile HeroUI Dropdown */}
+          <div className="sm:hidden">
+            <Dropdown>
+              <Button
+                variant="secondary"
+                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-[#E2E7DE] bg-[#0B0E0C] hover:bg-black/60 border border-[#757761]/40 rounded-xl cursor-pointer"
+                aria-label="Select Metric"
+              >
+                {metricMode === "intensity" ? (
+                  <Zap className="w-3.5 h-3.5 text-[#f7fe72]" />
+                ) : metricMode === "burn" ? (
+                  <Flame className="w-3.5 h-3.5 text-[#f7fe72]" />
+                ) : (
+                  <Footprints className="w-3.5 h-3.5 text-[#f7fe72]" />
+                )}
+                <span>
+                  {metricMode === "intensity" ? "Training Goals" : metricMode === "burn" ? "Burn (kcal)" : "Steps"}
+                </span>
+                <ChevronDown className="w-3 h-3 text-[#A0A594]" />
+              </Button>
+              <Dropdown.Popover className="min-w-[180px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+                <Dropdown.Menu
+                  aria-label="Select Metric"
+                  selectionMode="single"
+                  selectedKeys={new Set([metricMode])}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0];
+                    if (selected) setMetricMode(String(selected) as "intensity" | "burn" | "steps");
+                  }}
+                  className="space-y-1 outline-none"
+                >
+                  <Dropdown.Item id="intensity" textValue="Training Goals" className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]">
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <Label className="text-xs font-semibold">Training Goals</Label>
+                    </div>
+                    {metricMode === "intensity" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+                  <Dropdown.Item id="burn" textValue="Burn (kcal)" className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]">
+                    <div className="flex items-center gap-2">
+                      <Flame className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <Label className="text-xs font-semibold">Burn (kcal)</Label>
+                    </div>
+                    {metricMode === "burn" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+                  <Dropdown.Item id="steps" textValue="Steps" className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]">
+                    <div className="flex items-center gap-2">
+                      <Footprints className="w-3.5 h-3.5 text-[#f7fe72]" />
+                      <Label className="text-xs font-semibold">Steps</Label>
+                    </div>
+                    {metricMode === "steps" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
+            </Dropdown>
+          </div>
+
+          {/* Desktop Metric Selector (HeroUI Tabs) */}
+          <div className="hidden sm:block">
+            <Tabs
+              selectedKey={metricMode}
+              onSelectionChange={(key) => setMetricMode(key as "intensity" | "burn" | "steps")}
+              className="w-auto"
+            >
+              <Tabs.ListContainer className="p-0 bg-transparent">
+                <Tabs.List aria-label="Metric Mode" className="flex items-center gap-1 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
+                  <Tabs.Tab id="intensity" className="cursor-pointer">
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>Training Goals</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="burn" className="cursor-pointer">
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>Burn (kcal)</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="steps" className="cursor-pointer">
+                    <Footprints className="w-3.5 h-3.5" />
+                    <span>Steps</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
+          </div>
         </div>
       </div>
 
@@ -610,40 +671,113 @@ export default function ActivityCalendarHeatmap() {
         </div>
       </div>
 
-      {/* 3. Filter Tabs Strip (HeroUI Tabs) */}
+      {/* 3. Filter Controls: HeroUI Dropdown on Mobile + Tabs on Desktop */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2">
-          <span className="px-2 py-1 text-[11px] font-mono font-bold text-[#757761] uppercase flex items-center gap-1">
+          <span className="px-1 py-1 text-[11px] font-mono font-bold text-[#757761] uppercase flex items-center gap-1 shrink-0">
             <Filter className="w-3 h-3 text-[#f7fe72]" />
             <span>Filter:</span>
           </span>
 
-          <Tabs
-            selectedKey={activeFilter}
-            onSelectionChange={(key) => setActiveFilter(key as "all" | "goals_met" | "peak" | "recovery")}
-            className="w-auto"
-          >
-            <Tabs.ListContainer className="p-0 bg-transparent">
-              <Tabs.List aria-label="Activity Filter" className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl overflow-x-auto">
-                <Tabs.Tab id="all" className="cursor-pointer">
-                  <span>All Activity (365d)</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-                <Tabs.Tab id="goals_met" className="cursor-pointer">
-                  <span>Goals Met ({consistencyStats.goalsMetCount}d)</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-                <Tabs.Tab id="peak" className="cursor-pointer">
-                  <span>Peak Days &gt;120% ({consistencyStats.peakDays}d)</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-                <Tabs.Tab id="recovery" className="cursor-pointer">
-                  <span>Rest &amp; Mobility</span>
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-              </Tabs.List>
-            </Tabs.ListContainer>
-          </Tabs>
+          {/* Mobile HeroUI Dropdown for Filter */}
+          <div className="sm:hidden">
+            <Dropdown>
+              <Button
+                variant="secondary"
+                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-[#E2E7DE] bg-[#0B0E0C] hover:bg-black/60 border border-[#757761]/40 rounded-xl cursor-pointer"
+                aria-label="Filter Activity Days"
+              >
+                <span>
+                  {activeFilter === "all"
+                    ? "All Activity (365d)"
+                    : activeFilter === "goals_met"
+                    ? `Goals Met (${consistencyStats.goalsMetCount}d)`
+                    : activeFilter === "peak"
+                    ? `Peak Days >120% (${consistencyStats.peakDays}d)`
+                    : "Rest & Mobility"}
+                </span>
+                <ChevronDown className="w-3 h-3 text-[#A0A594]" />
+              </Button>
+              <Dropdown.Popover className="min-w-[220px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+                <Dropdown.Menu
+                  aria-label="Filter Activity Days"
+                  selectionMode="single"
+                  selectedKeys={new Set([activeFilter])}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0];
+                    if (selected) setActiveFilter(String(selected) as "all" | "goals_met" | "peak" | "recovery");
+                  }}
+                  className="space-y-1 outline-none"
+                >
+                  <Dropdown.Item
+                    id="all"
+                    textValue="All Activity (365d)"
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <Label className="text-xs font-semibold">All Activity (365d)</Label>
+                    {activeFilter === "all" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    id="goals_met"
+                    textValue={`Goals Met (${consistencyStats.goalsMetCount}d)`}
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <Label className="text-xs font-semibold">Goals Met ({consistencyStats.goalsMetCount}d)</Label>
+                    {activeFilter === "goals_met" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    id="peak"
+                    textValue={`Peak Days >120% (${consistencyStats.peakDays}d)`}
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <Label className="text-xs font-semibold">Peak Days &gt;120% ({consistencyStats.peakDays}d)</Label>
+                    {activeFilter === "peak" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    id="recovery"
+                    textValue="Rest & Mobility"
+                    className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold hover:bg-white/10 transition-colors cursor-pointer outline-none data-[selected=true]:bg-[#f7fe72]/15 data-[selected=true]:text-[#f7fe72]"
+                  >
+                    <Label className="text-xs font-semibold">Rest &amp; Mobility</Label>
+                    {activeFilter === "recovery" && <Check className="w-3.5 h-3.5 text-[#f7fe72]" />}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
+            </Dropdown>
+          </div>
+
+          {/* Desktop Filter Tabs Strip (HeroUI Tabs) */}
+          <div className="hidden sm:block">
+            <Tabs
+              selectedKey={activeFilter}
+              onSelectionChange={(key) => setActiveFilter(key as "all" | "goals_met" | "peak" | "recovery")}
+              className="w-auto"
+            >
+              <Tabs.ListContainer className="p-0 bg-transparent">
+                <Tabs.List aria-label="Activity Filter" className="flex items-center gap-1.5 p-1 bg-[#0B0E0C] border border-[#757761]/35 rounded-xl">
+                  <Tabs.Tab id="all" className="cursor-pointer">
+                    <span>All Activity (365d)</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="goals_met" className="cursor-pointer">
+                    <span>Goals Met ({consistencyStats.goalsMetCount}d)</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="peak" className="cursor-pointer">
+                    <span>Peak Days &gt;120% ({consistencyStats.peakDays}d)</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                  <Tabs.Tab id="recovery" className="cursor-pointer">
+                    <span>Rest &amp; Mobility</span>
+                    <Tabs.Indicator />
+                  </Tabs.Tab>
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-[#A0A493] font-mono">

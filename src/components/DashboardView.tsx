@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Dropdown, Button, Label, Description } from "@heroui/react";
 import {
   Calendar,
   Check,
@@ -37,6 +39,8 @@ import {
   ChevronUp,
   TrendingUp,
   CalendarDays,
+  Compass,
+  ArrowLeft,
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import RewardTiersModal from "@/components/RewardTiersModal";
@@ -53,6 +57,7 @@ interface DashboardViewProps {
 }
 
 export default function DashboardView({ onBackToHome, onOpenGuidedSession }: DashboardViewProps) {
+  const router = useRouter();
   const { data: session } = useSession();
   const userName = session?.user?.name || "David Kim";
   const {
@@ -257,25 +262,85 @@ export default function DashboardView({ onBackToHome, onOpenGuidedSession }: Das
     <div className="min-h-screen bg-[#F4F6F5] dark:bg-[#0B0E0C] text-[#121815] dark:text-[#E2E7DE] flex flex-col lg:flex-row font-sans transition-colors">
       
       {/* Mobile Top App Bar */}
-      <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-[#121815] border-b border-[#757761]/30 sticky top-0 z-30">
+      <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-[#121815]/95 backdrop-blur-md border-b border-[#757761]/30 sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            className="p-2 text-[#CBD2C7] hover:text-white rounded-lg hover:bg-[#181f1b]"
+            className="p-2 text-[#CBD2C7] hover:text-white rounded-lg hover:bg-[#181f1b] cursor-pointer"
+            aria-label="Toggle Navigation Sidebar"
           >
             {mobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <PotatoFitLogo size="sm" variant="dark" />
         </div>
 
-        {onBackToHome && (
-          <button
-            onClick={onBackToHome}
-            className="text-xs font-semibold text-[#f7fe72] bg-[#757761]/20 px-3 py-1.5 rounded-full border border-[#757761]/40"
-          >
-            ← Public Site
-          </button>
-        )}
+        {/* Unified HeroUI Dropdown for Mobile Navigation */}
+        <div className="flex items-center gap-2">
+          <Dropdown>
+            <Button
+              variant="secondary"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#0B0E0C] bg-[#f7fe72] hover:bg-[#e8ef63] border border-[#f7fe72]/50 rounded-xl transition-all cursor-pointer shadow-xs active:scale-95"
+              aria-label="Navigation Menu"
+            >
+              <Compass className="w-3.5 h-3.5 text-[#0B0E0C]" />
+              <span>Menu</span>
+              <ChevronDown className="w-3 h-3 text-[#0B0E0C]" />
+            </Button>
+            <Dropdown.Popover className="min-w-[210px] z-[70] p-1.5 bg-[#121815]/95 backdrop-blur-xl border border-[#757761]/40 rounded-2xl shadow-2xl">
+              <Dropdown.Menu
+                aria-label="Dashboard Navigation"
+                onAction={(key) => {
+                  if (key === "home") {
+                    if (onBackToHome) {
+                      onBackToHome();
+                    } else {
+                      router.push("/");
+                    }
+                  } else {
+                    router.push(String(key));
+                  }
+                }}
+                className="space-y-1 outline-none"
+              >
+                <Dropdown.Item
+                  id="/leaderboards"
+                  textValue="Live Leaderboards"
+                  className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none"
+                >
+                  <Trophy className="w-4 h-4 text-[#f7fe72] shrink-0" />
+                  <div className="flex flex-col text-left">
+                    <Label className="text-xs font-bold text-white">Live Leaderboards</Label>
+                    <Description className="text-[10px] text-[#A0A594]">Global rankings & streak race</Description>
+                  </div>
+                </Dropdown.Item>
+
+                <Dropdown.Item
+                  id="/rewards"
+                  textValue="Rewards & Tiers"
+                  className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none"
+                >
+                  <Award className="w-4 h-4 text-[#f7fe72] shrink-0" />
+                  <div className="flex flex-col text-left">
+                    <Label className="text-xs font-bold text-white">Rewards &amp; Tiers</Label>
+                    <Description className="text-[10px] text-[#A0A594]">Prestige vault & badges</Description>
+                  </div>
+                </Dropdown.Item>
+
+                <Dropdown.Item
+                  id="home"
+                  textValue="Public Site"
+                  className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer outline-none border-t border-[#757761]/20 mt-1 pt-2"
+                >
+                  <ArrowLeft className="w-4 h-4 text-[#CBD2C7] shrink-0" />
+                  <div className="flex flex-col text-left">
+                    <Label className="text-xs font-bold text-white">Public Site</Label>
+                    <Description className="text-[10px] text-[#A0A594]">Return to landing page</Description>
+                  </div>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown.Popover>
+          </Dropdown>
+        </div>
       </div>
 
       {/* 1. Left Sidebar (Fixed 240px on desktop) */}
@@ -714,7 +779,7 @@ export default function DashboardView({ onBackToHome, onOpenGuidedSession }: Das
         <section
           id="daily-goals-module"
           aria-label="Set Daily Goals"
-          className="bg-[#121815] rounded-3xl border border-[#757761]/30 shadow-xl p-5 sm:p-6 mb-8 transition-all scroll-mt-6"
+          className="bg-[#121815] rounded-3xl border border-[#757761]/30 shadow-xl p-5 sm:p-6 mb-8 transition-all scroll-mt-20 sm:scroll-mt-24"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#757761]/25">
             <div className="flex items-start sm:items-center gap-3">
