@@ -91,16 +91,16 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
     {
       id: "strength-recovery",
       bgImage: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=2000&q=80",
-      badgeText: "SCIENCE-BACKED LONGEVITY & STRENGTH PROTOCOLS",
+      badgeText: "॥ शरीरमाद्यं खलु धर्मसाधनम् ॥ • BHARATIYA FITNESS HERITAGE",
       badgeIcon: Sparkles,
-      headlineMain: "Build Sustainable Strength.",
-      headlineAccent: "Master Daily Recovery.",
+      headlineMain: "Build Timeless Strength.",
+      headlineAccent: "The Uchitatvam Way.",
       description:
-        "Personalized hybrid workout routines, targeted nutritional planning, and mindful recovery trackers engineered to fit your life.",
+        "Rooted in ancient Indian Akhada movement arts (Dand, Baithak, Gada), hyper-local Mandi nutrition (Sattu & Sprouts), and modern biometric science.",
       primaryActionText: "Build Your Routine",
-      secondaryActionText: "Explore Guided Sessions (5 min)",
+      secondaryActionText: "Explore Bharatiya Movement Studio",
       metricLabel: "Joined by 14,000+ active movers this month",
-      metricSub: "4.9/5 Rating • Progressive Overload Engine",
+      metricSub: "4.9/5 Rating • Progressive Overload & Vyayama Engine",
     },
     {
       id: "recovery-breathwork",
@@ -297,7 +297,15 @@ export default function Hero({ onOpenRoutineBuilder, onOpenGuidedSession }: Hero
 
               {/* Secondary Ghost Button: Styled with consistent #121815 and #757761 border */}
               <button
-                onClick={currentSlide === 1 ? onOpenRoutineBuilder : onOpenGuidedSession}
+                onClick={() => {
+                  if (currentSlide === 0) {
+                    document.getElementById("indian-fitness-heritage")?.scrollIntoView({ behavior: "smooth" });
+                  } else if (currentSlide === 1) {
+                    onOpenRoutineBuilder();
+                  } else {
+                    onOpenGuidedSession();
+                  }
+                }}
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-full bg-[#121815] hover:bg-[#181f1b] border border-[#757761]/40 hover:border-[#f7fe72] text-white hover:text-[#f7fe72] font-semibold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap"
               >
                 <div className="w-4 h-4 rounded-full bg-[#757761]/30 text-[#f7fe72] flex items-center justify-center">

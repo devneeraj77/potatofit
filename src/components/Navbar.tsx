@@ -320,6 +320,7 @@ const LEARN_MENU: MegaMenu = {
     },
   ],
   footerLinks: [
+    { label: "Bharatiya Fitness vs Apps Comparison", href: "/#indian-fitness-heritage" },
     { label: "Full Workout Routine Builder", href: "/#programs" },
     { label: "Live Delhi Mandi Price Indices", href: "/#nutrition" },
     { label: "Book Specialist Coach Clinic", href: "/#coaches" },
@@ -349,6 +350,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { label: "Learn", hasMenu: true, icon: BookOpen },
   { label: "Arena", hasMenu: true, icon: Trophy },
+  { label: "Bharatiya Fitness", hasMenu: false, icon: Sparkles, href: "/#indian-fitness-heritage" },
 ];
 
 const LANGUAGES = [

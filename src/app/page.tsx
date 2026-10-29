@@ -15,6 +15,7 @@ import SignInModal from "@/components/SignInModal";
 import DashboardView from "@/components/DashboardView";
 import PulseAINutritionEngine from "@/components/PulseAINutritionEngine";
 import ConnectedHealthEngine from "@/components/ConnectedHealthEngine";
+import IndianFitnessComparison from "@/components/IndianFitnessComparison";
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<"landing" | "dashboard">("landing");
@@ -78,6 +79,9 @@ export default function Home() {
 
         {/* PulseAI Hyper-Local Nutrition Engine */}
         <PulseAINutritionEngine />
+
+        {/* Authentic Indian Fitness Heritage & Western Fitness App Comparison */}
+        <IndianFitnessComparison />
 
         {/* 3. The 4-Pillar Wellness Bento Grid */}
         <BentoGrid />
